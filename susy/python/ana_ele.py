@@ -23,7 +23,7 @@ def Fun_findele(tree):
 
 #----------------------
     def Fun_ele_relCombIsoWithEA(ind):
-        return ( tree.elePFChIso[ind] + max( 0.0, tree.elePFNeuIso[ind]+tree.elePFPhoIso[ind]- Fun_getEle_EA(tree.eleSCEta[ind])*tree.rho) )/tree.elePt[ind]
+        return (tree.elePFChIso[ind] + max( 0.0, tree.elePFNeuIso[ind]+tree.elePFPhoIso[ind]-Fun_getEle_EA(tree.eleSCEta[ind])*tree.rho) )/tree.elePt[ind]
 
     def Fun_loose_ele(ind):
         if tree.elePt[ind]>10 and abs(tree.eleEta[ind])<2.5 and tree.eleIDbit[ind]>>1&1==1:

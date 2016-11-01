@@ -4,9 +4,19 @@ import sys
 import ROOT
 from ana2016.susy.Utilfunc import *
 
-def Fun_findjet(pholist,tree):
+def Fun_findjet(Scanmode,muonlist,electronlist,pholist,tree):
     result=[]
     for j in range(tree.nJet):
+
+        if Scanmode in ["eleTree","eQCDTree"]: #for electron channel
+            lep=electronlist[0][0]
+            dR_lep=Fun_deltaR(tree.eleEta[lep],tree.jetEta[j],tree.elePhi[lep],tree.jetPhi[j])
+        if Scanmode in ["muTree","mQCDTree"]: # for mu channel
+            lep=muonlist[0][0]
+            dR_lep=Fun_deltaR(tree.muEta[lep],tree.jetEta[j],tree.muPhi[lep],tree.jetPhi[j])
+
+        if dR_lep<0.4: continue # this jet overlaps to lepton
+
 
         jetOverpho=False
         for pho in pholist:

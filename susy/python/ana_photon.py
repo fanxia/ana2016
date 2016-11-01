@@ -27,7 +27,7 @@ def Fun_getPho_PhoEA(sceta):
 
 
 
-def Fun_findCandpho(Chan,lep,tree):
+def Fun_findCandpho(Scanmode,muonlist,electronlist,tree):
     cand_step1=[]
     candpho=[]
 
@@ -45,11 +45,52 @@ def Fun_findCandpho(Chan,lep,tree):
 
             return False
 
-        if tree.phoPFChIso[f]<20 and (tree.phoSigmaIEtaIEta[f]>1.0102 or tree.phoPFChIso[f]>3.32):
+        if tree.phoPFChIso[f]<20 and (tree.phoSigmaIEtaIEta[f]>1.0102 or tree.phoPFChIso[f]>3.32):     # loose fake 
             return True
         else:
-            print "check"
             return False
+
+    def Fun_loose_woIEtaIEta(f):
+        if  tree.phoHoverE[f]>0.05:
+            return False
+        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
+            return False
+
+        if tree.phoPFChIso[f]<20 and tree.phoPFChIso[f]<=3.32:
+            return True   # loosepho w/o sigmaIetaIeta cut
+        else:
+            return False
+
+    def Fun_loose_woChHadIso(f):
+        if  tree.phoHoverE[f]>0.05:
+            return False
+        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
+            return False
+
+        if tree.phoPFChIso[f]<20 and tree.phoSigmaIEtaIEta[f]<=1.010:
+             # loosepho w/o chIso cut
+            return True  
+        else:
+            return False
+
+
+    def Fun_phoGenmatch(f):
+        genMatchpho=False
+        genMatchele=False
+        for genPar in range(tree.nMC):
+            if tree.mcPID[genPar]==22:
+                if Fun_deltaR(tree.phoEta[f],tree.mcEta[genPar],tree.phoPhi[f],tree.mcPhi[genPar])<0.01 and abs(tree.phoEta[f]-tree.mcEta[genPar])<0.005 and abs(tree.phoEt[f]-tree.mcPt[genPar])/tree.mcPt[genPar]<0.1:
+                    genMatchpho=True
+                    break
+            elif tree.mcPID[genPar]==11 or tree.mcPID[genPar]==-11:
+                if Fun_deltaR(tree.phoEta[f],tree.mcEta[genPar],tree.phoPhi[f],tree.mcPhi[genPar])<0.04 and abs(tree.phoEta[f]-tree.mcEta[genPar])<0.005 and abs(tree.phoEt[f]-tree.mcPt[genPar])/tree.mcPt[genPar]<0.1:
+                    genMatchele=True
+                    break
+        
+        if genMatchpho: return 22
+        elif genMatchele: return 11
+        else: return -99
+
 #--------------------------------
 
         
@@ -58,9 +99,11 @@ def Fun_findCandpho(Chan,lep,tree):
     for p in range(tree.nPho):
 
 #----------get the dr for lep and photon--------
-        if Chan==111: #for electron channel
+        if Scanmode in ["eleTree","eQCDTree"]: #for electron channel
+            lep=electronlist[0][0]
             dR_lep=Fun_deltaR(tree.eleEta[lep],tree.phoEta[p],tree.elePhi[lep],tree.phoPhi[p])
-        if Chan==222: # for mu channel
+        if Scanmode in ["muTree","mQCDTree"]: # for mu channel
+            lep=muonlist[0][0]
             dR_lep=Fun_deltaR(tree.muEta[lep],tree.phoEta[p],tree.muPhi[lep],tree.phoPhi[p])
 
 
@@ -68,8 +111,19 @@ def Fun_findCandpho(Chan,lep,tree):
 
 
         if tree.phoEt[p]>20 and abs(tree.phoEta[p])<1.4442 and tree.phoEleVeto[p]:
-            if tree.phoIDbit[p]>>0&1==1: cand_step1.append([p,1,dR_lep])
-            elif tree.phoIDbit[p]>>0&1==0 and Fun_loosefake(p): cand_step1.append([p,0,dR_lep])
+            phoTag=0
+            if tree.phoIDbit[p]>>0&1==1: 
+                phoTag |= (1<<3)
+            elif tree.phoIDbit[p]>>0&1==0 and Fun_loosefake(p): 
+                phoTag |= (1<<0)
+
+            if  Fun_loose_woIEtaIEta(p): 
+                phoTag |= (1<<1)
+            if  Fun_loose_woChHadIso(p): 
+                phoTag |= (1<<2)
+
+            if phoTag>0:
+                cand_step1.append([p,phoTag,dR_lep])
        
 
 
@@ -85,8 +139,12 @@ def Fun_findCandpho(Chan,lep,tree):
 
 
         if not overlaps_pp:
+            if not tree.isData:  pp.append(Fun_phoGenmatch(pp[0]))
             candpho.append(pp)
             
 #    if len(candpho)>0:print candpho
+
+    
+
         
     return candpho
