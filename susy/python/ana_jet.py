@@ -36,3 +36,36 @@ def Fun_findjet(Scanmode,muonlist,electronlist,pholist,tree):
             result.append(jet)
 
     return result
+
+
+
+
+def Fun_JetM3(Jetlist,tree):
+    # calculate the highst 3jets invmass combination
+    maxSumPt = 0.
+    maxM3 = 0.
+    nj=len(Jetlist) #number of jets
+    for comb in range(1<<nj):
+        npicked=0
+        for j in range(nj):
+            if ((comb>>j)&1) ==1: npicked +=1
+
+
+        if npicked != 3: continue
+        
+        thisCombination=ROOT.TLorentzVector(0.,0.,0.,0.)
+        for j in range(nj):
+            if ((comb>>j)&1) ==1:
+                thisjet=ROOT.TLorentzVector()
+                thisjet.SetPtEtaPhiE(tree.jetPt[Jetlist[j][0]],tree.jetEta[Jetlist[j][0]],tree.jetPhi[Jetlist[j][0]],tree.jetEn[Jetlist[j][0]])
+                thisCombination += thisjet
+
+        if thisCombination.Pt()>maxSumPt:
+            maxSumPt = thisCombination.Pt()
+            maxM3= thisCombination.M()
+
+    return maxM3
+
+
+    
+    

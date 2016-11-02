@@ -93,7 +93,7 @@ BjetEta=vector(float)(0)
 BjetPhi=vector(float)(0)
 BjetHadFlvr=vector(int)(0)
 Bbtagged=vector(int)(0)
-
+BjetM3=array('d',[-99])
 
 BnCandPho=array('i',[-99])
 BCandPhoTag=vector(int)(0)  # tag>>(3,0,1,2)&1 for (photon,fake,wo..,wo..)
@@ -106,6 +106,7 @@ BCandphoSigmaIEtaIEta=vector(float)(0)
 BCandphoSigmaIPhiIPhi=vector(float)(0)
 BCandphoPFChIso=vector(float)(0)
 BCandphoGenmatch=vector(int)(0)
+BCandphoLepInvMass=vector(float)(0)
 
 BnPho=array('i',[-99])
 BnFake=array('i',[-99])
@@ -144,6 +145,7 @@ tree1_out.Branch("BjetEta",BjetEta)
 tree1_out.Branch("BjetPhi",BjetPhi)
 tree1_out.Branch("BjetHadFlvr",BjetHadFlvr)
 tree1_out.Branch("Bbtagged",Bbtagged)
+tree1_out.Branch("BjetM3",BjetM3,"BjetM3/D")
 
 tree1_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
 tree1_out.Branch("BCandPhoTag",BCandPhoTag)
@@ -156,6 +158,8 @@ tree1_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
 tree1_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
 tree1_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
 tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
+tree1_out.Branch("BCandphoLepInvMass",BCandphoLepInvMass)
+
 
 tree1_out.Branch("BnPho",BnPho,"BnPho/I")
 tree1_out.Branch("BnFake",BnFake,"BnFake/I")
@@ -326,7 +330,7 @@ for event in chain_in :
         BjetPhi.push_back(event.jetPhi[jet[0]])
         BjetHadFlvr.push_back(event.jetHadFlvr[0])
         Bbtagged.push_back(jet[1])
-
+    BjetM3[0]=Fun_JetM3(jetlist,event)    
 #-----------------Fill the photons/fakes----------------
 
 
@@ -342,6 +346,7 @@ for event in chain_in :
         BCandphoSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[pho[0]])
         BCandphoPFChIso.push_back(event.phoPFChIso[pho[0]])
         BCandphoGenmatch.push_back(pho[3])
+        BCandphoLepInvMass.push_back(Fun_invmass_pholep(Scanmode,lep_ind,pho[0],event))
 
     
     if Scanmode=="eleTree": tree1_out.Fill()
@@ -390,7 +395,7 @@ for event in chain_in :
     BjetPhi.clear()
     BjetHadFlvr.clear()
     Bbtagged.clear()
-    
+    BjetM3[0]=-99.
 
     BnCandPho[0]=-99
     BCandPhoTag.clear()
@@ -403,6 +408,7 @@ for event in chain_in :
     BCandphoSigmaIPhiIPhi.clear()
     BCandphoPFChIso.clear()
     BCandphoGenmatch.clear()
+    BCandphoLepInvMass.clear()
 
     BnPho[0]=-99
     BnFake[0]=-99

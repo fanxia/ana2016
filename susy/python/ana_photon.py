@@ -27,7 +27,7 @@ def Fun_getPho_PhoEA(sceta):
 
 
 
-def Fun_findCandpho(Scanmode,muonlist,electronlist,tree):
+def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
     cand_step1=[]
     candpho=[]
 
@@ -99,10 +99,11 @@ def Fun_findCandpho(Scanmode,muonlist,electronlist,tree):
     for p in range(tree.nPho):
 
 #----------get the dr for lep and photon--------
-        if Scanmode in ["eleTree","eQCDTree"]: #for electron channel
+        if scanmode in ["eleTree","eQCDTree"]: #for electron channel
             lep=electronlist[0][0]
             dR_lep=Fun_deltaR(tree.eleEta[lep],tree.phoEta[p],tree.elePhi[lep],tree.phoPhi[p])
-        if Scanmode in ["muTree","mQCDTree"]: # for mu channel
+            
+        if scanmode in ["muTree","mQCDTree"]: # for mu channel
             lep=muonlist[0][0]
             dR_lep=Fun_deltaR(tree.muEta[lep],tree.phoEta[p],tree.muPhi[lep],tree.phoPhi[p])
 
@@ -143,8 +144,20 @@ def Fun_findCandpho(Scanmode,muonlist,electronlist,tree):
             candpho.append(pp)
             
 #    if len(candpho)>0:print candpho
-
-    
-
         
     return candpho
+
+
+
+def Fun_invmass_pholep(scanmode,lep,pho,tree):
+    TLVlepton=ROOT.TLorentzVector()
+    TLVphoton=ROOT.TLorentzVector()
+    TLVphoton.SetPtEtaPhiM(tree.phoEt[pho],tree.phoEta[pho],tree.phoPhi[pho],0.)
+
+    if scanmode in ["eleTree","eQCDTree"]:
+        TLVlepton.SetPtEtaPhiE(tree.elePt[lep],tree.eleEta[lep],tree.elePhi[lep],tree.eleEn[lep])
+    if scanmode in ["muTree","mQCDTree"]:
+        TLVlepton.SetPtEtaPhiE(tree.muPt[lep],tree.muEta[lep],tree.muPhi[lep],tree.muEn[lep])
+
+
+    return (TLVlepton+TLVphoton).M()
