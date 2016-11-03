@@ -11,7 +11,6 @@ from ana2016.susy import *
 from ana2016.susy.ana_muon import *
 from ana2016.susy.ana_ele import *
 from ana2016.susy.ana_jet import *
-#from ana2016.susy.ana_fake import *
 from ana2016.susy.ana_photon import *
 from ana2016.susy.Utilfunc import *
 
@@ -19,78 +18,114 @@ from ana2016.susy.Utilfunc import *
 sw = ROOT.TStopwatch()
 sw.Start()
 print "------------Start--------------"
-print "input: "+sys.argv[1]
-print "output: "+sys.argv[2]
 
-if sys.argv[2]=='dataEle': Channel=111
-if sys.argv[2]=='dataMu': Channel=222
+INPUTFile=sys.argv[1]
+OUTPUTName=sys.argv[2]
+print "input: ",INPUTFile
+print "output: ",OUTPUTName
+
 
 
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
-#chain_in.Add("../preselected/reduced_Muchannel_dataSingleMu.root")
 chain_in.Add(sys.argv[1])
 chain_in.SetBranchStatus("AK8*",0)
-n_events = chain_in.GetEntries()
-print"Total events for processing: ",n_events
+#print"Total events for processing: ",chain_in.GetEntries()
+event=chain_in
+
+if len(sys.argv)>3:
+    fileID=int(sys.argv[3])
+    startEntryNumber=int(sys.argv[4])
+    endEntryNumber=int(sys.argv[5])
+else:
+    fileID=-999
+    startEntryNumber=0
+    endEntryNumber=chain_in.GetEntries()
+
+print "fileID: ",fileID
+print "startEntryNumber: ",startEntryNumber
+print "endEntryNumber: ",endEntryNumber
+
+
 
 dd=datetime.datetime.now().strftime("%b%d")
-log = open("anaLog_step1.txt","a")
-os.system('mkdir -p Data_Out_step1/ana_root'+dd)
-os.chdir('Data_Out_step1/ana_root'+dd)
-file_out = ROOT.TFile("step1_"+sys.argv[2]+".root","recreate")
+os.system('mkdir -p Data_Out_step1/'+OUTPUTName+'/ana_root'+dd)
+os.chdir('Data_Out_step1/'+OUTPUTName+'/ana_root'+dd)
+log = open("logstep1_"+OUTPUTName+"_"+str(fileID)+".txt","w")
+file_out = ROOT.TFile("step1_"+OUTPUTName+"_"+str(fileID)+".root","recreate")
 
 processdnevent = 0
-Pass_nHLT = 0
-Pass_npre = 0
-Pass_nSR1 = 0
-Pass_nSR2 = 0
-Pass_nCR1 = 0
-Pass_nCR2 = 0
+# the following list used to count event numbers in order: ele,eQCD,mu,muQCD trees
+Pass_1lep = [0,0,0,0]
+Pass_nHLT = [0,0,0,0]
+Pass_npre = [0,0,0,0]
+Pass_nSR1 = [0,0,0,0]
+Pass_nSR2 = [0,0,0,0]
+Pass_nCR1 = [0,0,0,0]
+Pass_nCR2 = [0,0,0,0]
 
+Pass_npre_btag = [0,0,0,0]
+Pass_nSR1_btag = [0,0,0,0]
+Pass_nSR2_btag = [0,0,0,0]
+Pass_nCR1_btag = [0,0,0,0]
+Pass_nCR2_btag = [0,0,0,0]
+
+#-----define hists for counting
+Binlabel= ["TotalEvent","Pass_1lep","Pass_nHLT","Pass_npre","Pass_nSR1","Pass_nSR2","Pass_nCR1","Pass_nCR2","Pass_npre_btag","Pass_nSR1_btag","Pass_nSR2_btag","Pass_nCR1_btag","Pass_nCR2_btag","0","0","0","0","0"]
+H_ele=ROOT.TH1F("H_ele","H_ele",15,0,15)
+for nbin in range(15): H_ele.GetXaxis().SetBinLabel(nbin+1,Binlabel[nbin])
+H_eQCD=H_ele.Clone("H_eQCD")
+H_mu=H_ele.Clone("H_mu")
+H_mQCD=H_ele.Clone("H_mQCD")
+#H_mu=ROOT.TH1F("H_mu","H_mu",15,0,15)
+#H_mQCD=ROOT.TH1F("H_mQCD","H_mQCD",15,0,15)
 
 
 #--------------define branches to record seleted obj------------
 
-BmuPt=array('d',[-1.])
+BmuPt=array('d',[-99.])
+BmuPt=array('d',[-99.])
+BmuEn=array('d',[-99.])
+BmuEta1=array('d',[-99.])
+BmuPhi=array('d',[-99.])
+BmuPFChIso=array('d',[-99.])
+BmuPFPhoIso=array('d',[-99.])
+BmuPFNeuIso=array('d',[-99.])
+BmuPFPUIso=array('d',[-99.])
+BmuPFMiniIso=array('d',[-99.])
+BmuPFRelCombIso=array('d',[-99.])
 
-BmuEta1=array('d',[-1.])
+BelePt=array('d',[-99.])
+BeleEn=array('d',[-99.])
+BeleEta=array('d',[-99.])
+BelePhi=array('d',[-99.])
+BelePFChIso=array('d',[-99.])
+BelePFPhoIso=array('d',[-99.])
+BeleNeuIso=array('d',[-99.])
+BelePFPUIso=array('d',[-99.])
+BeleConvVeto=array('i',[-99])
+BelePFMiniIso=array('d',[-99.])
+BelePFRelCombIso=array('d',[-99.])
 
-BmuPhi=array('d',[-1.])
-BmuPFChIso=array('d',[-1.])
-BmuPFPhoIso=array('d',[-1.])
-BmuPFNeuIso=array('d',[-1.])
-BmuPFPUIso=array('d',[-1.])
-BmuPFMiniIso=array('d',[-1.])
-BmuPFRelCombIso=array('d',[-1.])
-
-BelePt=array('d',[-1.])
-BeleEta=array('d',[-1.])
-BelePhi=array('d',[-1.])
-BelePFChIso=array('d',[-1.])
-BelePFPhoIso=array('d',[-1.])
-BeleNeuIso=array('d',[-1.])
-BelePFPUIso=array('d',[-1.])
-BeleConvVeto=array('i',[-1])
-BelePFMiniIso=array('d',[-1.])
-BelePFRelCombIso=array('d',[-1.])
-
-Bregion=array('i',[-1])
-BnVtx=array('i',[-1])
-Brho=array('d',[-1.])
-BpfMET=array('d',[-1.])
-BMt=array('d',[-1.])
-Bnjet=array('i',[-1])
-Bnbjet=array('i',[-1])
-
+Bregion=array('i',[-99])
+BnVtx=array('i',[-99])
+Brho=array('d',[-99.])
+BpfMET=array('d',[-99.])
+BpfMeTPhi=array('d',[-99.])
+#BPUTrue=array('d',[-99.])
+BlepMt=array('d',[-99.])
+Bnjet=array('i',[-99])
+Bnbjet=array('i',[-99])
 
 BjetPt=vector(float)(0)
+BjetEn=vector(float)(0)
 BjetEta=vector(float)(0)
 BjetPhi=vector(float)(0)
+#BjetHadFlvr=vector(int)(0)
 Bbtagged=vector(int)(0)
+BjetM3=array('d',[-99])
 
-
-BnCandPho=array('i',[-1])
-BCandPhoTag=vector(int)(0)  # (0,1) for (fake,photon)
+BnCandPho=array('i',[-99])
+BCandPhoTag=vector(int)(0)  # tag>>(3,0,1,2)&1 for (photon,fake,wo..,wo..)
 BCandphoEt=vector(float)(0)
 BCandphoEta=vector(float)(0)
 BCandphoPhi=vector(float)(0)
@@ -99,197 +134,214 @@ BCandphoHoverE=vector(float)(0)
 BCandphoSigmaIEtaIEta=vector(float)(0)
 BCandphoSigmaIPhiIPhi=vector(float)(0)
 BCandphoPFChIso=vector(float)(0)
+#BCandphoGenmatch=vector(int)(0)
+BCandphoLepInvMass=vector(float)(0)
 
+BnPho=array('i',[-99])
+BnFake=array('i',[-99])
 
-
-BnPho=array('i',[-1])
-BnFake=array('i',[-1])
-#BfakeEt=vector(float)(0)
-#BfakeEta=vector(float)(0)
-#BfakePhi=vector(float)(0)
-#BfakeR9=vector(float)(0)
-#BfakeSigmaIEtaIEta=vector(float)(0)
-#BfakeSigmaIPhiIPhi=vector(float)(0)
-#BfakePFChIso=vector(float)(0)
 
 
 #-----------------Define tree------------------------------
-if Channel==111:
-    tree_out=TTree("EventTree_ele","EventTree_ele")
-if Channel==222:
-    tree_out=TTree("EventTree_mu","EventTree_mu")
+tree1_out=TTree("EventTree_ele","EventTree_ele")
+tree1_out.Branch("Bregion",Bregion,"Bregion/I")
+tree1_out.Branch("BnVtx",BnVtx,"BnVtx/I")
+tree1_out.Branch("Brho",Brho,"Brho/D")
+#tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
+tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
+tree1_out.Branch("BpfMeTPhi",BpfMeTPhi,"BpfMeTPhi/D")
+tree1_out.Branch("BlepMt",BlepMt,"BlepMt/D")
 
-tree_out.Branch("Bregion",Bregion,"Bregion/I")
-tree_out.Branch("BnVtx",BnVtx,"BnVtx/I")
-tree_out.Branch("Brho",Brho,"Brho/D")
-tree_out.Branch("BpfMET",BpfMET,"BpfMET/D")
-tree_out.Branch("BMt",BMt,"BMt/D")
+tree1_out.Branch("BelePt",BelePt,"BelePt/D")
+tree1_out.Branch("BeleEn",BeleEn,"BeleEn/D")
+tree1_out.Branch("BeleEta",BeleEta,"BeleEta/D")
+tree1_out.Branch("BelePhi",BelePhi,"BelePhi/D")
+tree1_out.Branch("BelePFMiniIso",BelePFMiniIso,"BelePFMiniIso/D")
+tree1_out.Branch("BelePFRelCombIso",BelePFRelCombIso,"BelePFRelCombIso/D")
 
-   
+tree1_out.Branch("BmuPt",BmuPt,"BmuPt/D")
+tree1_out.Branch("BmuEn",BmuEn,"BmuEn/D")
+tree1_out.Branch("BmuEta",BmuEta1,"BmuEta/D")
+tree1_out.Branch("BmuPhi",BmuPhi,"BmuPhi/D")
+tree1_out.Branch("BmuPFMiniIso",BmuPFMiniIso,"BmuPFMiniIso/D")
+tree1_out.Branch("BmuPFRelCombIso",BmuPFRelCombIso,"BmuPFRelCombIso/D")
 
+tree1_out.Branch("Bnjet",Bnjet,"Bnjet/I")
+tree1_out.Branch("Bnbjet",Bnbjet,"Bnbjet/I")
+tree1_out.Branch("BjetPt",BjetPt)
+tree1_out.Branch("BjetEn",BjetEn)
+tree1_out.Branch("BjetEta",BjetEta)
+tree1_out.Branch("BjetPhi",BjetPhi)
+#tree1_out.Branch("BjetHadFlvr",BjetHadFlvr)
+tree1_out.Branch("Bbtagged",Bbtagged)
+tree1_out.Branch("BjetM3",BjetM3,"BjetM3/D")
 
-if Channel==111:
-    tree_out.Branch("BelePt",BelePt,"BelePt/D")
-    tree_out.Branch("BeleEta",BeleEta,"BeleEta/D")
-    tree_out.Branch("BelePhi",BelePhi,"BelePhi/D")
-#    tree_out.Branch("BelePhi",BelePhi,"BelePhi/D")
-    tree_out.Branch("BelePFMiniIso",BelePFMiniIso,"BelePFMiniIso/D")
-    tree_out.Branch("BelePFRelCombIso",BelePFRelCombIso,"BelePFRelCombIso/D")
-
-if Channel==222:
-
-    tree_out.Branch("BmuPt",BmuPt,"BmuPt/D")
-    tree_out.Branch("BmuEta",BmuEta1,"BmuEta/D")
-    tree_out.Branch("BmuPhi",BmuPhi,"BmuPhi/D")
-#    tree_out.Branch("BmuPFChIso",BmuPFChIso,"BmuPFChIso/D")
-    tree_out.Branch("BmuPFMiniIso",BmuPFMiniIso,"BmuPFMiniIso/D")
-    tree_out.Branch("BmuPFRelCombIso",BmuPFRelCombIso,"BmuPFRelCombIso/D")
-
-    
-
-tree_out.Branch("Bnjet",Bnjet,"Bnjet/I")
-tree_out.Branch("Bnbjet",Bnbjet,"Bnbjet/I")
-tree_out.Branch("BjetPt",BjetPt)
-tree_out.Branch("BjetEta",BjetEta)
-tree_out.Branch("Bbtagged",Bbtagged)
-
-tree_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
-tree_out.Branch("BCandPhoTag",BCandPhoTag)
-tree_out.Branch("BCandphoEt",BCandphoEt)
-tree_out.Branch("BCandphoEta",BCandphoEta)
-tree_out.Branch("BCandphoPhi",BCandphoPhi)
-tree_out.Branch("BCandphoR9",BCandphoR9)
-tree_out.Branch("BCandphoHoverE",BCandphoHoverE)
-tree_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
-tree_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
-tree_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
+tree1_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
+tree1_out.Branch("BCandPhoTag",BCandPhoTag)
+tree1_out.Branch("BCandphoEt",BCandphoEt)
+tree1_out.Branch("BCandphoEta",BCandphoEta)
+tree1_out.Branch("BCandphoPhi",BCandphoPhi)
+tree1_out.Branch("BCandphoR9",BCandphoR9)
+tree1_out.Branch("BCandphoHoverE",BCandphoHoverE)
+tree1_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
+tree1_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
+tree1_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
+#tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
+tree1_out.Branch("BCandphoLepInvMass",BCandphoLepInvMass)
 
 
-tree_out.Branch("BnPho",BnPho,"BnPho/I")
-tree_out.Branch("BnFake",BnFake,"BnFake/I")
-#tree_out.Branch("BfakeEt",BfakeEt)
-#tree_out.Branch("BfakeEta",BfakeEta)
-#tree_out.Branch("BfakePhi",BfakePhi)
-#tree_out.Branch("BfakeR9",BfakeR9)
-#tree_out.Branch("BfakeSigmaIEtaIEta",BfakeSigmaIEtaIEta)
-#tree_out.Branch("BfakeSigmaIPhiIPhi",BfakeSigmaIPhiIPhi)
-#tree_out.Branch("BfakePFChIso",BfakePFChIso)
+tree1_out.Branch("BnPho",BnPho,"BnPho/I")
+tree1_out.Branch("BnFake",BnFake,"BnFake/I")
 
+
+
+tree2_out=tree1_out.CloneTree(0)
+tree3_out=tree1_out.CloneTree(0)
+tree4_out=tree1_out.CloneTree(0)
+tree2_out.SetObject("EventTree_eQCD","EventTree_eQCD")
+tree3_out.SetObject("EventTree_mu","EventTree_mu")
+tree4_out.SetObject("EventTree_mQCD","EventTree_mQCD")
 #--------
-print "mupt", BmuPt[0]
-print "muphi", BmuPhi[0]
-print "mueta1", BmuEta1
 
 
+#for event in chain_in :
+for entrynumber in range(startEntryNumber,endEntryNumber):
+    event.GetEntry(entrynumber)
 
-for event in chain_in :
 
-#    print "mupt", BmuPt[0]
-#    print "muphi", BmuPhi[0]
-
-#    BmuEta1=array('d',[-1.])
-#    print "event no.", processdnevent
-#    print "mueta2", BmuEta1
     (processdnevent)+=1
     if (processdnevent)%10000 ==0:
         print "Processing entry ", processdnevent
+#    print "Processing entry ", processdnevent
+
+#----------0.event clean and modesetting----------
 
 
-#----------0.event clean----------
 
+    Scanmode="None"
     if not event.hasGoodVtx: continue
 
-#--------------1.HLT cut-------------
-
-    if Channel==111: hlt=event.HLTEleMuX>>55&1
-    if Channel==222: hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
-
-    if not hlt: continue
-    Pass_nHLT+=1
-
-#-------------2. Only one tight lepton-------
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
-    GoodOneLep=False
-                                                                                                               
+   # ID: 0 for loose, 1 for tight, 3 for QCDmode
     mulist=Fun_findmu(event)
     elelist=Fun_findele(event)
 
-    if processdnevent==86171: print mulist, elelist
 
-    if Channel==111:
-        if len(elelist)==1 and elelist[0][1]==1 and len(mulist)==0: 
-            GoodOneLep=True
+
+#-------------1. Only one tight lepton(OR one tight QCDlep)-------
+    if len(elelist)==1 and elelist[0][1]==1 and len(mulist)==0: 
+            Scanmode="eleTree"
             lep_ind=elelist[0][0]
             lep_Mt=(2*event.elePt[lep_ind]*event.pfMET*(1-TMath.Cos(event.elePhi[lep_ind]-event.pfMETPhi)))**0.5
-    if Channel==222:  
-        if len(elelist)==0  and len(mulist)==1 and mulist[0][1]==1: 
-            GoodOneLep=True
+    elif len(elelist)==1 and elelist[0][1]==3 and len(mulist)==0:
+            Scanmode="eQCDTree"
+            lep_ind=elelist[0][0]
+            lep_Mt=(2*event.elePt[lep_ind]*event.pfMET*(1-TMath.Cos(event.elePhi[lep_ind]-event.pfMETPhi)))**0.5
+        
+        
+    elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==1: 
+            Scanmode="muTree"
             lep_ind=mulist[0][0]
             lep_Mt=(2*event.muPt[lep_ind]*event.pfMET*(1-TMath.Cos(event.muPhi[lep_ind]-event.pfMETPhi)))**0.5
-    if not GoodOneLep: continue
+    elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==3:
+            Scanmode="mQCDTree"
+            lep_ind=mulist[0][0]
+            lep_Mt=(2*event.muPt[lep_ind]*event.pfMET*(1-TMath.Cos(event.muPhi[lep_ind]-event.pfMETPhi)))**0.5
+    else : continue
+
+    Scanmode_ind=["eleTree","eQCDTree","muTree","mQCDTree"].index(Scanmode)
+    Pass_1lep[Scanmode_ind]+=1
+#--------------1.HLT cut-------------
+
+    CheckHLT=False
+    if CheckHLT:
+        if Scanmode=="eleTree": 
+            hlt=event.HLTEleMuX>>55&1
+        elif Scanmode=="eQCDTree": 
+            hlt=1
+        elif Scanmode=="muTree": 
+            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+        elif Scanmode=="mQCDTree": 
+            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+
+        if hlt==1: Pass_nHLT[Scanmode_ind] +=1
+        else: continue
+
+    else:   Pass_nHLT[Scanmode_ind] +=1
+
+
+
 
 
 
 #-------------2.5 find photon before jets-------------
-    #Candpholist: [[index,dr_lep,phoTag],[],[],,,]
-    Candpholist=Fun_findCandpho(Channel,lep_ind,event)
+    #Candpholist: [[index,phoTag,dr_lep,genmatch(only4mc)],[],[],,,]
+    Candpholist=Fun_findCandpho(Scanmode,mulist,elelist,event)
     BnCandPho[0]=len(Candpholist)
-    BnPho[0]=len([p for p in Candpholist if p[1]==1])
-    BnFake[0]=len([p for p in Candpholist if p[1]==0])
-
+    BnPho[0]=len([p for p in Candpholist if p[1]>>3&1==1])
+    BnFake[0]=len([p for p in Candpholist if p[1]>>0&1==1])
 
 
 #---------------3. more than 3 jets and at least 1 btagged----
     # jetlist:[[index,btagged],[],[],...]
 
-    CheckBtag=True
+    CheckBtag=False
     GoodJets=False
-    jetlist=Fun_findjet(Candpholist,event)
+    jetlist=Fun_findjet(Scanmode,mulist,elelist,Candpholist,event)
     nbtagged=sum(jet[1] for jet in jetlist)
-    if not CheckBtag and len(jetlist)>=3: GoodJets=True
-    if CheckBtag and len(jetlist)>=3 and nbtagged>=1: GoodJets=True
+    if len(jetlist)>=3: 
+        GoodJets=True
+        if nbtagged>=1: CheckBtag=True
 
     if not GoodJets: continue
-
-
+    Bregion[0]=0  # To this step: pass the pre selection
+    Pass_npre[Scanmode_ind]+=1
+    if CheckBtag: Pass_npre_btag[Scanmode_ind]+=1
 
 #-------------------------define signal region1 &2
+
     if BnPho[0]==1:
         Bregion[0]=1
-        (Pass_nSR1)+=1
-
+        Pass_nSR1[Scanmode_ind]+=1
+        if CheckBtag: Pass_nSR1_btag[Scanmode_ind]+=1
     elif BnPho[0]>=2:    
         Bregion[0]=2
-        (Pass_nSR2)+=1
+        Pass_nSR2[Scanmode_ind]+=1
+        if CheckBtag: Pass_nSR2_btag[Scanmode_ind]+=1
 #------------------------------define control region 1&2 depends on fake numbers
     if BnFake[0]==1 and BnPho[0]==0:
         Bregion[0]=3
-        (Pass_nCR1)+=1
+        Pass_nCR1[Scanmode_ind]+=1
+        if CheckBtag: Pass_nCR1_btag[Scanmode_ind]+=1
     elif BnFake[0]>=2 and BnPho[0]==0:
         Bregion[0]=4
-        Pass_nCR2+=1
+        Pass_nCR2[Scanmode_ind]+=1
+        if CheckBtag: Pass_nCR2_btag[Scanmode_ind]+=1
 
 #---------------Fill the pretree-----------------------------------
-    (Pass_npre)+=1
 
-    Bregion[0]=0
+
+
+
     BpfMET[0]=event.pfMET
+    BpfMeTPhi[0]=event.pfMETPhi
     BnVtx[0]=event.nVtx
     Brho[0]=event.rho
-    BMt[0]=lep_Mt
-    if Channel==111:
+ #   BPUTrue[0]=event.puTrue[12] # puBX=12,intime pu
+    BlepMt[0]=lep_Mt
+    if Scanmode in ["eleTree","eQCDTree"]:
         BelePt[0]=(event.elePt[lep_ind])
+        BeleEn[0]=(event.eleEn[lep_ind])
         BeleEta[0]=(event.eleEta[lep_ind])
         BelePhi[0]=(event.elePhi[lep_ind])
         BelePFMiniIso[0]=(event.elePFMiniIso[lep_ind])
         BelePFRelCombIso[0]=(elelist[0][2])
 
         
-
-    if Channel==222:
-        print processdnevent
+    if Scanmode in ["muTree","mQCDTree"]:
         BmuPt[0]=(event.muPt[lep_ind])
+        BmuEn[0]=(event.muEn[lep_ind])
         BmuEta1[0]=(event.muEta[lep_ind])
         BmuPhi[0]=(event.muPhi[lep_ind])
 #        BmuPFChIso[0]=(event.muPFChIso[lep_ind])
@@ -303,9 +355,12 @@ for event in chain_in :
     Bnbjet[0]=nbtagged
     for jet in jetlist:
         BjetPt.push_back(event.jetPt[jet[0]])
+        BjetEn.push_back(event.jetEn[jet[0]])
         BjetEta.push_back(event.jetEta[jet[0]])
+        BjetPhi.push_back(event.jetPhi[jet[0]])
+ #       BjetHadFlvr.push_back(event.jetHadFlvr[0])
         Bbtagged.push_back(jet[1])
-
+    BjetM3[0]=Fun_JetM3(jetlist,event)    
 #-----------------Fill the photons/fakes----------------
 
 
@@ -320,29 +375,59 @@ for event in chain_in :
         BCandphoSigmaIEtaIEta.push_back(event.phoSigmaIEtaIEta[pho[0]])
         BCandphoSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[pho[0]])
         BCandphoPFChIso.push_back(event.phoPFChIso[pho[0]])
-
-
-#    for fake in fakelist: 
-#        BfakeEt.push_back(event.phoEt[fake[0]])
-#        BfakeEta.push_back(event.phoEta[fake[0]])
-#        BfakePhi.push_back(event.phoPhi[fake[0]])
-#        BfakeR9.push_back(event.phoR9[fake[0]])
-#        BfakeSigmaIEtaIEta.push_back(event.phoSigmaIEtaIEta[fake[0]])
-#        BfakeSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[fake[0]])
-#        BfakePFChIso.push_back(event.phoPFChIso[fake[0]])
-
-
-
+#        BCandphoGenmatch.push_back(pho[3])
+        BCandphoLepInvMass.push_back(Fun_invmass_pholep(Scanmode,lep_ind,pho[0],event))
 
     
-
-    tree_out.Fill()
+    if Scanmode=="eleTree": tree1_out.Fill()
+    if Scanmode=="eQCDTree": tree2_out.Fill()
+    if Scanmode=="muTree": tree3_out.Fill()
+    if Scanmode=="muQCDTree": tree4_out.Fill()
 
 #----------------------clean branches for next event
-    BjetPt.clear()
-    BjetEta.clear()
-    Bbtagged.clear()
+    BmuPt[0]=-99.
+    BmuPt[0]=-99.
+    BmuEn[0]=-99.
+    BmuEta1[0]=-99.
+    BmuPhi[0]=-99.
+    BmuPFChIso[0]=-99.
+    BmuPFPhoIso[0]=-99.
+    BmuPFNeuIso[0]=-99.
+    BmuPFPUIso[0]=-99.
+    BmuPFMiniIso[0]=-99.
+    BmuPFRelCombIso[0]=-99.
 
+    BelePt[0]=-99.
+    BeleEn[0]=-99.
+    BeleEta[0]=-99.
+    BelePhi[0]=-99.
+    BelePFChIso[0]=-99.
+    BelePFPhoIso[0]=-99.
+    BeleNeuIso[0]=-99.
+    BelePFPUIso[0]=-99.
+    BeleConvVeto[0]=-99
+    BelePFMiniIso[0]=-99.
+    BelePFRelCombIso[0]=-99.
+
+    Bregion[0]=-99
+    BnVtx[0]=-99
+    Brho[0]=-99.
+    BpfMET[0]=-99.
+    BpfMeTPhi[0]=-99.
+#    BPUTrue[0]=-99.
+    BlepMt[0]=-99.
+    Bnjet[0]=-99
+    Bnbjet[0]=-99
+    
+    BjetPt.clear()
+    BjetEn.clear()
+    BjetEta.clear()
+    BjetPhi.clear()
+#    BjetHadFlvr.clear()
+    Bbtagged.clear()
+    BjetM3[0]=-99.
+
+    BnCandPho[0]=-99
     BCandPhoTag.clear()
     BCandphoEt.clear()
     BCandphoEta.clear()
@@ -352,44 +437,74 @@ for event in chain_in :
     BCandphoSigmaIEtaIEta.clear()
     BCandphoSigmaIPhiIPhi.clear()
     BCandphoPFChIso.clear()
+ #   BCandphoGenmatch.clear()
+    BCandphoLepInvMass.clear()
 
-#    BfakeEt.clear()
-#    BfakeEta.clear()
-#    BfakePhi.clear()
-#    BfakeR9.clear()
-#    BfakeSigmaIEtaIEta.clear()
-#    BfakeSigmaIPhiIPhi.clear()
-#    BfakePFChIso.clear()
-        
-        
+    BnPho[0]=-99
+    BnFake[0]=-99
 
+
+#---fill the hist----
+Binlist=[Pass_1lep,Pass_nHLT,Pass_npre,Pass_nSR1,Pass_nSR2,Pass_nCR1,Pass_nCR2,Pass_npre_btag,Pass_nSR1_btag,Pass_nSR2_btag,Pass_nCR1_btag,Pass_nCR2_btag]
+Histlist=[H_ele,H_eQCD,H_mu,H_mQCD]
+for hist in range(len(Histlist)):
+    Histlist[hist].SetBinContent(1,processdnevent)
+    for bin in range(len(Binlist)):
+        Histlist[hist].SetBinContent(bin+2,Binlist[bin][hist])
+
+
+#--------------------------------------
 
 file_out.Write()
 file_out.Close()
 
 print "----------------------"
-print "TotalEventNumber = ", n_events
-print "n_HLT pass = ", Pass_nHLT
-print "n_pre selection = ",Pass_npre
-print "n_SR1 = ", Pass_nSR1
-print "n_SR2 = ", Pass_nSR2
-print "n_CR1 = ", Pass_nCR1
-print "n_CR2 = ", Pass_nCR2
+print "TotalEventNumber = ", processdnevent
+print "Scanmode:-eleTree-|-eQCDTree-|-muTree-|-mQCDTree"
+print "n_1lep pass = ", Pass_1lep
+print "n_HLT pass  = ", Pass_nHLT
+print "n_pre select= ", Pass_npre
+print "      n_SR1 = ", Pass_nSR1
+print "      n_SR2 = ", Pass_nSR2
+print "      n_CR1 = ", Pass_nCR1
+print "      n_CR2 = ", Pass_nCR2
+
+print "Scanmode(with >=1 Btagget):-eleTree-|-eQCDTree-|-muTree-|-mQCDTree"
+print "n_pre select= ",Pass_npre_btag
+print "      n_SR1 = ", Pass_nSR1_btag
+print "      n_SR2 = ", Pass_nSR2_btag
+print "      n_CR1 = ", Pass_nCR1_btag
+print "      n_CR2 = ", Pass_nCR2_btag
+
+
+
 print "----------------------"
 
 
 #### to write in logpre.txt
 log.write("############################################################\n")
-log.write("INPUT %s"%sys.argv[1])
-log.write("\nOutPUT %s\n"%sys.argv[2])
-log.write("%s"%datetime.datetime.now())
-log.write("\nTotalEventNumber = %s"%n_events)
+log.write("INPUT %s"%INPUTFile)
+log.write("\nOutPUT %s %s"%(OUTPUTName,fileID))
+log.write("\nTotalEventNumber = %s"%(event.GetEntries()))
+log.write("\n%s"%datetime.datetime.now())
+log.write("\nstartEntry: %s endEntry %s"%(startEntryNumber,startEntryNumber))
+log.write("\nProcessedEventNumber = %s"%processdnevent)
+log.write("\nScanmode:-eleTree-|-eQCDTree-|-muTree-|-mQCDTree")
+log.write( "\nn_1lep pass =%s "%Pass_1lep)
 log.write( "\nn_HLT pass =%s "%Pass_nHLT)
+log.write("\nNoBtag requirement")
 log.write("\nn_pre selection = %s"%Pass_npre)
 log.write("\nn_SR1 =%s "%Pass_nSR1)
 log.write("\nn_SR2 =%s "%Pass_nSR2)
 log.write("\nn_CR1 =%s "%Pass_nCR1)
 log.write("\nn_CR2 =%s "%Pass_nCR2)
+log.write("\nWith Btag requirement nBtagged>=1")
+log.write("\nn_pre selection(bjj) = %s"%Pass_npre_btag)
+log.write("\nn_SR1_bjj =%s "%Pass_nSR1_btag)
+log.write("\nn_SR2_bjj =%s "%Pass_nSR2_btag)
+log.write("\nn_CR1_bjj =%s "%Pass_nCR1_btag)
+log.write("\nn_CR2_bjj =%s "%Pass_nCR2_btag)
+
 log.write( "\n----------------------\n\n")
 log.close()
 
