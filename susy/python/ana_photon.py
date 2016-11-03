@@ -37,15 +37,30 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
         return max(tree.phoPFPhoIso[ind]-tree.rho*Fun_getPho_PhoEA(tree.phoSCEta[ind]),0.0)
 
 #------------------------------
-    def Fun_loosefake(f):
+    def Fun_loosepho(f):
         if  tree.phoHoverE[f]>0.05:
             return False
-
+        
         if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
 
             return False
 
-        if tree.phoPFChIso[f]<20 and (tree.phoSigmaIEtaIEta[f]>1.0102 or tree.phoPFChIso[f]>3.32):     # loose fake 
+        if tree.phoPFChIso[f]<20 and tree.phoSigmaIEtaIEta[f]<=0.0102 and tree.phoPFChIso[f]<=3.32:     # loose photon
+            return True
+        else:
+            return False
+
+
+#
+    def Fun_loosefake(f):
+        if  tree.phoHoverE[f]>0.05:
+            return False
+        
+        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
+
+            return False
+
+        if tree.phoPFChIso[f]<20 and (tree.phoSigmaIEtaIEta[f]>0.0102 or tree.phoPFChIso[f]>3.32):     # loose fake 
             return True
         else:
             return False
@@ -67,7 +82,7 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
         if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
             return False
 
-        if tree.phoPFChIso[f]<20 and tree.phoSigmaIEtaIEta[f]<=1.010:
+        if tree.phoPFChIso[f]<20 and tree.phoSigmaIEtaIEta[f]<=0.0102:
              # loosepho w/o chIso cut
             return True  
         else:
@@ -125,8 +140,8 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
 
             if phoTag>0:
                 cand_step1.append([p,phoTag,dR_lep])
-       
 
+                
 
 #---------loop the whole photon and fake
 

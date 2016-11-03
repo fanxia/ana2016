@@ -280,7 +280,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Candpholist=Fun_findCandpho(Scanmode,mulist,elelist,event)
     BnCandPho[0]=len(Candpholist)
     BnPho[0]=len([p for p in Candpholist if p[1]>>3&1==1])
-    BnFake[0]=len([p for p in Candpholist if p[1]>>1&1==1])
+    BnFake[0]=len([p for p in Candpholist if p[1]>>0&1==1])
 
 
 #---------------3. more than 3 jets and at least 1 btagged----

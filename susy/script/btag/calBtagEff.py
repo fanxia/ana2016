@@ -32,15 +32,15 @@ etaNBins=24
 etaMin=-2.4
 etaMax=2.4
 
-num_bjets = ROOT.TH2F("bjets", "bjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_bjets.Sumw2();
-num_btags = ROOT.TH2F("btags", "btags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_btags.Sumw2();
-num_cjets = ROOT.TH2F("cjets", "cjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_cjets.Sumw2();
-num_ctags = ROOT.TH2F("ctags", "ctags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ctags.Sumw2();
-num_ljets = ROOT.TH2F("ljets", "ljets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ljets.Sumw2();
-num_ltags = ROOT.TH2F("ltags", "ltags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ltags.Sumw2();
+num_bjets = ROOT.TH2D("bjets", "bjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_bjets.Sumw2();
+num_btags = ROOT.TH2D("btags", "btags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_btags.Sumw2();
+num_cjets = ROOT.TH2D("cjets", "cjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_cjets.Sumw2();
+num_ctags = ROOT.TH2D("ctags", "ctags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ctags.Sumw2();
+num_ljets = ROOT.TH2D("ljets", "ljets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ljets.Sumw2();
+num_ltags = ROOT.TH2D("ltags", "ltags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ltags.Sumw2();
 
-#num_tempjets = ROOT.TH2F("tempjets", "tempjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_tempjets.Sumw2();
-#num_temptags = ROOT.TH2F("temptags", "temptags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_temptags.Sumw2();
+#num_tempjets = ROOT.TH2D("tempjets", "tempjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_tempjets.Sumw2();
+#num_temptags = ROOT.TH2D("temptags", "temptags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_temptags.Sumw2();
 
 
 processevent = 0

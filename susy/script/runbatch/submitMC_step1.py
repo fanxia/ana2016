@@ -21,7 +21,7 @@ ScriptName = "mc_ana_step1.py" # script to be used
 queue = "8nh" # give bsub queue -- 8nm (8 minutes), 1nh (1 hour), 8nh, 1nd (1day), 2nd, 1nw (1 week), 2nw 
 ########   customization end   #########
 #os.system("rm -r log 2>/dev/null")
-os.system("mkdir -p "+sys.argv[3]+"_step1_log")
+os.system("mkdir -p "+sys.argv[2]+"_step1_log")
 #os.chdir(sys.argv[3]+"_step1output/log")
 jobscr='''
 #!/bin/sh

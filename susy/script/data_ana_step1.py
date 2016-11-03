@@ -35,8 +35,8 @@ print"Total events for processing: ",n_events
 
 dd=datetime.datetime.now().strftime("%b%d")
 log = open("anaLog_step1.txt","a")
-os.system('mkdir -p Out_step1/ana_root'+dd)
-os.chdir('Out_step1/ana_root'+dd)
+os.system('mkdir -p Data_Out_step1/ana_root'+dd)
+os.chdir('Data_Out_step1/ana_root'+dd)
 file_out = ROOT.TFile("step1_"+sys.argv[2]+".root","recreate")
 
 processdnevent = 0
