@@ -42,7 +42,7 @@ for x in range(len(intervallist)-1):
    ###### sends bjobs ######
    os.system("bsub -q "+queue+" -o"+sys.argv[2]+"_step1_log/log{0} job{0}.sh".format(x))
    print "job nr " + str(x) + " submitted"
-   os.system("mv jobs{0}.sh "+sys.argv[2]+"_step1_log/".format(x))
+   os.system("mv job{0}.sh ".format(x)+sys.argv[2]+"_step1_log/")
    #os.chdir("../..")
    
 print "\nyour jobs:"
