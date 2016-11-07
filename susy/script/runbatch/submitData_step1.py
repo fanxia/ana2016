@@ -37,12 +37,12 @@ for x in range(len(intervallist)-1):
    #os.chdir("tmp/"+str(x))
    #os.system("cp ../{0} .".format(ScriptName))
    ##### creates jobs #######
-   with open('job{0}.sh'.format(x), 'w') as fout:fout.write(jobscr.replace('LOWLIMIT',str(intervallist[x])).replace('UPLIMIT',str(intervallist[x+1])).replace('JOBID',str(x)).replace('INPUT',sys.argv[1]).replace('OUTNAME',sys.argv[2]))
-   os.system("chmod 755 job{0}.sh".format(x))
+   with open(sys.argv[2]+'_job{0}.sh'.format(x), 'w') as fout:fout.write(jobscr.replace('LOWLIMIT',str(intervallist[x])).replace('UPLIMIT',str(intervallist[x+1])).replace('JOBID',str(x)).replace('INPUT',sys.argv[1]).replace('OUTNAME',sys.argv[2]))
+   os.system("chmod 755 "+sys.argv[2]+"_job{0}.sh".format(x))
    ###### sends bjobs ######
-   os.system("bsub -q "+queue+" -o"+sys.argv[2]+"_step1_log/log{0} job{0}.sh".format(x))
+   os.system("bsub -q "+queue+" -o "+sys.argv[2]+"_step1_log/log{0} ".format(x)+sys.argv[2]+"_job{0}.sh".format(x))
    print "job nr " + str(x) + " submitted"
-   os.system("mv job{0}.sh ".format(x)+sys.argv[2]+"_step1_log/")
+   os.system("cp "+sys.argv[2]+"_job{0}.sh ".format(x)+sys.argv[2]+"_step1_log/")
    #os.chdir("../..")
    
 print "\nyour jobs:"

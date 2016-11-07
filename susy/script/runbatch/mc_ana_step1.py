@@ -207,7 +207,7 @@ tree4_out.SetObject("EventTree_mQCD","EventTree_mQCD")
 #for event in chain_in :
 for entrynumber in range(startEntryNumber,endEntryNumber):
     event.GetEntry(entrynumber)
-
+#    print "entry:",entrynumber
 
     (processdnevent)+=1
     if (processdnevent)%10000 ==0:
@@ -487,7 +487,7 @@ log.write("INPUT %s"%INPUTFile)
 log.write("\nOutPUT %s %s"%(OUTPUTName,fileID))
 log.write("\nTotalEventNumber = %s"%(event.GetEntries()))
 log.write("\n%s"%datetime.datetime.now())
-log.write("\nstartEntry: %s endEntry %s"%(startEntryNumber,startEntryNumber))
+log.write("\nstartEntry: %s endEntry %s"%(startEntryNumber,endEntryNumber))
 log.write("\nProcessedEventNumber = %s"%processdnevent)
 log.write("\nScanmode:-eleTree-|-eQCDTree-|-muTree-|-mQCDTree")
 log.write( "\nn_1lep pass =%s "%Pass_1lep)

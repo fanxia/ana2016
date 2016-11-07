@@ -12,7 +12,7 @@ def Fun_getEle_EA(sceta):
     elif abs(sceta)<2.3: return 0.1903
     elif abs(sceta)<2.4: return 0.2243
     elif abs(sceta)<5.0: return 0.2687
-
+    else: return 0.0
 
 
 
