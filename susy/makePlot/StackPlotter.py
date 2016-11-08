@@ -190,7 +190,7 @@ class StackPlotter(object):
     def doRatio(self,doRatio):
         self.doRatioPlot = doRatio
 
-    def drawStack(self,var,cut,lumi,bins,mini,maxi,titlex = "", units = "", output = 'out', outDir='.', separateSignal=False, blinding=False, blindingCut=100.0, fakeData=False):
+    def drawStack(self,var,cut,lumi,bins,mini,maxi,channel="",titlex = "", units = "", output = 'out', outDir='.', separateSignal=False, blinding=False, blindingCut=100.0, fakeData=False):
 
         #fout = ROOT.TFile.Open(outDir+'/'+outputTag+'_'+output+'.root', 'recreate')
 
@@ -311,6 +311,17 @@ class StackPlotter(object):
 
 
         frame.Draw()
+
+
+        channelComment=ROOT.TPaveText(0.55,0.55,0.85,0.64,"NDC")
+        channelComment.SetFillColor(ROOT.kGray)
+#        channelComment.SetFillStyle(0)
+        channelComment.SetLineColor(0)
+        channelComment.SetBorderSize(0)
+        channelComment.AddText(channel)
+        channelComment.Draw("SAME")
+
+
         stack.Draw("A,HIST,SAME")
         if dataH !=None:
             dataG.Draw("Psame")              
@@ -318,7 +329,7 @@ class StackPlotter(object):
             for sigH in signalHs:
                 sigH.Draw("HIST,SAME")
 
-        legend = ROOT.TLegend(0.62,0.6,0.92,0.90,"","brNDC")
+        legend = ROOT.TLegend(0.62,0.65,0.92,0.90,"","brNDC")
         legend.SetName(output+'_'+'legend')
 	legend.SetBorderSize(0)
 	legend.SetLineColor(1)
