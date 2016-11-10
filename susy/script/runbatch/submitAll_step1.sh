@@ -10,6 +10,10 @@
 
 ./submitMC_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/MC/V08_00_11_01/job_spring16_Zg_aMCatNLO.root Zg_aMCatNLO 1000000
 
+./submitMC_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/MC/V08_00_11_01/job_spring16_WW.root WW 200000
+
+./submitMC_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/MC/V08_00_11_01/job_spring16_WZ.root WZ 200000
+
 
 
 ./submitData_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/data/V08_00_11_01/job_SingleEle_Run2016D_PRv2.root SingleEleRun2016D 2000000

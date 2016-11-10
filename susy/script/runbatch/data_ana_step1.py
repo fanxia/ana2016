@@ -48,8 +48,8 @@ print "endEntryNumber: ",endEntryNumber
 
 
 dd=datetime.datetime.now().strftime("%b%d")
-os.system('mkdir -p MC_Out_step1/'+OUTPUTName+'/ana_root'+dd)
-os.chdir('MC_Out_step1/'+OUTPUTName+'/ana_root'+dd)
+os.system('mkdir -p Data_Out_step1/'+OUTPUTName+'/ana_root'+dd)
+os.chdir('Data_Out_step1/'+OUTPUTName+'/ana_root'+dd)
 log = open("logstep1_"+OUTPUTName+"_"+str(fileID)+".txt","w")
 file_out = ROOT.TFile("step1_"+OUTPUTName+"_"+str(fileID)+".root","recreate")
 
@@ -111,8 +111,7 @@ BnVtx=array('i',[-99])
 Brho=array('d',[-99.])
 BpfMET=array('d',[-99.])
 BpfMeTPhi=array('d',[-99.])
-BPUTrue=array('d',[-99.])
-BgenWeight=array('d',[-99.])
+#BPUTrue=array('d',[-99.])
 BlepMt=array('d',[-99.])
 Bnjet=array('i',[-99])
 Bnbjet=array('i',[-99])
@@ -121,7 +120,7 @@ BjetPt=vector(float)(0)
 BjetEn=vector(float)(0)
 BjetEta=vector(float)(0)
 BjetPhi=vector(float)(0)
-BjetHadFlvr=vector(int)(0)
+#BjetHadFlvr=vector(int)(0)
 Bbtagged=vector(int)(0)
 BjetM3=array('d',[-99])
 
@@ -135,7 +134,7 @@ BCandphoHoverE=vector(float)(0)
 BCandphoSigmaIEtaIEta=vector(float)(0)
 BCandphoSigmaIPhiIPhi=vector(float)(0)
 BCandphoPFChIso=vector(float)(0)
-BCandphoGenmatch=vector(int)(0)
+#BCandphoGenmatch=vector(int)(0)
 BCandphoLepInvMass=vector(float)(0)
 
 BnPho=array('i',[-99])
@@ -148,8 +147,7 @@ tree1_out=TTree("EventTree_ele","EventTree_ele")
 tree1_out.Branch("Bregion",Bregion,"Bregion/I")
 tree1_out.Branch("BnVtx",BnVtx,"BnVtx/I")
 tree1_out.Branch("Brho",Brho,"Brho/D")
-tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
-tree1_out.Branch("BgenWeight",BgenWeight,"BgenWeight/D")
+#tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
 tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
 tree1_out.Branch("BpfMeTPhi",BpfMeTPhi,"BpfMeTPhi/D")
 tree1_out.Branch("BlepMt",BlepMt,"BlepMt/D")
@@ -174,7 +172,7 @@ tree1_out.Branch("BjetPt",BjetPt)
 tree1_out.Branch("BjetEn",BjetEn)
 tree1_out.Branch("BjetEta",BjetEta)
 tree1_out.Branch("BjetPhi",BjetPhi)
-tree1_out.Branch("BjetHadFlvr",BjetHadFlvr)
+#tree1_out.Branch("BjetHadFlvr",BjetHadFlvr)
 tree1_out.Branch("Bbtagged",Bbtagged)
 tree1_out.Branch("BjetM3",BjetM3,"BjetM3/D")
 
@@ -188,7 +186,7 @@ tree1_out.Branch("BCandphoHoverE",BCandphoHoverE)
 tree1_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
 tree1_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
 tree1_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
-tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
+#tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
 tree1_out.Branch("BCandphoLepInvMass",BCandphoLepInvMass)
 
 
@@ -209,7 +207,7 @@ tree4_out.SetObject("EventTree_mQCD","EventTree_mQCD")
 #for event in chain_in :
 for entrynumber in range(startEntryNumber,endEntryNumber):
     event.GetEntry(entrynumber)
-#    print "entry:",entrynumber
+
 
     (processdnevent)+=1
     if (processdnevent)%10000 ==0:
@@ -330,8 +328,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BpfMeTPhi[0]=event.pfMETPhi
     BnVtx[0]=event.nVtx
     Brho[0]=event.rho
-    BPUTrue[0]=event.puTrue[12] # puBX=12,intime pu
-    BgenWeight[0]=event.genWeight
+ #   BPUTrue[0]=event.puTrue[12] # puBX=12,intime pu
     BlepMt[0]=lep_Mt
     if Scanmode in ["eleTree","eQCDTree"]:
         BelePt[0]=(event.elePt[lep_ind])
@@ -361,7 +358,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BjetEn.push_back(event.jetEn[jet[0]])
         BjetEta.push_back(event.jetEta[jet[0]])
         BjetPhi.push_back(event.jetPhi[jet[0]])
-        BjetHadFlvr.push_back(event.jetHadFlvr[0])
+ #       BjetHadFlvr.push_back(event.jetHadFlvr[0])
         Bbtagged.push_back(jet[1])
     BjetM3[0]=Fun_JetM3(jetlist,event)    
 #-----------------Fill the photons/fakes----------------
@@ -378,7 +375,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BCandphoSigmaIEtaIEta.push_back(event.phoSigmaIEtaIEta[pho[0]])
         BCandphoSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[pho[0]])
         BCandphoPFChIso.push_back(event.phoPFChIso[pho[0]])
-        BCandphoGenmatch.push_back(pho[3])
+#        BCandphoGenmatch.push_back(pho[3])
         BCandphoLepInvMass.push_back(Fun_invmass_pholep(Scanmode,lep_ind,pho[0],event))
 
     
@@ -417,8 +414,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Brho[0]=-99.
     BpfMET[0]=-99.
     BpfMeTPhi[0]=-99.
-    BgenWeight[0]=-99.
-    BPUTrue[0]=-99.
+#    BPUTrue[0]=-99.
     BlepMt[0]=-99.
     Bnjet[0]=-99
     Bnbjet[0]=-99
@@ -427,7 +423,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BjetEn.clear()
     BjetEta.clear()
     BjetPhi.clear()
-    BjetHadFlvr.clear()
+#    BjetHadFlvr.clear()
     Bbtagged.clear()
     BjetM3[0]=-99.
 
@@ -441,7 +437,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BCandphoSigmaIEtaIEta.clear()
     BCandphoSigmaIPhiIPhi.clear()
     BCandphoPFChIso.clear()
-    BCandphoGenmatch.clear()
+ #   BCandphoGenmatch.clear()
     BCandphoLepInvMass.clear()
 
     BnPho[0]=-99
