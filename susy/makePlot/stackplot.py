@@ -16,7 +16,7 @@ indir='../ntupleStore'
 
 tree='EventTree_ele'
 
-lumi=1.731   #1.731    #4.353 #2016D
+lumi=4.353   #1.731    #4.353 #2016D
 doRatio=True
 Blind=True
 UseMETFilter=False
@@ -49,29 +49,30 @@ ROOT.gROOT.ProcessLine('.x ./tdrstyle.C')
 allPlotters = {}
 
 # starting adding MC bkg
-# wwPlotters=[]
-# wwSamples = ['WWTo2L2Nu']
-# for sample in wwSamples:
-#     wwPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
-#     wwPlotters[-1].addCorrectionFactor('1./SumWeights','norm')
-#     wwPlotters[-1].addCorrectionFactor('xsec','xsec')
-#     wwPlotters[-1].addCorrectionFactor('genWeight','genWeight')
-#     wwPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
-#     wwPlotters[-1].addCorrectionFactor("trg*id*iso",'lepsf')
-#     allPlotters[sample] = wwPlotters[-1]
-# WW = MergedPlotter(wwPlotters)
-# WW.setFillProperties(1001,ROOT.kOrange)
+vvPlotters=[]
+vvSamples = [['step1_WW',993209,110.8],['step1_WZ',999994,47.13]]
+for sample in vvSamples:
+     vvPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+#     vvPlotters[-1].addCorrectionFactor('1./SumWeights','norm')
+     vvPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
+     vvPlotters[-1].addCorrectionFactor(sample[2],'xsec')
+#     vvPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#     vvPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
+#     vvPlotters[-1].addCorrectionFactor("trg*id*iso",'lepsf')
+     allPlotters[sample[0]] = vvPlotters[-1]
+VV = MergedPlotter(vvPlotters)
+VV.setFillProperties(1001,ROOT.kOrange)
 
 vgPlotters=[]
-vgSamples = ['step1_Wg_MG']
+vgSamples = [['step1_Wg_MG',5916760,405.271],['step1_Zg_aMCatNLO',4391358,117.864]]
 for sample in vgSamples:
-    vgPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
-    vgPlotters[-1].addCorrectionFactor(1./5916760,'norm')
-    vgPlotters[-1].addCorrectionFactor(0.,'xsec')
+    vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+    vgPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
+    vgPlotters[-1].addCorrectionFactor(sample[2],'xsec')
 #    vgPlotters[-1].addCorrectionFactor('genWeight','genWeight')
 #    vgPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
 #    vgPlotters[-1].addCorrectionFactor("trg*id*iso", 'lepsf')
-    allPlotters[sample] = vgPlotters[-1]
+    allPlotters[sample[0]] = vgPlotters[-1]
 VG = MergedPlotter(vgPlotters)
 VG.setFillProperties(1001,ROOT.kMagenta)
 
@@ -147,9 +148,9 @@ Stack = StackPlotter(outTag=tag, outDir=outdir)
 Stack.setPaveText(paveText)
 Stack.addPlotter(Data, "data_obs", "Data", "data")
 
-#Stack.addPlotter(WW, "NonReso","WW/WZ/WJets non-reson.", "background")
+#Stack.addPlotter(VV, "NonReso","VV/WZ/WJets non-reson.", "background")
 Stack.addPlotter(TT, "TT","TT", "background")
-#Stack.addPlotter(VV, "VVZReso","ZZ WZ reson.", "background")
+Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
 Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 Stack.addPlotter(WJets, "WJets","WJets", "background")
 Stack.addPlotter(VG, "Vgamma","Vgamma", "background")
