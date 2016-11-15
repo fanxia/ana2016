@@ -190,10 +190,10 @@ class StackPlotter(object):
     def doRatio(self,doRatio):
         self.doRatioPlot = doRatio
 
-    def drawStack(self,var,cut,lumi,bins,mini,maxi,channel="",titlex = "", units = "", output = 'out', outDir='.', separateSignal=False, blinding=False, blindingCut=100.0, fakeData=False):
+    def drawStack(self,var,cut,lumi,bins=-1,mini=-1,maxi=-1,channel="",titlex = "", units = "", output = 'out', outDir='.', separateSignal=False, blinding=False, blindingCut=100.0, fakeData=False):
 
         #fout = ROOT.TFile.Open(outDir+'/'+outputTag+'_'+output+'.root', 'recreate')
-
+        print"start drawing plot: ",output
         self.fout.cd()
 
         c1 = ROOT.TCanvas(output+'_'+"c1", "c1", 800, 1040); c1.Draw()
@@ -304,7 +304,7 @@ class StackPlotter(object):
 
         if len(units)>0:
             frame.GetXaxis().SetTitle(titlex + " (" +units+")")
-            frame.GetYaxis().SetTitle("Events / "+str((maxi-mini)/bins)+ " "+units)
+            frame.GetYaxis().SetTitle("Events /  "+units)
         else:    
             frame.GetXaxis().SetTitle(titlex)
             frame.GetYaxis().SetTitle("Events")
@@ -376,6 +376,7 @@ class StackPlotter(object):
             integral = dataH.IntegralAndError(1,dataH.GetNbinsX(),error)
             if background>0.0:
                 print "Data/Bkg= {ratio} +- {err}".format(ratio=integral/background,err=math.sqrt(error*error/(background*background)+integral*integral*backgroundErr/(background*background*background*background)))
+        print"################################################"
 
 	pt =ROOT.TPaveText(0.1577181,0.9562937,0.9580537,0.9947552,"brNDC")
         pt.SetName(output+'_'+'pavetext')
