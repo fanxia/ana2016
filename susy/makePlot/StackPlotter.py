@@ -235,6 +235,7 @@ class StackPlotter(object):
             if (typeP =="background") or (not separateSignal and typeP == "signal"):
                 hist = plotter.drawTH1(output+'_'+name,var,cutL,lumi,bins,mini,maxi,titlex,units)
                 #hist.SetName(output+'_'+name)
+                hist.SetLineWidth(1)
                 stack.Add(hist)
                 hists.append(hist)
                 print label+" : %f\n" % hist.Integral()
@@ -264,6 +265,7 @@ class StackPlotter(object):
                 hist.SetBinErrorOption(1)
                 hists.append(hist)
                 dataH=hist
+                dataH.SetLineWidth(1)
                 dataG=convertToPoisson(hist,blinding,blindingCut)
                 dataG.SetName(output+'_'+'dataG')
                 dataG.SetLineWidth(1)
@@ -323,8 +325,11 @@ class StackPlotter(object):
 
 
         stack.Draw("A,HIST,SAME")
+#        ROOT.gStyle.SetErrorX(0.5)
         if dataH !=None:
-            dataG.Draw("Psame")              
+
+            dataH.Draw("E1 same")
+#            dataG.Draw("Psame")              
         if separateSignal and len(signalHs)>0:
             for sigH in signalHs:
                 sigH.Draw("HIST,SAME")
@@ -406,7 +411,7 @@ class StackPlotter(object):
             p2.cd()
             hratio.Draw('AXIS')
             hline.Draw('HIST,SAME')
-            hratio.Draw('P,SAME')
+            hratio.Draw('E1,P,SAME')
                 
 
         # blinding mask 

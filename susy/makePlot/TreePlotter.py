@@ -32,7 +32,9 @@ class TreePlotter(PlotterBase):
 
     def drawTH1(self,name,var,cuts,lumi,bins,min,max,titlex = "",units = "",drawStyle = "HIST"):
         name +='_'+self.name
-        if type(bins)==list:  h = ROOT.TH1D(name,name,len(bins),bins)
+        if type(bins)==list:  
+            xbins=array('d',bins)
+            h = ROOT.TH1D(name,name,len(bins)-1,xbins)
         else:  h = ROOT.TH1D(name,name,bins,min,max)
         h.Sumw2()
         h.SetLineStyle(self.linestyle)
@@ -42,7 +44,7 @@ class TreePlotter(PlotterBase):
         h.SetFillColor(self.fillcolor)
         h.SetMarkerStyle(self.markerstyle)
         h.GetXaxis().SetTitle(titlex+ " ["+units+"]")
-
+        if len(units)>0: h.Scale(1,"width")
     
         #Apply correction factors
         corrString='1'
