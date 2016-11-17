@@ -1,5 +1,8 @@
 #!/bin/python
 #To calculate the MC btag eff using the jets in which the event has past the singleLepton cuts
+# to run this script alone: python calBtagEff_step1.py inputfilename outputname
+# to run this by submitting jobs, refer to submitMC_btag_step1.sh
+
 import os
 import sys
 import time
@@ -16,13 +19,36 @@ from ana2016.susy.Utilfunc import *
 
 
 
+INPUTFile=sys.argv[1]
+OUTPUTName=sys.argv[2]
+print "input: ",INPUTFile
+print "output: ",OUTPUTName
+
+
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
-#chain_in.Add("../preselected/reduced_Muchannel_dataSingleMu.root")
 chain_in.Add(sys.argv[1])
 chain_in.SetBranchStatus("AK8*",0)
 print"Total events for processing: ",chain_in.GetEntries()
+event=chain_in
 
-file_out = ROOT.TFile("btageff4Sig_"+sys.argv[2]+".root","recreate")
+if len(sys.argv)>3:
+    fileID=int(sys.argv[3])
+    startEntryNumber=int(sys.argv[4])
+    endEntryNumber=int(sys.argv[5])
+else:
+    fileID=-999
+    startEntryNumber=0
+    endEntryNumber=chain_in.GetEntries()
+
+print "fileID: ",fileID
+print "startEntryNumber: ",startEntryNumber
+print "endEntryNumber: ",endEntryNumber
+
+dd=datetime.datetime.now().strftime("%b%d")
+os.system('mkdir -p MC_BtagEff_step1/'+OUTPUTName+'/'+dd)
+os.chdir('MC_BtagEff_step1/'+OUTPUTName+'/'+dd)
+log = open("logstep1_"+OUTPUTName+"_"+str(fileID)+".txt","w")
+file_out = ROOT.TFile("BtagEff_step1_"+OUTPUTName+"_"+str(fileID)+".root","recreate")
 file_out.cd()
 
 ptNBins=200
@@ -44,7 +70,9 @@ num_ltags = ROOT.TH2F("ltags", "ltags", ptNBins, ptMin, ptMax, etaNBins, etaMin,
 
 
 processevent = 0
-for event in chain_in:
+for entrynumber in range(startEntryNumber,endEntryNumber):
+    event.GetEntry(entrynumber)
+
     processevent+=1
     if processevent%10000==0: print "processing event ",processevent
 
@@ -55,27 +83,25 @@ for event in chain_in:
     elelist=Fun_findele(event)
 
     if len(elelist)==1 and elelist[0][1]==1 and len(mulist)==0: 
-        Channel=111
+        Scanmode="eleTree"
         lep_ind=elelist[0][0]
     elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==1: 
-        Channel=222
+        Scanmode="muTree"
         lep_ind=mulist[0][0]
-    else: Channel=0
+    else: continue
 
-    if Channel==0: continue
 
 #--------------1.HLT cut-------------
 
-    if Channel==111 : hlt=event.HLTEleMuX>>55&1
-    if Channel==222 : hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+#    if Channel==111 : hlt=event.HLTEleMuX>>55&1
+#    if Channel==222 : hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
 
-    if not hlt: continue
+#    if not hlt: continue
 
-#-------------2.5 find photon before jets-------------
-    #Candpholist: [[index,dr_lep,phoTag],[],[],,,]
-    Candpholist=Fun_findCandpho(Channel,lep_ind,event)
 
-    jetlist=Fun_findjet(Candpholist,event)
+#    Candpholist=Fun_findCandpho(Channel,lep_ind,event)
+
+    jetlist=Fun_findjet(Scanmode,mulist,elelist,[],event)
     for jet in jetlist:
         jetInd=jet[0]
         if jet[1]==1: btagged=True
@@ -97,18 +123,15 @@ for event in chain_in:
         else: continue
 
 
-lEff=num_ltags.Clone("lEff")
-lEff.Divide(num_ljets)
+#lEff=num_ltags.Clone("lEff")
+#lEff.Divide(num_ljets)
 
-cEff=num_ctags.Clone("cEff")
-cEff.Divide(num_cjets)
+#cEff=num_ctags.Clone("cEff")
+#cEff.Divide(num_cjets)
 
-bEff=num_btags.Clone("bEff")
-bEff.Divide(num_bjets)
+#bEff=num_btags.Clone("bEff")
+#bEff.Divide(num_bjets)
 
-#tempEff=num_temptags.Clone("tempEff")
-#tempEff.Divide(num_tempjets)
-    
 
 file_out.Write()
 file_out.Close()
