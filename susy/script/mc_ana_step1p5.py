@@ -67,7 +67,26 @@ for tree_in in Trees_in:
     for event in tree_in:
         
         BpileupWeight[0]=Fun_pileupweight(event.BPUTrue)
-        BbtagWeight[0]=Fun_btagweight()
+
+        Jetlist=[]
+        for j in range(len(event.BjetPt)):
+            Jet_pt=event.BjetPt[j]
+            Jet_eta=event.BjetEta[j]
+            Jet_flavor=event.BjetHadFlvr[j]
+            if abs(Jet_flavor)==0:
+                Jet_eff=l_btageff.GetBinContent(l_btageff.FindBin(Jet_pt,Jet_eta))
+                Jet_sf=l_btagsfReader.eval(2,abs(Jet_eta),Jet_pt)
+            elif abs(Jet_flavor)==4:
+                Jet_eff=c_btageff.GetBinContent(c_btageff.FindBin(Jet_pt,Jet_eta))
+                Jet_sf=bc_btagsfReader.eval(1,Jet_eta,Jet_pt)
+            elif abs(Jet_flavor)==5: 
+                Jet_eff=b_btageff.GetBinContent(b_btageff.FindBin(Jet_pt,Jet_eta))
+                Jet_sf=bc_btagsfReader.eval(0,Jet_eta,Jet_pt)
+            else:
+                continue
+            Jet=[event.Bbtagged[j],Jet_eff,Jet_sf]
+            Jetlist.append(Jet)
+        BbtagWeight[0]=Fun_btagweight(Jetlist)
 
         tree_out.Fill()
 
