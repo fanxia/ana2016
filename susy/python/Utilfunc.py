@@ -16,25 +16,36 @@ def Fun_pileupweight(truepu):
 
 
 
-def Fun_btagweight(jets):
+def Fun_btagweight(jets,sys="central"):
 #    jetlist[[btagged,btageff,btagsf],[]..]
     Pmc1=1.0
     Pdata1=1.0
+    PmcErr2=0.0     # acturally, it's (d(Pmc)/Pmc)^2
+    PdataErr2=0.0
     for jet in jets:
         btagged=jet[0]
         btageff=jet[1]
-        btagsf=jet[2]
+        btageff_err=jet[2]
+        if sys=='central':    btagsf=jet[3]
+        elif sys=='up':    btagsf=jet[4]
+        elif sys=='down':    btagsf=jet[5]
 
         if btageff==0.0 or btageff==1.0:continue
 
         if btagged: 
             Pmc1*=btageff
             Pdata1*=btageff*btagsf
+            PmcErr2+=(btageff_err/btageff)**2
+            PdataErr2+=(btageff_err/btageff)**2
         else: 
             Pmc1*=(1-btageff)
             Pdata1*=(1-btageff*btagsf)
+            PmcErr2+=(btageff_err)**2/(1.0-btageff)**2
+            PdataErr2+=(btagsf*btageff_err)**2/(1.0-btagsf*btageff)**2
 
     weight1=Pdata1/Pmc1
+    weight1_err=((PdataErr2/Pdata1)**2+(PmcErr2/Pmc1)**2)**0.5*weight1
 
-    return weight1
+
+    return [weight1,weight1_err]
 

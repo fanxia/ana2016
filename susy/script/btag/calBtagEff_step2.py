@@ -9,7 +9,7 @@ from ROOT import *
 INPUTDIR=sys.argv[1]
 OutName=sys.argv[2]
 
-os.system("hadd -k "+OutName+"_BtagEff.root "+INPUTDIR+"*root")
+os.system("hadd -fk "+OutName+"_BtagEff.root "+INPUTDIR+"*root")
 
 #file_in=TFile.Open(OutName+"_BtagEff_step1.root")
 #os.system("mv "+OutName+"_BtagEff_step1.root "+OutName+"_BtagEff.root")

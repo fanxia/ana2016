@@ -1,4 +1,5 @@
 # analysis topology
+# updata 2016/11/23
 
 dir python:
 to store all the function modules
@@ -13,4 +14,14 @@ step1 select the signal the QCD events for electron/mu
 
 For MC:
 step1 select the signal the QCD events for electron/mu
-step2 adding the reweight, scalefactor...
+step1p5 adding the reweight, scalefactor...
+
+
+
+1 How to run btag eff:
+  
+1.1 ./submitMC_btag_step1.sh    This will produce multiple jobs to run through all MC datasets, save in to dir (MC_BtagEff_step1)
+1.2 go check the dir (MC_BtagEff_step1), make sure every mc has got all the outputs
+1.3 python calBtagEff_step2.py inputdirname/ outputname       
+    for eg. python calBtagEff_step2.py MC_BtagEff_step1/WW/Nov17/ WW    Will finally give WW_BtagEff.root
+1.4 repeat step1.3 for all the bkgs
