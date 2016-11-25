@@ -325,7 +325,7 @@ class StackPlotter(object):
 
 
         stack.Draw("A,HIST,SAME")
-#        ROOT.gStyle.SetErrorX(0.5)
+        ROOT.gStyle.SetErrorX(0.5)
         if dataH !=None:
 
             dataH.Draw("E1 same")

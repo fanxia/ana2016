@@ -44,12 +44,16 @@ btagSFreader = ROOT.BTagCalibrationReader(
     "central",      # central systematic type
     v_sys,          # vector of other sys. types
 )    
+
+measure_type="comb"
+#if sys.argv[2]=="TT_powheg": measure_type="mujets"
+print measure_type
 btagSFreader.load(
     file_btagSF, 
     0,          # 0 is for b flavour, 1: FLAV_C, 2: FLAV_UDSG 
-    "comb"      # measurement type
+    measure_type      # measurement type
 )
-btagSFreader.load(file_btagSF, 1, "comb"  )
+btagSFreader.load(file_btagSF, 1, measure_type  )
 btagSFreader.load(file_btagSF, 2, "incl"  ) #eta:0~2.4
 
 

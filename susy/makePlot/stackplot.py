@@ -6,7 +6,7 @@ from TreePlotter import TreePlotter
 from MergedPlotter import MergedPlotter
 from StackPlotter import StackPlotter
 ROOT.gROOT.SetBatch()
-tag="tag_"
+tag="Bwei"
 LogY=False
 
 test=True
@@ -29,7 +29,7 @@ paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi))+" fb^{-1}"
 metfilter='(Flag_EcalDeadCellTriggerPrimitiveFilter&&Flag_HBHENoiseIsoFilter&&Flag_goodVertices&&Flag_HBHENoiseFilter&&Flag_globalTightHalo2016Filter&&Flag_eeBadScFilter)'
 
 cut_pre_bjj="Bnbjet>0" # add it yourself
-cut_SR1_bjj="Bnbjet>0 && BnPho==1" # add it yourself
+cut_SR1_bjj="Bnbjet>0 && BnPho==1 " # add it yourself
 cut_SR1_bjj_4gamma="Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1" # add it yourself
 
 cut_SR2_bjj="Bnbjet>0 && BnPho>1" # add it yourself
@@ -58,8 +58,9 @@ for sample in vvSamples:
 #     vvPlotters[-1].addCorrectionFactor('1./SumWeights','norm')
      vvPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
      vvPlotters[-1].addCorrectionFactor(sample[2],'xsec')
-#     vvPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#     vvPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
      vvPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+     vvPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #     vvPlotters[-1].addCorrectionFactor("trg*id*iso",'lepsf')
      allPlotters[sample[0]] = vvPlotters[-1]
 VV = MergedPlotter(vvPlotters)
@@ -71,8 +72,9 @@ for sample in vgSamples:
     vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
     vgPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
     vgPlotters[-1].addCorrectionFactor(sample[2],'xsec')
-#    vgPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#    vgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
     vgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+    vgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #    vgPlotters[-1].addCorrectionFactor("trg*id*iso", 'lepsf')
     allPlotters[sample[0]] = vgPlotters[-1]
 VG = MergedPlotter(vgPlotters)
@@ -84,8 +86,9 @@ for sample in wjetsSamples:
     wjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
     wjetsPlotters[-1].addCorrectionFactor(1./9908500,'norm')
     wjetsPlotters[-1].addCorrectionFactor(61526.7,'xsec')
-#    wjetsPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#    wjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
     wjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+    wjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #    wjetsPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
 WJets = MergedPlotter(wjetsPlotters)
 WJets.setFillProperties(1001,ROOT.kBlue-6)
@@ -96,8 +99,9 @@ for sample in zjetsSamples:
     zjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
     zjetsPlotters[-1].addCorrectionFactor(1./28696800,'norm')
     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
-#    wjetsPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#    wjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #    wjetsPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
 ZJets = MergedPlotter(zjetsPlotters)
 ZJets.setFillProperties(1001,ROOT.kGreen+2)
@@ -110,7 +114,7 @@ ZJets.setFillProperties(1001,ROOT.kGreen+2)
 #     zjetsPlotters[-1].addCorrectionFactor('(1.05)','norm')
 #     if ZJetsZPtWeight: zjetsPlotters[-1].addCorrectionFactor('ZPtWeight','ZPtWeight')
 #     zjetsPlotters[-1].addCorrectionFactor('(1921.8*3)','xsec') # FEWZ NNLO.results_z_m
-#     zjetsPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#     zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #     zjetsPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
 #     zjetsPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
 #     allPlotters[sample] = zjetsPlotters[-1]
@@ -124,9 +128,10 @@ for sample in ttSamples:
     ttPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
     ttPlotters[-1].addCorrectionFactor(1./93120500,'norm')
     ttPlotters[-1].addCorrectionFactor(831.76,'xsec')
-#    ttPlotters[-1].addCorrectionFactor('genWeight','genWeight')
+#    ttPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #    ttPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
     ttPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+    ttPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #    ttPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
     allPlotters[sample] = ttPlotters[-1]
 
@@ -185,6 +190,8 @@ if test:
 
 
     Stack.drawStack('BnVtx', cut_pre_bjj, str(lumi*1000), 100, 0, 100, channel = "ele_bjj: Pre", titlex = "nVtx", units = "",output=tag+'nVtx_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BlepMt', cut_pre_bjj, str(lumi*1000), 20, 0, 1000, channel = "ele_bjj: Pre", titlex = "Mt", units = "GeV",output=tag+'lepMt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)

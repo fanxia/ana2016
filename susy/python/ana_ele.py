@@ -31,7 +31,7 @@ def Fun_findele(tree):
         else: return False
 
     def Fun_tight_ele(ind):
-        if tree.elePt[ind]>30 and abs(tree.eleEta[ind])<2.5 and tree.eleIDbit[ind]>>3&1==1:
+        if tree.elePt[ind]>30 and abs(tree.eleEta[ind])<2.1 and tree.eleIDbit[ind]>>3&1==1:
             return True
         else: return False
     
@@ -40,9 +40,9 @@ def Fun_findele(tree):
 
         pfiso=Fun_ele_relCombIsoWithEA(ind)
         antiIso=False
-        if abs(tree.eleSCEta[ind])<=1.479 and pfiso>0.0893 and pfiso<1.0 and tree.eledEtaAtVtx[ind]<0.00926 and tree.eledPhiAtVtx[ind]<0.0336 and tree.eleHoverE[ind]<0.0597 and abs(tree.eleD0[ind])<0.0111 and abs(tree.eleDz[ind])<0.0466 and tree.eleConvVeto[ind]==1:
+        if abs(tree.eleSCEta[ind])<=1.479 and pfiso>0.0994 and pfiso<1.0 and tree.eledEtaAtVtx[ind]<0.00308 and tree.eledPhiAtVtx[ind]<0.0816 and tree.eleHoverE[ind]<0.0414 and tree.eleEoverPInv[ind]<0.0129 and tree.eleConvVeto[ind]==1 and tree.eleSigmaIEtaIEtaFull5x5[ind]<0.00998 and tree.eleMissHits[ind]<=1:
             antiIso=True
-        elif abs(tree.eleSCEta[ind])<2.5 and abs(tree.eleSCEta[ind])>1.479 and pfiso>0.121 and pfiso<1.0 and tree.eledEtaAtVtx[ind]<0.00724  and tree.eledPhiAtVtx[ind]<0.0918 and tree.eleHoverE[ind]<0.0615 and abs(tree.eleD0[ind])<0.0351 and abs(tree.eleDz[ind])<0.417 and tree.eleConvVeto[ind]==1:
+        elif abs(tree.eleSCEta[ind])>1.479 and abs(tree.eleSCEta[ind])<2.1 and pfiso>0.107 and pfiso<1.0 and tree.eledEtaAtVtx[ind]<0.00605  and tree.eledPhiAtVtx[ind]<0.0394 and tree.eleHoverE[ind]<0.0641 and tree.eleEoverPInv[ind]<0.0129 and tree.eleSigmaIEtaIEtaFull5x5[ind]<0.0292 and tree.eleMissHits[ind]<=1 and tree.eleConvVeto[ind]==1:
             antiIso=True
         else: return False
 
