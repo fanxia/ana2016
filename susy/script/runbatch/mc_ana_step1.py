@@ -109,6 +109,7 @@ BelePFRelCombIso=array('d',[-99.])
 Bregion=array('i',[-99])
 BnVtx=array('i',[-99])
 Brho=array('d',[-99.])
+BrhoCentral=array('d',[-99.])
 BpfMET=array('d',[-99.])
 BpfMeTPhi=array('d',[-99.])
 BPUTrue=array('d',[-99.])
@@ -148,6 +149,7 @@ tree1_out=TTree("EventTree_ele","EventTree_ele")
 tree1_out.Branch("Bregion",Bregion,"Bregion/I")
 tree1_out.Branch("BnVtx",BnVtx,"BnVtx/I")
 tree1_out.Branch("Brho",Brho,"Brho/D")
+tree1_out.Branch("BrhoCentral",BrhoCentral,"BrhoCentral/D")
 tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
 tree1_out.Branch("BgenWeight",BgenWeight,"BgenWeight/D")
 tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
@@ -330,6 +332,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BpfMeTPhi[0]=event.pfMETPhi
     BnVtx[0]=event.nVtx
     Brho[0]=event.rho
+    BrhoCentral[0]=event.rhoCentral
     BPUTrue[0]=event.puTrue[12] # puBX=12,intime pu
     BgenWeight[0]=event.genWeight
     BlepMt[0]=lep_Mt
@@ -415,6 +418,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Bregion[0]=-99
     BnVtx[0]=-99
     Brho[0]=-99.
+    BrhoCentral[0]=-99.
     BpfMET[0]=-99.
     BpfMeTPhi[0]=-99.
     BgenWeight[0]=-99.

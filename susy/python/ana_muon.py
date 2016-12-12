@@ -26,7 +26,7 @@ def Fun_findmu(tree):
             mu=[m,1,iso]
         elif  tree.muPt[m]>10 and abs(tree.muEta[m])<2.5 and iso<0.25 and tree.muIsLooseID[m]:
             mu=[m,0,iso]
-        elif Fun_tight_mu_antiIso(m):
+        elif tree.muPt[m]>30 and abs(tree.muEta[m])<2.1 and iso>0.25 and tree.muIsTightID[m]:
             mu=[m,3,iso]
         else: continue
 

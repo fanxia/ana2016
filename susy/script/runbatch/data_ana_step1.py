@@ -254,16 +254,18 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Pass_1lep[Scanmode_ind]+=1
 #--------------1.HLT cut-------------
 
-    CheckHLT=False
+    CheckHLT=True
     if CheckHLT:
         if Scanmode=="eleTree": 
             hlt=event.HLTEleMuX>>55&1
         elif Scanmode=="eQCDTree": 
             hlt=1
         elif Scanmode=="muTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=1
+#            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
         elif Scanmode=="mQCDTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=1
+#            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
 
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
         else: continue

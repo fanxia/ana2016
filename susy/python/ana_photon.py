@@ -4,25 +4,35 @@ import sys
 import ROOT
 from ana2016.susy.Utilfunc import *
 
-# get ea from https://github.com/cms-sw/cmssw/tree/CMSSW_8_0_X/RecoEgamma/PhotonIdentification/data/Spring15
+#https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonIdentificationRun2#Recommended_Working_points_for_2
+
 def Fun_getPho_NeuEA(sceta):
-    if abs(sceta)<1.0: return 0.0599
-    elif abs(sceta)<1.479: return 0.0819
-    elif abs(sceta)<2.0: return 0.0696
-    elif abs(sceta)<2.2: return 0.0360
-    elif abs(sceta)<2.3: return 0.0360
-    elif abs(sceta)<2.4: return 0.0462
-    elif abs(sceta)<5.0: return 0.0656
+    if abs(sceta)<1.0: return 0.0597
+    elif abs(sceta)<1.479: return 0.0807
+    elif abs(sceta)<2.0: return 0.0629
+    elif abs(sceta)<2.2: return 0.0197
+    elif abs(sceta)<2.3: return 0.0184
+    elif abs(sceta)<2.4: return 0.0284
+    elif abs(sceta)<5.0: return 0.0591
+
 
 def Fun_getPho_PhoEA(sceta):
-    if abs(sceta)<1.0: return 0.1271
-    elif abs(sceta)<1.479: return 0.1101
-    elif abs(sceta)<2.0: return 0.0756
-    elif abs(sceta)<2.2: return 0.1175
-    elif abs(sceta)<2.3: return 0.1498
-    elif abs(sceta)<2.4: return 0.1857
-    elif abs(sceta)<5.0: return 0.2183
+    if abs(sceta)<1.0: return 0.1210
+    elif abs(sceta)<1.479: return 0.1107
+    elif abs(sceta)<2.0: return 0.0699
+    elif abs(sceta)<2.2: return 0.1056
+    elif abs(sceta)<2.3: return 0.1457
+    elif abs(sceta)<2.4: return 0.1719
+    elif abs(sceta)<5.0: return 0.1998
 
+def Fun_getPho_ChEA(sceta):
+    if abs(sceta)<1.0: return 0.0360
+    elif abs(sceta)<1.479: return 0.0377
+    elif abs(sceta)<2.0: return 0.0306
+    elif abs(sceta)<2.2: return 0.0283
+    elif abs(sceta)<2.3: return 0.0254
+    elif abs(sceta)<2.4: return 0.0217
+    elif abs(sceta)<5.0: return 0.0167
 
 
 
@@ -35,55 +45,33 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
         return max(tree.phoPFNeuIso[ind]-tree.rho*Fun_getPho_NeuEA(tree.phoSCEta[ind]),0.0)
     def PhoIso_corrected(ind):
         return max(tree.phoPFPhoIso[ind]-tree.rho*Fun_getPho_PhoEA(tree.phoSCEta[ind]),0.0)
+    def ChIso_corrected(ind):
+        return max(tree.phoPFChIso[ind]-tree.rho*Fun_getPho_ChEA(tree.phoSCEta[ind]),0.0)
+
 
 #------------------------------
     def Fun_loosepho(f):
-        if  tree.phoHoverE[f]>0.05:
-            return False
-        
-        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
-
-            return False
-
-        if tree.phoPFChIso[f]<20 and tree.phoSigmaIEtaIEta[f]<=0.0102 and tree.phoPFChIso[f]<=3.32:     # loose photon
+        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)<=1.295:     # loose photon
             return True
         else:
             return False
 
-
-#
     def Fun_loosefake(f):
-        if  tree.phoHoverE[f]>0.05:
-            return False
-        
-        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
-
-            return False
-
-        if tree.phoPFChIso[f]<20 and (tree.phoSigmaIEtaIEta[f]>0.0102 or tree.phoPFChIso[f]>3.32):     # loose fake 
-            return True
-        else:
-            return False
+        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and ChIso_corrected(f)<20:   
+            if tree.phoSigmaIEtaIEtaFull5x5[f]>0.01031 or ChIso_corrected(f)>1.295:     # loose fake 
+                return True
+            else:
+                return False
+        else: return False
 
     def Fun_loose_woIEtaIEta(f):
-        if  tree.phoHoverE[f]>0.05:
-            return False
-        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
-            return False
-
-        if tree.phoPFChIso[f]<20 and tree.phoPFChIso[f]<=3.32:
+        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and ChIso_corrected(f)<=1.295:   
             return True   # loosepho w/o sigmaIetaIeta cut
         else:
             return False
 
     def Fun_loose_woChHadIso(f):
-        if  tree.phoHoverE[f]>0.05:
-            return False
-        if (1.92+0.014*tree.phoEt[f]+0.000019*tree.phoEt[f]**2)<NeuIso_corrected(f) or (0.81+0.0053*tree.phoEt[f])<PhoIso_corrected(f):
-            return False
-
-        if tree.phoPFChIso[f]<20 and tree.phoSigmaIEtaIEta[f]<=0.0102:
-             # loosepho w/o chIso cut
+        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)<20:    
             return True  
         else:
             return False
@@ -126,11 +114,11 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
         if dR_lep<0.3: continue # this pho overlaps to lepton
 
 
-        if tree.phoEt[p]>20 and abs(tree.phoEta[p])<1.4442 and tree.phoEleVeto[p]:
+        if tree.phoEt[p]>20 and abs(tree.phoEta[p])<1.4442 and not tree.phohasPixelSeed[p]:
             phoTag=0
-            if tree.phoIDbit[p]>>0&1==1: 
+            if Fun_loosepho(p): 
                 phoTag |= (1<<3)
-            elif tree.phoIDbit[p]>>0&1==0 and Fun_loosefake(p): 
+            elif Fun_loosefake(p): 
                 phoTag |= (1<<0)
 
             if  Fun_loose_woIEtaIEta(p): 

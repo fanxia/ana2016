@@ -4,6 +4,7 @@ import sys
 import ROOT
 from ana2016.susy.Utilfunc import *
 
+
 def Fun_findjet(Scanmode,muonlist,electronlist,pholist,tree):
     result=[]
     for j in range(tree.nJet):
@@ -30,11 +31,16 @@ def Fun_findjet(Scanmode,muonlist,electronlist,pholist,tree):
 
         if tree.jetPt[j]>30 and abs(tree.jetEta[j])<2.4 and tree.jetPFLooseId[j]:
             if tree.jetpfCombinedInclusiveSecondaryVertexV2BJetTags[j]>0.8:
-                jet=[j,1]
-            else: jet=[j,0]
+                jet=[j,1,dR_lep]
+            else: jet=[j,0,dR_lep]
 
             result.append(jet)
-
+    
+#    if len(result)==3:
+#        print "---"
+#        for jet in result:        
+#            if jet[2]<0.4:
+#                    print jet[2],"loose" #,"d_Pt:",(tree.jetPt[jet[0]]-tree.elePt[lep])/tree.jetPt[jet[0]]
     return result
 
 

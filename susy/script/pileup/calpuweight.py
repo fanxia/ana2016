@@ -7,7 +7,7 @@ from ROOT import *
 import ROOT
 import sys
 
-ddata=TFile.Open("SingleEle_Run2016D_pileup.root")
+ddata=TFile.Open("SingleEle_Run2016BCD_pileup.root")
 pileupdata=ddata.Get("pileup")
 Ndata=pileupdata.Integral()
 pileupdata.Scale(1.0/Ndata)
@@ -65,8 +65,8 @@ mclist=[0.000829312873542,
 
 log=open("puweight.txt","w")
 f=TFile("pileup.root","recreate")
-puweight=ROOT.TH1F("puweight","puweight",50,0,50)
-pileupmc=ROOT.TH1F("pileupmc","pileupmc",50,0,50)
+puweight=ROOT.TH1F("puweight","puweight",80,0,80)
+pileupmc=ROOT.TH1F("pileupmc","pileupmc",80,0,80)
 #pileupdata=ROOT.TH1F("pileupdata","pileupdata",50,0,50)
 #pileupmc=ROOT.TH1F("pileupmc","pileupmc",50,0,50)
 
@@ -88,14 +88,19 @@ log.write("INPUT data true pu %s\n"%datalist)
 
 
 for i in range(1,pileupdata.GetXaxis().GetNbins()+1):
-    pileupmc.SetBinContent(i,mclist[i-1])
+    if i>len(mclist): pileupmc.SetBinContent(i,0.)
+    else:    pileupmc.SetBinContent(i,mclist[i-1])
+
 pileupmc.Write()
 
+puweight=pileupdata.Clone("weight")
+puweight.Divide(pileupmc)
+
 puweightlist=[]
-for j in range(0,pileupdata.GetXaxis().GetNbins()):
-    if mclist[j]!=0.: puweightlist.append(datalist[j]/mclist[j])
-    else: puweightlist.append(0.)
-    puweight.SetBinContent(j+1,puweightlist[-1])
+for j in range(0,puweight.GetNbinsX()):
+#    if mclist[j]!=0. and j+1>len(mclist): puweightlist.append(datalist[j]/mclist[j])
+#    else: puweightlist.append(0.)
+    puweightlist.append(puweight.GetBinContent(j+1))
 puweight.Write()
 
 log.write("pileweightlist: %s\n"%puweightlist)
@@ -111,6 +116,6 @@ pileupmc.SetLineColor(kBlue)
 leg.AddEntry(pileupmc,"MC pu_true","l")
 leg.Draw()
 
-c.Print("PUTrue-data_vs_mc.pdf","pdf")
+c.Print("PUTrue-dataBCD_vs_mc.pdf","pdf")
 
 f.Close()
