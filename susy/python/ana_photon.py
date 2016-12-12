@@ -51,27 +51,27 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
 
 #------------------------------
     def Fun_loosepho(f):
-        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)<=1.295:     # loose photon
+        if  tree.phoHoverE[f]<0.0597 and NeuIso_corrected(f)<(10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2) and PhoIso_corrected(f)<(3.63+0.0047*tree.phoEt[f]) and tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)<=1.295:     # loose photon
             return True
         else:
             return False
 
     def Fun_loosefake(f):
-        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and ChIso_corrected(f)<20:   
-            if tree.phoSigmaIEtaIEtaFull5x5[f]>0.01031 or ChIso_corrected(f)>1.295:     # loose fake 
+        if  tree.phoHoverE[f]<0.0597 and NeuIso_corrected(f)<(10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2) and PhoIso_corrected(f)<(3.63+0.0047*tree.phoEt[f]) and ChIso_corrected(f)<20 and tree.phoSigmaIEtaIEtaFull5x5[f]<0.02:   
+            if (tree.phoSigmaIEtaIEtaFull5x5[f]>0.01031 and ChIso_corrected(f)<=1.295) or (tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)>1.295):     # loose fake 
                 return True
             else:
                 return False
         else: return False
 
     def Fun_loose_woIEtaIEta(f):
-        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and ChIso_corrected(f)<=1.295:   
+        if  tree.phoHoverE[f]<0.0597 and NeuIso_corrected(f)<(10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2) and PhoIso_corrected(f)<(3.63+0.0047*tree.phoEt[f]) and ChIso_corrected(f)<=1.295 and tree.phoSigmaIEtaIEtaFull5x5[f]<0.02:   
             return True   # loosepho w/o sigmaIetaIeta cut
         else:
             return False
 
     def Fun_loose_woChHadIso(f):
-        if  tree.phoHoverE[f]<0.0597 and (10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2)<NeuIso_corrected(f) and (3.63+0.0047*tree.phoEt[f])<PhoIso_corrected(f) and tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)<20:    
+        if  tree.phoHoverE[f]<0.0597 and NeuIso_corrected(f)<(10.91+0.0148*tree.phoEt[f]+0.000017*tree.phoEt[f]**2) and PhoIso_corrected(f)<(3.63+0.0047*tree.phoEt[f]) and tree.phoSigmaIEtaIEtaFull5x5[f]<=0.01031 and ChIso_corrected(f)<20:    
             return True  
         else:
             return False
