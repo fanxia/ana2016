@@ -110,6 +110,16 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
             lep=muonlist[0][0]
             dR_lep=Fun_deltaR(tree.muEta[lep],tree.phoEta[p],tree.muPhi[lep],tree.phoPhi[p])
 
+        if scanmode in ["eeTree","eeQCDTree"]: #for di-electron 
+            lep1=electronlist[0][0]
+            lep2=electronlist[1][0]
+            dR_lep=min(Fun_deltaR(tree.eleEta[lep1],tree.phoEta[p],tree.elePhi[lep1],tree.phoPhi[p]),Fun_deltaR(tree.eleEta[lep2],tree.phoEta[p],tree.elePhi[lep2],tree.phoPhi[p]))
+
+        if scanmode in ["mumuTree","mmQCDTree"]: #for di-muon 
+            lep1=muonlist[0][0]
+            lep2=muonlist[1][0]
+            dR_lep=min(Fun_deltaR(tree.muEta[lep1],tree.phoEta[p],tree.muPhi[lep1],tree.phoPhi[p]),Fun_deltaR(tree.muEta[lep2],tree.phoEta[p],tree.muPhi[lep2],tree.phoPhi[p]))
+
 
         if dR_lep<0.3: continue # this pho overlaps to lepton
 
@@ -164,3 +174,6 @@ def Fun_invmass_pholep(scanmode,lep,pho,tree):
 
 
     return (TLVlepton+TLVphoton).M()
+
+
+

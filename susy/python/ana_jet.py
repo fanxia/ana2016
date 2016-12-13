@@ -15,6 +15,16 @@ def Fun_findjet(Scanmode,muonlist,electronlist,pholist,tree):
         if Scanmode in ["muTree","mQCDTree"]: # for mu channel
             lep=muonlist[0][0]
             dR_lep=Fun_deltaR(tree.muEta[lep],tree.jetEta[j],tree.muPhi[lep],tree.jetPhi[j])
+    
+        if Scanmode in ["eeTree","eeQCDTree"]: #for di-electron 
+            lep1=electronlist[0][0]
+            lep2=electronlist[1][0]
+            dR_lep=min(Fun_deltaR(tree.eleEta[lep1],tree.jetEta[j],tree.elePhi[lep1],tree.jetPhi[j]),Fun_deltaR(tree.eleEta[lep2],tree.jetEta[j],tree.elePhi[lep2],tree.jetPhi[j]))
+
+        if Scanmode in ["mumuTree","mmQCDTree"]: #for di-muon 
+            lep1=muonlist[0][0]
+            lep2=muonlist[1][0]
+            dR_lep=min(Fun_deltaR(tree.muEta[lep1],tree.jetEta[j],tree.muPhi[lep1],tree.jetPhi[j]),Fun_deltaR(tree.muEta[lep2],tree.jetEta[j],tree.muPhi[lep2],tree.jetPhi[j]))
 
         if dR_lep<0.4: continue # this jet overlaps to lepton
 

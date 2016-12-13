@@ -56,3 +56,21 @@ def Fun_btagweight(jets,sys="central"):
 
     return [weight1,weight1_err]
 
+
+
+def Fun_invmass_dilep(scanmode,lep,tree):
+    TLVlepton1=ROOT.TLorentzVector() 
+    TLVlepton2=ROOT.TLorentzVector()
+
+    lep1=lep[0][0]
+    lep2=lep[1][0]
+
+    if scanmode in ["eeTree","eeQCDTree"]:
+        TLVlepton1.SetPtEtaPhiE(tree.elePt[lep1],tree.eleEta[lep1],tree.elePhi[lep1],tree.eleEn[lep1])
+        TLVlepton2.SetPtEtaPhiE(tree.elePt[lep2],tree.eleEta[lep2],tree.elePhi[lep2],tree.eleEn[lep2])
+
+    if scanmode in ["mumuTree","mmQCDTree"]:
+        TLVlepton1.SetPtEtaPhiE(tree.muPt[lep1],tree.muEta[lep1],tree.muPhi[lep1],tree.muEn[lep1])
+        TLVlepton2.SetPtEtaPhiE(tree.muPt[lep2],tree.muEta[lep2],tree.muPhi[lep2],tree.muEn[lep2])
+
+    return (TLVlepton1+TLVlepton2).M()
