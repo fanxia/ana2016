@@ -83,5 +83,10 @@ def Fun_JetM3(Jetlist,tree):
     return maxM3
 
 
-    
-    
+
+def Fun_ht(Jetlist,tree):    
+    # calculate the scalar sum of all jets
+    result=0.
+    for j in Jetlist:
+        result+=tree.jetPt[j[0]]
+    return result

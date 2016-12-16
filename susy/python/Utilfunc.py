@@ -74,3 +74,34 @@ def Fun_invmass_dilep(scanmode,lep,tree):
         TLVlepton2.SetPtEtaPhiE(tree.muPt[lep2],tree.muEta[lep2],tree.muPhi[lep2],tree.muEn[lep2])
 
     return (TLVlepton1+TLVlepton2).M()
+
+
+def Fun_mht(ml,el,pl,jl,tree):
+    TLVall=ROOT.TLorentzVector()
+    TLVthis=ROOT.TLorentzVector()
+    TLVall.SetPtEtaPhiE(0,0,0,0)
+
+    if len(ml) >0:
+        for mu in ml:
+            TLVthis.SetPtEtaPhiE(tree.muPt[mu[0]],tree.muEta[mu[0]],tree.muPhi[mu[0]],tree.muEn[mu[0]])
+            TLVall+=TLVthis
+
+    if len(el) >0:
+        for ele in el:
+            TLVthis.SetPtEtaPhiE(tree.elePt[ele[0]],tree.eleEta[ele[0]],tree.elePhi[ele[0]],tree.eleEn[ele[0]])
+            TLVall+=TLVthis
+            
+    if len(pl) >0:
+        for pho in pl: 
+            TLVthis.SetPtEtaPhiM(tree.phoEt[pho[0]],tree.phoEta[pho[0]],tree.phoPhi[pho[0]],0.)
+            TLVall+=TLVthis
+
+    if len(jl) >0:
+        for jet in jl:
+            TLVthis.SetPtEtaPhiE(tree.jetPt[jet[0]],tree.jetEta[jet[0]],tree.jetPhi[jet[0]],tree.jetEn[jet[0]])
+            TLVall+=TLVthis
+
+    return TLVall.Pt()
+
+
+            

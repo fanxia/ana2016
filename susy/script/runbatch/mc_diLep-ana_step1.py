@@ -105,6 +105,8 @@ BpfMET=array('d',[-99.])
 BpfMeTPhi=array('d',[-99.])
 BPUTrue=array('d',[-99.])
 BgenWeight=array('d',[-99.])
+BMHT=array('d',[-99.])
+BHT=array('d',[-99.])
 Bnjet=array('i',[-99])
 Bnbjet=array('i',[-99])
 
@@ -141,7 +143,8 @@ tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
 tree1_out.Branch("BgenWeight",BgenWeight,"BgenWeight/D")
 tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
 tree1_out.Branch("BpfMeTPhi",BpfMeTPhi,"BpfMeTPhi/D")
-
+tree1_out.Branch("BMHT",BMHT,"BMHT/D")
+tree1_out.Branch("BHT",BHT,"BHT/D")
 
 tree1_out.Branch("BelePt",BelePt)
 tree1_out.Branch("BeleEn",BeleEn)
@@ -289,6 +292,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BrhoCentral[0]=event.rhoCentral
     BPUTrue[0]=event.puTrue[12] # puBX=12,intime pu
     BgenWeight[0]=event.genWeight
+    BMHT[0]=Fun_mht(mulist,elelist,Candpholist,jetlist,event)
+    BHT[0]=Fun_ht(jetlist,event)
     if Scanmode in ["eeTree","eeQCDTree"]:
         BeeInvMass[0]=Fun_invmass_dilep(Scanmode,elelist,event)
         for ele in elelist:

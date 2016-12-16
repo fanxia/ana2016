@@ -113,6 +113,8 @@ BpfMET=array('d',[-99.])
 BpfMeTPhi=array('d',[-99.])
 #BPUTrue=array('d',[-99.])
 BlepMt=array('d',[-99.])
+BMHT=array('d',[-99.])
+BHT=array('d',[-99.])
 Bnjet=array('i',[-99])
 Bnbjet=array('i',[-99])
 
@@ -151,6 +153,9 @@ tree1_out.Branch("Brho",Brho,"Brho/D")
 tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
 tree1_out.Branch("BpfMeTPhi",BpfMeTPhi,"BpfMeTPhi/D")
 tree1_out.Branch("BlepMt",BlepMt,"BlepMt/D")
+tree1_out.Branch("BMHT",BMHT,"BMHT/D")
+tree1_out.Branch("BHT",BHT,"BHT/D")
+
 
 tree1_out.Branch("BelePt",BelePt,"BelePt/D")
 tree1_out.Branch("BeleEn",BeleEn,"BeleEn/D")
@@ -332,6 +337,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Brho[0]=event.rho
  #   BPUTrue[0]=event.puTrue[12] # puBX=12,intime pu
     BlepMt[0]=lep_Mt
+    BMHT[0]=Fun_mht(mulist,elelist,Candpholist,jetlist,event)
+    BHT[0]=Fun_ht(jetlist,event)
     if Scanmode in ["eleTree","eQCDTree"]:
         BelePt[0]=(event.elePt[lep_ind])
         BeleEn[0]=(event.eleEn[lep_ind])

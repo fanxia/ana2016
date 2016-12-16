@@ -315,7 +315,7 @@ class StackPlotter(object):
         frame.Draw()
 
 
-        channelComment=ROOT.TPaveText(0.55,0.55,0.85,0.64,"NDC")
+        channelComment=ROOT.TPaveText(0.25,0.8,0.55,0.88,"NDC")
         channelComment.SetFillColor(ROOT.kGray)
 #        channelComment.SetFillStyle(0)
         channelComment.SetLineColor(0)
