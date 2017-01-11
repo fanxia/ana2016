@@ -22,11 +22,11 @@ def Fun_findmu(tree):
 
         iso=Fun_muPFRelCombIso(m)
 
-        if tree.muPt[m]>30 and abs(tree.muEta[m])<2.1 and iso<0.15 and tree.muIsTightID[m]:
+        if tree.muPt[m]>30 and abs(tree.muEta[m])<2.1 and iso<0.15 and tree.muIDbit[m]>>2&1==1:
             mu=[m,1,iso]
-        elif  tree.muPt[m]>10 and abs(tree.muEta[m])<2.5 and iso<0.25 and tree.muIsLooseID[m]:
+        elif  tree.muPt[m]>10 and abs(tree.muEta[m])<2.5 and iso<0.25 and tree.muIDbit[m]>>0&1==1:
             mu=[m,0,iso]
-        elif tree.muPt[m]>30 and abs(tree.muEta[m])<2.1 and iso>0.25 and tree.muIsTightID[m]:
+        elif tree.muPt[m]>30 and abs(tree.muEta[m])<2.1 and iso>0.25 and tree.muIDbit[m]>>2&1==1:
             mu=[m,3,iso]
         else: continue
 

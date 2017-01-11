@@ -40,7 +40,8 @@ def Fun_findjet(Scanmode,muonlist,electronlist,pholist,tree):
 
 
         if tree.jetPt[j]>30 and abs(tree.jetEta[j])<2.4 and tree.jetPFLooseId[j]:
-            if tree.jetpfCombinedInclusiveSecondaryVertexV2BJetTags[j]>0.8:
+#            if tree.jetpfCombinedInclusiveSecondaryVertexV2BJetTags[j]>0.8:
+            if tree.jetCSV2BJetTags[j]>0.8:
                 jet=[j,1,dR_lep]
             else: jet=[j,0,dR_lep]
 

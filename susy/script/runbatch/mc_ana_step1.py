@@ -227,7 +227,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 
     Scanmode="None"
-    if not event.hasGoodVtx: continue
+    if not event.isPVGood: continue
 
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
