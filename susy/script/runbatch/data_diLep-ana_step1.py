@@ -26,15 +26,20 @@ print "output: ",OUTPUTName
 
 
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
-chain_in.Add(sys.argv[1])
+for inputf in INPUTFileN.split():
+    chain_in.Add(inputf)
 chain_in.SetBranchStatus("AK8*",0)
 #print"Total events for processing: ",chain_in.GetEntries()
 event=chain_in
 
-if len(sys.argv)>3:
+if len(sys.argv)>4:
     fileID=int(sys.argv[3])
     startEntryNumber=int(sys.argv[4])
     endEntryNumber=int(sys.argv[5])
+elif len(sys.argv)==4:
+    fileID=int(sys.argv[3])
+    startEntryNumber=0
+    endEntryNumber=chain_in.GetEntries()
 else:
     fileID=-999
     startEntryNumber=0
