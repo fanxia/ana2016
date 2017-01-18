@@ -6,7 +6,7 @@ from TreePlotter import TreePlotter
 from MergedPlotter import MergedPlotter
 from StackPlotter import StackPlotter
 ROOT.gROOT.SetBatch()
-tag="Dec15"
+tag="Jan16"
 LogY=False
 
 test=True
@@ -17,7 +17,8 @@ indir='../ntupleStore'
 tree='EventTree_ele'
 #tree='EventTree_eQCD'
 
-lumi=12.88   #1.731    #4.353 #2016D
+#lumi=12.88   #1.731    #4.353 #2016D
+lumi=4.353
 doRatio=True
 Blind=True
 UseMETFilter=False
@@ -25,8 +26,8 @@ UseMETFilter=False
 if not os.path.exists(outdir): os.system('mkdir '+outdir)
 if not Blind: tag = tag+'unblind_'
 
-#paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi))+" fb^{-1}"
-paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(12.88))+" fb^{-1}"
+paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi))+" fb^{-1}"
+#paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(12.88))+" fb^{-1}"
 
 #metfilter='(Flag_EcalDeadCellTriggerPrimitiveFilter&&Flag_HBHENoiseIsoFilter&&Flag_goodVertices&&Flag_HBHENoiseFilter&&Flag_globalTightHalo2016Filter&&Flag_eeBadScFilter)'
 
@@ -54,12 +55,15 @@ allPlotters = {}
 
 # starting adding MC bkg
 vvPlotters=[]
-vvSamples = [['step1p5_WW',993209,110.8],['step1p5_WZ',999994,47.13]]
+vvSamples = [['step1_WW',110.8],['step1_WZ',47.13],['step1_ZZ',16.523]]
 for sample in vvSamples:
      vvPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+     SumEvents=vvPlotters[-1].file.Get("H_ele").GetBinContent(1)
+     print "SumEvents=",SumEvents
 #     vvPlotters[-1].addCorrectionFactor('1./SumWeights','norm')
-     vvPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
-     vvPlotters[-1].addCorrectionFactor(sample[2],'xsec')
+     vvPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
+#     vvPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
+     vvPlotters[-1].addCorrectionFactor(sample[1],'xsec')
 #     vvPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #     vvPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #     vvPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
@@ -69,11 +73,12 @@ VV = MergedPlotter(vvPlotters)
 VV.setFillProperties(1001,ROOT.kOrange)
 
 vgPlotters=[]
-vgSamples = [['step1p5_Wg_MG',5916760,405.271],['step1p5_Zg_aMCatNLO',4391358,117.864]]
+vgSamples = [['step1_WGToLNuG',405.271],['step1_ZGTo2LG',117.864]]
 for sample in vgSamples:
     vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
-    vgPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
-    vgPlotters[-1].addCorrectionFactor(sample[2],'xsec')
+    SumEvents=vgPlotters[-1].file.Get("H_ele").GetBinContent(1)
+    vgPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
+    vgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
 #    vgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #    vgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    vgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
@@ -83,10 +88,11 @@ VG = MergedPlotter(vgPlotters)
 VG.setFillProperties(1001,ROOT.kMagenta)
 
 wjetsPlotters=[]
-wjetsSamples = ['step1p5_WJetsToLNu']
+wjetsSamples = ['step1_WJetsToLNu']
 for sample in wjetsSamples:
     wjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
-    wjetsPlotters[-1].addCorrectionFactor(1./9908500,'norm')
+    SumEvents=wjetsPlotters[-1].file.Get("H_ele").GetBinContent(1)
+    wjetsPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
     wjetsPlotters[-1].addCorrectionFactor(61526.7,'xsec')
 #    wjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #    wjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
@@ -124,11 +130,12 @@ ZJets.setFillProperties(1001,ROOT.kGreen+2)
 # ZJets.setFillProperties(1001,ROOT.kGreen+2)
 
 ttPlotters=[]
-ttSamples = ['step1p5_TT_powheg']
+ttSamples = ['step1_TT_powheg']
 
 for sample in ttSamples:
     ttPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
-    ttPlotters[-1].addCorrectionFactor(1./93120500,'norm')
+    SumEvents=ttPlotters[-1].file.Get("H_ele").GetBinContent(1)
+    ttPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
     ttPlotters[-1].addCorrectionFactor(831.76,'xsec')
 #    ttPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #    ttPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
@@ -139,15 +146,36 @@ for sample in ttSamples:
 
 TT = MergedPlotter(ttPlotters)
 TT.setFillProperties(1001,ROOT.kAzure-9)
+
+
+ttgPlotters=[]
+ttgSamples = ['step1_TTGJets']
+
+for sample in ttgSamples:
+    ttgPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+    SumEvents=ttgPlotters[-1].file.Get("H_ele").GetBinContent(1)
+    ttgPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
+    ttgPlotters[-1].addCorrectionFactor(3.697,'xsec')
+#    ttgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+#    ttgPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
+#    ttgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    ttgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+#    ttgPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
+    allPlotters[sample] = ttgPlotters[-1]
+
+TTG = MergedPlotter(ttgPlotters)
+TTG.setFillProperties(1001,ROOT.kGreen-3)
+
 # Adding MC bkg ends here
 
 # Starting adding data
 dataPlotters=[]
 dataSamples = [
 #'step1_SingleMuRun2016D',
-'step1_SingleEleRun2016B',
-'step1_SingleEleRun2016C', 
-'step1_SingleEleRun2016D'
+#'step1_SingleEleRun2016B',
+#'step1_SingleEleRun2016C', 
+#'step1_SingleEleRun2016D'
+'step1_SingleEle_Run2016D_SepRereco'
 #'step1_SingleEle_Run2015D'
 ]
 for sample in dataSamples:
@@ -162,9 +190,10 @@ Stack.addPlotter(Data, "data_obs", "Data", "data")
 
 #Stack.addPlotter(VV, "NonReso","VV/WZ/WJets non-reson.", "background")
 
+Stack.addPlotter(TTG, "TTG","TT#gamma", "background")
 Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
-Stack.addPlotter(VG, "Vgamma","Vgamma", "background")
-Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
+Stack.addPlotter(VG, "Vgamma","V#gamma", "background")
+#Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 
 Stack.addPlotter(WJets, "WJets","WJets", "background")
 

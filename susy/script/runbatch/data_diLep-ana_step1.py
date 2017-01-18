@@ -241,13 +241,13 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     CheckHLT=False
     if CheckHLT:
         if Scanmode=="eeTree": 
-            hlt=event.HLTEleMuX>>55&1
+            hlt=event.HLTEleMuX>>3&1  #HLT_Ele32_eta2p1_WPTight_Gsf_v
         elif Scanmode=="eeQCDTree": 
             hlt=1
         elif Scanmode=="mumuTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=(event.HLTEleMuX>>19&1 or event.HLTEleMuX>>20&1) #HLT_IsoMu24_v,HLT_IsoTkMu24_v
         elif Scanmode=="mmQCDTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=(event.HLTEleMuX>>19&1 or event.HLTEleMuX>>20&1) #HLT_IsoMu24_v,HLT_IsoTkMu24_v
 
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
         else: continue

@@ -50,6 +50,18 @@
 #################################  DATA  ###############################
 ########################################################################
 ########### * Electron*  ###############
+/eos/cms/store/user/cmkuo/job_SingleEle_Run2016B_SepRereco/SingleElectron/crab_job_SingleEle_Run2016B_SepRereco/161218_023412/
+
+./submitData_step1.py /eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V08_00_24_00/job_SingleEle_Run2016C_SepRereco/ SingleEle_Run2016C_SepRereco 20
+
+./submitData_step1.py /eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V08_00_24_00/job_SingleEle_Run2016D_SepRereco/ SingleEle_Run2016D_SepRereco 20
+
+./submitData_step1.py /eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V08_00_24_00/job_SingleEle_Run2016E_SepRereco/ SingleEle_Run2016E_SepRereco 20
+
+./submitData_step1.py root://eoscms//store/user/fxia/ggntuples/data/V08_00_24_00/job_SingleEle_Run2016H_PRv3.root SingleEle_Run2016H_PRv3 2000000
+
+
+
 #./submitData_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/data/V08_00_11_01/job_SingleEle_Run2016D_PRv2.root SingleEleRun2016D 2000000
 
 #./submitData_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/data/V08_00_11_01/job_SingleEle_Run2016B_PRv2.root SingleEleRun2016B 2000000
@@ -59,3 +71,5 @@
 
 
 ########### * Muon*    #################
+
+./submitData_step1.py /eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V08_00_24_00/job_SingleMu_Run2016C_SepRereco/ SingleMu_Run2016C_SepRereco 20
