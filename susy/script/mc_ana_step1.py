@@ -27,15 +27,20 @@ print "output: ",OUTPUTName
 
 
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
-chain_in.Add(sys.argv[1])
+for inputf in INPUTFile.split():
+    chain_in.Add(inputf)
 chain_in.SetBranchStatus("AK8*",0)
 #print"Total events for processing: ",chain_in.GetEntries()
 event=chain_in
 
-if len(sys.argv)>3:
+if len(sys.argv)>4:
     fileID=int(sys.argv[3])
     startEntryNumber=int(sys.argv[4])
     endEntryNumber=int(sys.argv[5])
+elif len(sys.argv)==4:
+    fileID=int(sys.argv[3])
+    startEntryNumber=0
+    endEntryNumber=chain_in.GetEntries()
 else:
     fileID=-999
     startEntryNumber=0
@@ -97,6 +102,7 @@ BmuPFRelCombIso=array('d',[-99.])
 BelePt=array('d',[-99.])
 BeleEn=array('d',[-99.])
 BeleEta=array('d',[-99.])
+BeleSCEta=array('d',[-99.])
 BelePhi=array('d',[-99.])
 BelePFChIso=array('d',[-99.])
 BelePFPhoIso=array('d',[-99.])
@@ -132,6 +138,7 @@ BnCandPho=array('i',[-99])
 BCandPhoTag=vector(int)(0)  # tag>>(3,0,1,2)&1 for (photon,fake,wo..,wo..)
 BCandphoEt=vector(float)(0)
 BCandphoEta=vector(float)(0)
+BCandphoSCEta=vector(float)(0)
 BCandphoPhi=vector(float)(0)
 BCandphoR9=vector(float)(0)
 BCandphoHoverE=vector(float)(0)
@@ -163,6 +170,7 @@ tree1_out.Branch("BHT",BHT,"BHT/D")
 tree1_out.Branch("BelePt",BelePt,"BelePt/D")
 tree1_out.Branch("BeleEn",BeleEn,"BeleEn/D")
 tree1_out.Branch("BeleEta",BeleEta,"BeleEta/D")
+tree1_out.Branch("BeleSCEta",BeleSCEta,"BeleSCEta/D")
 tree1_out.Branch("BelePhi",BelePhi,"BelePhi/D")
 tree1_out.Branch("BelePFMiniIso",BelePFMiniIso,"BelePFMiniIso/D")
 tree1_out.Branch("BelePFRelCombIso",BelePFRelCombIso,"BelePFRelCombIso/D")
@@ -188,6 +196,7 @@ tree1_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
 tree1_out.Branch("BCandPhoTag",BCandPhoTag)
 tree1_out.Branch("BCandphoEt",BCandphoEt)
 tree1_out.Branch("BCandphoEta",BCandphoEta)
+tree1_out.Branch("BCandphoSCEta",BCandphoSCEta)
 tree1_out.Branch("BCandphoPhi",BCandphoPhi)
 tree1_out.Branch("BCandphoR9",BCandphoR9)
 tree1_out.Branch("BCandphoHoverE",BCandphoHoverE)
@@ -227,7 +236,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 
     Scanmode="None"
-    if not event.hasGoodVtx: continue
+    if not event.isPVGood: continue
 
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
@@ -347,6 +356,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BelePt[0]=(event.elePt[lep_ind])
         BeleEn[0]=(event.eleEn[lep_ind])
         BeleEta[0]=(event.eleEta[lep_ind])
+        BeleSCEta[0]=(event.eleSCEta[lep_ind])
         BelePhi[0]=(event.elePhi[lep_ind])
         BelePFMiniIso[0]=(event.elePFMiniIso[lep_ind])
         BelePFRelCombIso[0]=(elelist[0][2])
@@ -382,6 +392,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BCandPhoTag.push_back(pho[1]) 
         BCandphoEt.push_back(event.phoEt[pho[0]])
         BCandphoEta.push_back(event.phoEta[pho[0]])
+        BCandphoSCEta.push_back(event.phoSCEta[pho[0]])
         BCandphoPhi.push_back(event.phoPhi[pho[0]])
         BCandphoR9.push_back(event.phoR9[pho[0]])
         BCandphoHoverE.push_back(event.phoHoverE[pho[0]])
@@ -395,7 +406,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     if Scanmode=="eleTree": tree1_out.Fill()
     if Scanmode=="eQCDTree": tree2_out.Fill()
     if Scanmode=="muTree": tree3_out.Fill()
-    if Scanmode=="muQCDTree": tree4_out.Fill()
+    if Scanmode=="mQCDTree": tree4_out.Fill()
 
 #----------------------clean branches for next event
     BmuPt[0]=-99.
@@ -413,6 +424,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BelePt[0]=-99.
     BeleEn[0]=-99.
     BeleEta[0]=-99.
+    BeleSCEta[0]=-99.
     BelePhi[0]=-99.
     BelePFChIso[0]=-99.
     BelePFPhoIso[0]=-99.
@@ -446,6 +458,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BCandPhoTag.clear()
     BCandphoEt.clear()
     BCandphoEta.clear()
+    BCandphoSCEta.clear()
     BCandphoPhi.clear()
     BCandphoR9.clear()
     BCandphoHoverE.clear()

@@ -55,12 +55,22 @@ btagSFreader.load(
 )
 btagSFreader.load(file_btagSF, 1, measure_type  )
 btagSFreader.load(file_btagSF, 2, "incl"  ) #eta:0~2.4
-
-
-
 #---------------END btagweight input files-------------------
 
 
+#----------------lepton sf input files-----------------------
+file_eleSF = TFile.Open("lepSF/egammaEffi.root")
+eleTrgsf=file_eleSF.Get("efficiency_dt")
+
+file_muSF = TFile.Open(".root")  
+muTrgsf=file_muSF.Get("")
+
+print "The egamma sf input file is######### ",file_eleSF.GetName()
+#---------------END lepton sf input files----------------------- 
+
+
+###################################################################
+###################################################################
 
 INPUTFile=sys.argv[1]
 file_in=TFile.Open(INPUTFile)
@@ -73,33 +83,51 @@ Treenames=['EventTree_ele','EventTree_eQCD','EventTree_mu','EventTree_mQCD']
 Trees_in=[file_in.Get(treename) for treename in Treenames]
 
 #-----------------define the additional branches object--------------
-
+BTotalEventsNumber=array('d',[1.])# used to save the totaleventsnumbers that have been processed
 BpileupWeight=array('d',[1.])
 BbtagWeight=array('d',[1.])
 BbtagWeightUp=array('d',[1.])
 BbtagWeightDown=array('d',[1.])
 BbtagWeightErr=array('d',[1.])
+BlepIDsf=array('d',[1.])
+BlepIsosf=array('d',[1.])
+BlepTrgsf=array('d',[1.])
+BlepWeight=array('d',[1.])  # for the total weight=lepidSF*isoSF*trgSF
 
 
 #-----------------define the branches-------------------------------
 for tree_in in Trees_in:
     tree_out=tree_in.CloneTree(0)
+    tree_out.Branch("BTotalEventsNumber",BTotalEventsNumber,"BTotalEventsNumber/D")
     tree_out.Branch("BpileupWeight",BpileupWeight,"BpileupWeight/D")
     tree_out.Branch("BbtagWeight",BbtagWeight,"BbtagWeight/D")
     tree_out.Branch("BbtagWeightUp",BbtagWeightUp,"BbtagWeightUp/D")
     tree_out.Branch("BbtagWeightDown",BbtagWeightDown,"BbtagWeightDown/D")
     tree_out.Branch("BbtagWeightErr",BbtagWeightErr,"BbtagWeightErr/D")
-
+    
+    tree_out.Branch("BlepIDsf",BlepIDsf,"BlepIDsf/D")
+    tree_out.Branch("BlepIsosf",BlepIsosf,"BlepIsosf/D")
+    tree_out.Branch("BlepTrgsf",BlepTrgsf,"BlepTrgsf/D")
+    tree_out.Branch("BlepWeight",BlepWeight,"BlepWeight/D")
 
 #----------------ending branches definitions-------------------------
+    BTotalEventsNumber[0]=file_in.Get("H_ele").GetBinContent(1)
 
+    if tree_in.GetName() in ['EventTree_ele','EventTree_eQCD']:
+        TreeMODE=12
+        lepTrgsf=eleTrgsf
+    elif tree_in.GetName() in ['EventTree_mu','EventTree_mQCD']:
+        TreeMODE=34
+        lepTrgsf=muTrgsf
 
 #-----------------Starting loop------------
     for event in tree_in:
         
+
+#***********************Fill PU weight info***********************
         BpileupWeight[0]=Fun_pileupweight(event.BPUTrue)
 
-#-------------------------
+#***********************Fill Btag weight info***********************
         Jetlist=[]
         for j in range(len(event.BjetPt)):
             Jet_pt=event.BjetPt[j]
@@ -131,6 +159,20 @@ for tree_in in Trees_in:
         BbtagWeightUp[0]=Fun_btagweight(Jetlist,'up')[0]
         BbtagWeightDown[0]=Fun_btagweight(Jetlist,'down')[0]
 
+
+
+#***********************Fill lepton sf & weight info*********************** 
+
+        if TreeMODE==12:
+            lep_pt=event.BelePt
+            lep_eta=event.BeleEta  # will use sc_eta later
+        elif TreeMODE==34:
+            lep_pt=event.BmuPt
+            lep_eta=event.BmuEta
+        BlepTrgsf[0]=lepTrgsf.GetBinContent(lepTrgsf.FindBin(lep_eta,lep_pt))
+        
+
+
         tree_out.Fill()
 
 
@@ -139,7 +181,10 @@ for tree_in in Trees_in:
         BbtagWeightUp[0]=1.
         BbtagWeightDown[0]=1.
         BbtagWeightErr[0]=1.
-
+        BlepIDsf[0]=1.
+        BlepIsosf[0]=1.
+        BlepTrgsf[0]=1.
+        BlepWeight[0]=1.
 
 
     tree_out.Write()

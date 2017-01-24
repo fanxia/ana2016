@@ -9,7 +9,7 @@ import sys
 GetIn=sys.argv[1]
 
 outputfile=sys.argv[2]
-ScriptName = "data_ana_step1.py" # script to be used
+ScriptName = "../data_ana_step1.py" # script to be used
 if '.root' in GetIn:
    # got nenties as the number of entries
    inputfile=TFile.Open(sys.argv[1])
