@@ -165,7 +165,7 @@ for tree_in in Trees_in:
 
         if TreeMODE==12:
             lep_pt=event.BelePt
-            lep_eta=event.BeleEta  # will use sc_eta later
+            lep_eta=event.BeleSCEta  # will use sc_eta later
         elif TreeMODE==34:
             lep_pt=event.BmuPt
             lep_eta=event.BmuEta

@@ -10,6 +10,7 @@ GetIn=sys.argv[1]
 
 outputfile=sys.argv[2]
 ScriptName = "../mc_ana_step1.py" # script to be used
+print "****************Begin submit jobs for ",outputfile
 if '.root' in GetIn:
    # got nenties as the number of entries
    inputfile=TFile.Open(sys.argv[1])

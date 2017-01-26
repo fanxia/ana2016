@@ -6,7 +6,7 @@ from TreePlotter import TreePlotter
 from MergedPlotter import MergedPlotter
 from StackPlotter import StackPlotter
 ROOT.gROOT.SetBatch()
-tag="Jan24_withTrgsf"
+tag="Jan26_MiniIsowoTrgsf"
 LogY=False
 
 test=True
@@ -17,8 +17,8 @@ indir='../ntupleStore'
 tree='EventTree_ele'
 #tree='EventTree_eQCD'
 
-#lumi=12.88   #1.731    #4.353 #2016D
-lumi=4.353+2.646
+lumi=12.88   #1.731    #4.353 #2016D
+#lumi=4.353+2.646
 doRatio=True
 Blind=True
 UseMETFilter=False
@@ -57,7 +57,7 @@ allPlotters = {}
 vvPlotters=[]
 vvSamples = [['step1p5_WW',110.8],['step1p5_WZ',47.13],['step1p5_ZZ',16.523]]
 for sample in vvSamples:
-     vvPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+     vvPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'_miniIso.root',tree))
 #     SumEvents=vvPlotters[-1].file.Get("H_ele").GetBinContent(1)
 #     print "SumEvents=",SumEvents
 #     vvPlotters[-1].addCorrectionFactor('1./SumWeights','norm')
@@ -65,9 +65,9 @@ for sample in vvSamples:
 #     vvPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
      vvPlotters[-1].addCorrectionFactor(sample[1],'xsec')
 #     vvPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-     vvPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#     vvPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #     vvPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-     vvPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+#     vvPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
 #     vvPlotters[-1].addCorrectionFactor("trg*id*iso",'lepsf')
      allPlotters[sample[0]] = vvPlotters[-1]
 VV = MergedPlotter(vvPlotters)
@@ -76,15 +76,15 @@ VV.setFillProperties(1001,ROOT.kOrange)
 vgPlotters=[]
 vgSamples = [['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864]]
 for sample in vgSamples:
-    vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+    vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'_miniIso.root',tree))
 #    SumEvents=vgPlotters[-1].file.Get("H_ele").GetBinContent(1)
 #    vgPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
     vgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
 #    vgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
     vgPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
-    vgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    vgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    vgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-    vgPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+#    vgPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
 #    vgPlotters[-1].addCorrectionFactor("trg*id*iso", 'lepsf')
     allPlotters[sample[0]] = vgPlotters[-1]
 VG = MergedPlotter(vgPlotters)
@@ -93,15 +93,15 @@ VG.setFillProperties(1001,ROOT.kMagenta)
 wjetsPlotters=[]
 wjetsSamples = ['step1p5_WJetsToLNu']
 for sample in wjetsSamples:
-    wjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+    wjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'_miniIso.root',tree))
 #    SumEvents=wjetsPlotters[-1].file.Get("H_ele").GetBinContent(1)
 #    wjetsPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
     wjetsPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
     wjetsPlotters[-1].addCorrectionFactor(61526.7,'xsec')
 #    wjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-    wjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    wjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    wjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-    wjetsPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+#    wjetsPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
 #    wjetsPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
 WJets = MergedPlotter(wjetsPlotters)
 WJets.setFillProperties(1001,ROOT.kBlue-6)
@@ -115,9 +115,9 @@ for sample in zjetsSamples:
     zjetsPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
 #    wjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-    zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-    zjetsPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+#    zjetsPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
 #    wjetsPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
 ZJets = MergedPlotter(zjetsPlotters)
 ZJets.setFillProperties(1001,ROOT.kOrange+7)
@@ -141,16 +141,16 @@ ttPlotters=[]
 ttSamples = ['step1p5_TT_powheg']
 
 for sample in ttSamples:
-    ttPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+    ttPlotters.append(TreePlotter(sample, indir+'/'+sample+'_miniIso.root',tree))
 #    SumEvents=ttPlotters[-1].file.Get("H_ele").GetBinContent(1)
 #    ttPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
     ttPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
     ttPlotters[-1].addCorrectionFactor(831.76,'xsec')
 #    ttPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-    ttPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    ttPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    ttPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #    ttPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
-    ttPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+#    ttPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
     allPlotters[sample] = ttPlotters[-1]
 TT = MergedPlotter(ttPlotters)
 TT.setFillProperties(1001,ROOT.kAzure-9)
@@ -160,15 +160,15 @@ ttgPlotters=[]
 ttgSamples = ['step1p5_TTGJets']
 
 for sample in ttgSamples:
-    ttgPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+    ttgPlotters.append(TreePlotter(sample, indir+'/'+sample+'_miniIso.root',tree))
 #    SumEvents=ttgPlotters[-1].file.Get("H_ele").GetBinContent(1)
 #    ttgPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
     ttgPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
     ttgPlotters[-1].addCorrectionFactor(3.697,'xsec')
 #    ttgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
 #    ttgPlotters[-1].addCorrectionFactor(puWeight,'puWeight')
-    ttgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
-    ttgPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+#    ttgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    ttgPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
 #    ttgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
 #    ttgPlotters[-1].addCorrectionFactor(lepsf,'lepsf')
     allPlotters[sample] = ttgPlotters[-1]
@@ -185,12 +185,13 @@ dataSamples = [
 #'step1_SingleEleRun2016B',
 #'step1_SingleEleRun2016C', 
 #'step1_SingleEleRun2016D'
+'step1_SingleEle_Run2016B_sepRereco',
 'step1_SingleEle_Run2016C_SepRereco',
 'step1_SingleEle_Run2016D_SepRereco'
 #'step1_SingleEle_Run2015D'
 ]
 for sample in dataSamples:
-    dataPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+    dataPlotters.append(TreePlotter(sample, indir+'/'+sample+'_miniIso.root',tree))
 #    dataPlotters[0].addCorrectionFactor('(HLT_MUv2||HLT_ELEv2)','HLT')
 Data = MergedPlotter(dataPlotters)
 
