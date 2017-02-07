@@ -91,3 +91,22 @@ def Fun_ht(Jetlist,tree):
     for j in Jetlist:
         result+=tree.jetPt[j[0]]
     return result
+
+
+
+def Fun_findjetbtag(tree):  # this function only for btageff study
+    result=[]
+    for j in range(tree.nJet):
+
+        if tree.jetPt[j]>30 and abs(tree.jetEta[j])<2.4 and tree.jetPFLooseId[j]:
+#            if tree.jetpfCombinedInclusiveSecondaryVertexV2BJetTags[j]>0.8:
+            flav=tree.jetHadFlvr[j]
+            if tree.jetCSV2BJetTags[j]>0.8:
+                jet=[j,1,flav]
+            else: jet=[j,0,flav]
+
+            result.append(jet)
+
+    return result
+
+

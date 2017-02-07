@@ -26,15 +26,20 @@ print "output: ",OUTPUTName
 
 
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
-chain_in.Add(sys.argv[1])
+for inputf in INPUTFile.split():
+    chain_in.Add(inputf)
 chain_in.SetBranchStatus("AK8*",0)
 print"Total events for processing: ",chain_in.GetEntries()
 event=chain_in
 
-if len(sys.argv)>3:
+if len(sys.argv)>4:
     fileID=int(sys.argv[3])
     startEntryNumber=int(sys.argv[4])
     endEntryNumber=int(sys.argv[5])
+elif len(sys.argv)==4:
+    fileID=int(sys.argv[3])
+    startEntryNumber=0
+    endEntryNumber=chain_in.GetEntries()
 else:
     fileID=-999
     startEntryNumber=0
@@ -76,19 +81,19 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     processevent+=1
     if processevent%10000==0: print "processing event ",processevent
 
-    if not event.hasGoodVtx: continue
+    if not event.isPVGood: continue
     # elelist:[[index,ID,iso],[]...]
     # mulist: [[index,ID,iso],[]...]
-    mulist=Fun_findmu(event)
-    elelist=Fun_findele(event)
+    # mulist=Fun_findmu(event)
+    # elelist=Fun_findele(event)
 
-    if len(elelist)==1 and elelist[0][1]==1 and len(mulist)==0: 
-        Scanmode="eleTree"
-        lep_ind=elelist[0][0]
-    elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==1: 
-        Scanmode="muTree"
-        lep_ind=mulist[0][0]
-    else: continue
+    # if len(elelist)==1 and elelist[0][1]==1 and len(mulist)==0: 
+    #     Scanmode="eleTree"
+    #     lep_ind=elelist[0][0]
+    # elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==1: 
+    #     Scanmode="muTree"
+    #     lep_ind=mulist[0][0]
+    # else: continue
 
 
 #--------------1.HLT cut-------------
@@ -101,7 +106,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 #    Candpholist=Fun_findCandpho(Channel,lep_ind,event)
 
-    jetlist=Fun_findjet(Scanmode,mulist,elelist,[],event)
+    jetlist=Fun_findjetbtag(event)
     for jet in jetlist:
         jetInd=jet[0]
         if jet[1]==1: btagged=True
@@ -109,7 +114,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 
 #        ---------The following using jet hadron flavor(recommanded by BTV POG) which was not included in ggNtuplizer7-14
-        flavor=event.jetHadFlvr[jetInd]
+        flavor=jet[2]
 
         if flavor==0:        #light
                 num_ljets.Fill(event.jetPt[jetInd],event.jetEta[jetInd])

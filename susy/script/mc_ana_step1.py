@@ -8,8 +8,8 @@ import ROOT
 from ROOT import *
 from array import array
 from ana2016.susy import *
-from ana2016.susy.ana_muon_miniIso import *
-from ana2016.susy.ana_ele_miniIso import *
+from ana2016.susy.ana_muon import *
+from ana2016.susy.ana_ele import *
 from ana2016.susy.ana_jet import *
 from ana2016.susy.ana_photon import *
 from ana2016.susy.Utilfunc import *
