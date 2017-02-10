@@ -18,7 +18,13 @@
 
 
 #V+jets
-./submitMC_step1.py root://eoscms//store/user/pbarria/ggntuples/mc/V08_00_24_00/output/job_spring16_WJetsToLNu_aMCatNLO_miniAOD.root WJetsToLNu 1000000
+#./submitMC_step1.py root://eoscms//store/user/pbarria/ggntuples/mc/V08_00_24_00/output/job_spring16_WJetsToLNu_aMCatNLO_miniAOD.root WJetsToLNu 1000000
+
+./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_24_00/job_spring16_W3JetsToLNu/W3JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_job_spring16_W3JetsToLNu/170207_095808/0000/ W3JetsToLNu 2
+
+./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_24_00/job_spring16_W4JetsToLNu/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_job_spring16_W4JetsToLNu/170202_160516/0000/ W4JetsToLNu 2
+
+
 #*******ZJets
 
 # diboson
@@ -40,7 +46,6 @@
 
 ./submitMC_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/MC/V08_00_24_00/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/job_spring16_ST_tW_antitop_5f_inclusiveDecays_miniAOD.root ST_tW_antitop_5f_inclus 400000
 ./submitMC_step1.py root://eoscms//store/group/phys_smp/ggNtuples/13TeV/MC/V08_00_24_00/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/job_spring16_ST_tW_top_5f_inclusiveDecays_miniAOD.root ST_tW_top_5f_inclus 400000
-
 
 
 
@@ -70,6 +75,11 @@
  ./submitData_step1.py /store/user/cmkuo/job_SingleEle_Run2016G_SepRereco/SingleElectron/crab_job_SingleEle_Run2016G_SepRereco/161216_032746/0000/ SingleEle_Run2016G_sepRereco0 40 
  ./submitData_step1.py /store/user/cmkuo/job_SingleEle_Run2016G_SepRereco/SingleElectron/crab_job_SingleEle_Run2016G_SepRereco/161216_032746/0001/ SingleEle_Run2016G_sepRereco1 40 
  ./submitData_step1.py /store/user/cmkuo/job_SingleEle_Run2016G_SepRereco/SingleElectron/crab_job_SingleEle_Run2016G_SepRereco/161216_032746/0002/ SingleEle_Run2016G_sepRereco2 40 
+
+
+ ./submitData_step1.py /store/user/fxia/ggntuples/data/V08_00_24_00/job_SingleEle_Run2016H_PRv2/SingleElectron/crab_job_SingleEle_Run2016H_PRv2/170209_120252/0000/ SingleEle_Run2016H_PRv2_0 40
+ ./submitData_step1.py /store/user/fxia/ggntuples/data/V08_00_24_00/job_SingleEle_Run2016H_PRv2/SingleElectron/crab_job_SingleEle_Run2016H_PRv2/170209_120252/0001/ SingleEle_Run2016H_PRv2_1 40
+
 
  ./submitData_step1.py root://eoscms//store/user/fxia/ggntuples/data/V08_00_24_00/job_SingleEle_Run2016H_PRv3.root SingleEle_Run2016H_PRv3 2000000
 

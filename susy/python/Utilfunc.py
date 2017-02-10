@@ -108,3 +108,13 @@ def Fun_mht(ml,el,pl,jl,tree):
 
 
             
+def Fun_FindGenTopPair(tree):
+    result=[]
+    for genp in range(tree.nMC):
+        if abs(tree.mcPID[genp])==6 and tree.mcStatusFlag[genp]>>2&1==1:  # is hardprocess top
+            result.append(tree.mcPt[genp])
+    return result
+
+def Fun_TopPtWeight(apt,bpt):
+    result=(math.exp(0.0615-0.0005*apt)*math.exp(0.0615-0.0005*bpt))**0.5
+    return result

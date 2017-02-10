@@ -24,7 +24,10 @@ OUTPUTName=sys.argv[2]
 print "input: ",INPUTFile
 print "output: ",OUTPUTName
 
-
+DoTopPt=False
+if "TT" in OUTPUTName: 
+    DoTopPt=True
+    print "Will find gen top pair pt for this bkg"
 
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
 for inputf in INPUTFile.split():
@@ -151,6 +154,8 @@ BCandphoLepInvMass=vector(float)(0)
 BnPho=array('i',[-99])
 BnFake=array('i',[-99])
 
+BGenTopAPt=array('d',[-99.])
+BGenTopBPt=array('d',[-99.])
 
 
 #-----------------Define tree------------------------------
@@ -209,6 +214,10 @@ tree1_out.Branch("BCandphoLepInvMass",BCandphoLepInvMass)
 
 tree1_out.Branch("BnPho",BnPho,"BnPho/I")
 tree1_out.Branch("BnFake",BnFake,"BnFake/I")
+
+tree1_out.Branch("BGenTopAPt",BGenTopAPt,"BGenTopAPt/D")
+tree1_out.Branch("BGenTopBPt",BGenTopBPt,"BGenTopBPt/D")
+
 
 
 
@@ -352,6 +361,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BMHT[0]=Fun_mht(mulist,elelist,Candpholist,jetlist,event)
     BHT[0]=Fun_ht(jetlist,event)
 
+
     if Scanmode in ["eleTree","eQCDTree"]:
         BelePt[0]=(event.elePt[lep_ind])
         BeleEn[0]=(event.eleEn[lep_ind])
@@ -384,6 +394,14 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BjetHadFlvr.push_back(event.jetHadFlvr[0])
         Bbtagged.push_back(jet[1])
     BjetM3[0]=Fun_JetM3(jetlist,event)    
+
+#---------------Fill gen top pair pt for sm ttbar bkgs-------------
+    if DoTopPt:
+        GenTopPairpt=Fun_FindGenTopPair(event)
+        BGenTopAPt[0]=GenTopPairpt[0]
+        BGenTopBPt[0]=GenTopPairpt[1]
+
+
 #-----------------Fill the photons/fakes----------------
 
 
@@ -471,6 +489,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BnPho[0]=-99
     BnFake[0]=-99
 
+    BGenTopAPt[0]=-99.    
+    BGenTopBPt[0]=-99.    
 
 #---fill the hist----
 Binlist=[Pass_1lep,Pass_nHLT,Pass_npre,Pass_nSR1,Pass_nSR2,Pass_nCR1,Pass_nCR2,Pass_npre_btag,Pass_nSR1_btag,Pass_nSR2_btag,Pass_nCR1_btag,Pass_nCR2_btag]
