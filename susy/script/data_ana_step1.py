@@ -241,26 +241,31 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
    # mulist: [[index,ID,iso],[]...]
    # ID: 0 for loose, 1 for tight, 3 for QCDmode
     mulist=Fun_findmu(event)
+    mulistwoqcd=[m for m in mulist if m[1]!=3]
     elelist=Fun_findele(event)
+    elelistwoqcd=[e for e in elelist if e[1]!=3]
 
 
 
 #-------------1. Only one tight lepton(OR one tight QCDlep)-------
-    if len(elelist)==1 and elelist[0][1]==1 and len(mulist)==0: 
+    if len(elelistwoqcd)==1 and elelistwoqcd[0][1]==1 and len(mulistwoqcd)==0: 
             Scanmode="eleTree"
+            elelist=elelistwoqcd
             lep_ind=elelist[0][0]
             lep_Mt=(2*event.elePt[lep_ind]*event.pfMET*(1-TMath.Cos(event.elePhi[lep_ind]-event.pfMETPhi)))**0.5
+
+    elif len(mulistwoqcd)==1 and mulistwoqcd[0][1]==1 and len(elelistwoqcd)==0:
+            Scanmode="muTree"
+            mulist=mulistwoqcd
+            lep_ind=mulist[0][0]
+            lep_Mt=(2*event.muPt[lep_ind]*event.pfMET*(1-TMath.Cos(event.muPhi[lep_ind]-event.pfMETPhi)))**0.5
+
     elif len(elelist)==1 and elelist[0][1]==3 and len(mulist)==0:
             Scanmode="eQCDTree"
             lep_ind=elelist[0][0]
             lep_Mt=(2*event.elePt[lep_ind]*event.pfMET*(1-TMath.Cos(event.elePhi[lep_ind]-event.pfMETPhi)))**0.5
-        
-        
-    elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==1: 
-            Scanmode="muTree"
-            lep_ind=mulist[0][0]
-            lep_Mt=(2*event.muPt[lep_ind]*event.pfMET*(1-TMath.Cos(event.muPhi[lep_ind]-event.pfMETPhi)))**0.5
-    elif len(elelist)==0  and len(mulist)==1 and mulist[0][1]==3:
+
+    elif len(elelist)==0 and len(mulist)==1 and mulist[0][1]==3:
             Scanmode="mQCDTree"
             lep_ind=mulist[0][0]
             lep_Mt=(2*event.muPt[lep_ind]*event.pfMET*(1-TMath.Cos(event.muPhi[lep_ind]-event.pfMETPhi)))**0.5

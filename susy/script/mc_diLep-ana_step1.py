@@ -59,7 +59,7 @@ file_out = ROOT.TFile("step1-dilep_"+OUTPUTName+"_"+str(fileID)+".root","recreat
 
 processdnevent = 0
 # the following list used to count event numbers in order: ele,eQCD,mu,muQCD trees
-Pass_1lep = [0,0,0,0]
+Pass_2lep = [0,0,0,0]
 Pass_nHLT = [0,0,0,0]
 Pass_npre = [0,0,0,0]
 
@@ -67,7 +67,7 @@ Pass_npre_btag = [0,0,0,0]
 
 
 #-----define hists for counting
-Binlabel= ["TotalEvent","Pass_1lep","Pass_nHLT","Pass_npre","Pass_npre_btag","0","0","0","0","0"]
+Binlabel= ["TotalEvent","Pass_2lep","Pass_nHLT","Pass_npre","Pass_npre_btag","0","0","0","0","0"]
 H_ee=ROOT.TH1F("H_ee","H_ele",10,0,10)
 for nbin in range(10): H_ee.GetXaxis().SetBinLabel(nbin+1,Binlabel[nbin])
 H_eeQCD=H_ee.Clone("H_eeQCD")
@@ -77,7 +77,6 @@ H_mmQCD=H_ee.Clone("H_mmQCD")
 
 #--------------define branches to record seleted obj------------
 
-BmuPt=vector(float)(0)
 BmuPt=vector(float)(0)
 BmuEn=vector(float)(0)
 BmuEta1=vector(float)(0)
@@ -243,19 +242,19 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     else : continue
 
     Scanmode_ind=["eeTree","eeQCDTree","mumuTree","mmQCDTree"].index(Scanmode)
-    Pass_1lep[Scanmode_ind]+=1
+    Pass_2lep[Scanmode_ind]+=1
 #--------------1.HLT cut-------------
 
-    CheckHLT=False
+    CheckHLT=True
     if CheckHLT:
         if Scanmode=="eeTree": 
-            hlt=event.HLTEleMuX>>55&1
+            hlt=event.HLTEleMuX>>3&1
         elif Scanmode=="eeQCDTree": 
             hlt=1
         elif Scanmode=="mumuTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
         elif Scanmode=="mmQCDTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
 
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
         else: continue
@@ -363,7 +362,6 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 #----------------------clean branches for next event
     BmuPt.clear()
-    BmuPt.clear()
     BmuEn.clear()
     BmuEta1.clear()
     BmuPhi.clear()
@@ -422,7 +420,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 
 #---fill the hist----
-Binlist=[Pass_1lep,Pass_nHLT,Pass_npre,Pass_npre_btag]
+Binlist=[Pass_2lep,Pass_nHLT,Pass_npre,Pass_npre_btag]
 Histlist=[H_ee,H_eeQCD,H_mumu,H_mmQCD]
 for hist in range(len(Histlist)):
     Histlist[hist].SetBinContent(1,processdnevent)
@@ -438,7 +436,7 @@ file_out.Close()
 print "----------------------"
 print "TotalEventNumber = ", processdnevent
 print "Scanmode:-eeTree-|-eeQCDTree-|-mumuTree-|-mmQCDTree"
-print "n_1lep pass = ", Pass_1lep
+print "n_2lep pass = ", Pass_2lep
 print "n_HLT pass  = ", Pass_nHLT
 print "n_pre select= ", Pass_npre
 
@@ -456,7 +454,7 @@ log.write("\n%s"%datetime.datetime.now())
 log.write("\nstartEntry: %s endEntry %s"%(startEntryNumber,endEntryNumber))
 log.write("\nProcessedEventNumber = %s"%processdnevent)
 log.write("\nScanmode:-eeTree-|-eeQCDTree-|-mumuTree-|-mumuQCDTree")
-log.write( "\nn_1lep pass =%s "%Pass_1lep)
+log.write( "\nn_2lep pass =%s "%Pass_2lep)
 log.write( "\nn_HLT pass =%s "%Pass_nHLT)
 log.write("\nNoBtag requirement")
 log.write("\nn_pre selection = %s"%Pass_npre)
