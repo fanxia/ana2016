@@ -38,8 +38,10 @@ python TESTmc_ana_step1p5.py ../ntupleStore/step1_TTWJetsToQQ.root TTWJetsToQQ
 
 
 
-python TESTmc_ana_step1p5.py ../ntupleStore/step1_WJetsToLNu.root WJetsToLNu
-#python TESTmc_ana_step1p5.py ../ntupleStore/step1_DYLL.root DYLL
+#python TESTmc_ana_step1p5.py ../ntupleStore/step1_WJetsToLNu.root WJetsToLNu
+python TESTmc_ana_step1p5.py ../ntupleStore/step1_W3JetsToLNu.root W3JetsToLNu
+python TESTmc_ana_step1p5.py ../ntupleStore/step1_W4JetsToLNu.root W4JetsToLNu
+python TESTmc_ana_step1p5.py ../ntupleStore/step1_DYJetsToLL.root DYJetsToLL
 
 python TESTmc_ana_step1p5.py ../ntupleStore/step1_WGToLNuG.root WGToLNuG
 python TESTmc_ana_step1p5.py ../ntupleStore/step1_ZGTo2LG.root ZGTo2LG

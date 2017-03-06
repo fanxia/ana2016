@@ -145,9 +145,10 @@ BCandphoSCEta=vector(float)(0)
 BCandphoPhi=vector(float)(0)
 BCandphoR9=vector(float)(0)
 BCandphoHoverE=vector(float)(0)
-BCandphoSigmaIEtaIEta=vector(float)(0)
-BCandphoSigmaIPhiIPhi=vector(float)(0)
+BCandphoSigmaIEtaIEtaFull=vector(float)(0) #phoSigmaIEtaIEtaFull5x5
+BCandphoSigmaIPhiIPhiFull=vector(float)(0) #phoSigmaIPhiIPhiFull5x5
 BCandphoPFChIso=vector(float)(0)
+BCandphoPFCorChIso=vector(float)(0)  #corrected chiso
 BCandphoGenmatch=vector(int)(0)
 BCandphoLepInvMass=vector(float)(0)
 
@@ -205,9 +206,10 @@ tree1_out.Branch("BCandphoSCEta",BCandphoSCEta)
 tree1_out.Branch("BCandphoPhi",BCandphoPhi)
 tree1_out.Branch("BCandphoR9",BCandphoR9)
 tree1_out.Branch("BCandphoHoverE",BCandphoHoverE)
-tree1_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
-tree1_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
+tree1_out.Branch("BCandphoSigmaIEtaIEtaFull",BCandphoSigmaIEtaIEtaFull)
+tree1_out.Branch("BCandphoSigmaIPhiIPhiFull",BCandphoSigmaIPhiIPhiFull)
 tree1_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
+tree1_out.Branch("BCandphoPFCorChIso",BCandphoPFCorChIso)
 tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
 tree1_out.Branch("BCandphoLepInvMass",BCandphoLepInvMass)
 
@@ -280,16 +282,16 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Pass_1lep[Scanmode_ind]+=1
 #--------------1.HLT cut-------------
 
-    CheckHLT=False
+    CheckHLT=True
     if CheckHLT:
         if Scanmode=="eleTree": 
-            hlt=event.HLTEleMuX>>55&1
+            hlt=event.HLTEleMuX>>3&1
         elif Scanmode=="eQCDTree": 
             hlt=1
         elif Scanmode=="muTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
         elif Scanmode=="mQCDTree": 
-            hlt=(event.HLTEleMuX>>31&1 and event.HLTEleMuX>>32&1)
+            hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
 
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
         else: continue
@@ -302,7 +304,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 
 #-------------2.5 find photon before jets-------------
-    #Candpholist: [[index,phoTag,dr_lep,genmatch(only4mc)],[],[],,,]
+    #Candpholist: [[index,phoTag,dr_lep,corChIso,genmatch(only4mc)],[],,,]
     Candpholist=Fun_findCandpho(Scanmode,mulist,elelist,event)
     BnCandPho[0]=len(Candpholist)
     BnPho[0]=len([p for p in Candpholist if p[1]>>3&1==1])
@@ -414,10 +416,11 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BCandphoPhi.push_back(event.phoPhi[pho[0]])
         BCandphoR9.push_back(event.phoR9[pho[0]])
         BCandphoHoverE.push_back(event.phoHoverE[pho[0]])
-        BCandphoSigmaIEtaIEta.push_back(event.phoSigmaIEtaIEta[pho[0]])
-        BCandphoSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[pho[0]])
+        BCandphoSigmaIEtaIEtaFull.push_back(event.phoSigmaIEtaIEtaFull5x5[pho[0]])
+        BCandphoSigmaIPhiIPhiFull.push_back(event.phoSigmaIPhiIPhiFull5x5[pho[0]])
         BCandphoPFChIso.push_back(event.phoPFChIso[pho[0]])
-        BCandphoGenmatch.push_back(pho[3])
+        BCandphoPFCorChIso.push_back(pho[3])
+        BCandphoGenmatch.push_back(pho[4])
         BCandphoLepInvMass.push_back(Fun_invmass_pholep(Scanmode,lep_ind,pho[0],event))
 
     
@@ -480,9 +483,10 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BCandphoPhi.clear()
     BCandphoR9.clear()
     BCandphoHoverE.clear()
-    BCandphoSigmaIEtaIEta.clear()
-    BCandphoSigmaIPhiIPhi.clear()
+    BCandphoSigmaIEtaIEtaFull.clear()
+    BCandphoSigmaIPhiIPhiFull.clear()
     BCandphoPFChIso.clear()
+    BCandphoPFCorChIso.clear()
     BCandphoGenmatch.clear()
     BCandphoLepInvMass.clear()
 

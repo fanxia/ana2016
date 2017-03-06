@@ -26,6 +26,8 @@ class MergedPlotter(PlotterBase):
                 h=plotter.drawTH1(name,var,cuts,lumi,bins,min,max,titlex,units,drawStyle)
             else:
                 h.Add(plotter.drawTH1(name,var,cuts,lumi,bins,min,max,titlex,units,drawStyle))
+        # special point here for name
+        h.SetName(name)
         h.SetLineColor(self.linecolor)
         h.SetLineWidth(self.linewidth)
         h.SetFillStyle(self.fillstyle)

@@ -59,14 +59,23 @@ def Fun_findele(tree):
 
 
     for e in range(tree.nEle):
+        if abs(tree.eleSCEta[e])>1.4442 and abs(tree.eleSCEta[e])<1.566: continue
+
         PFiso=Fun_ele_relCombIsoWithEA(e)
-        if tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele(e,PFiso):
+        # if tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele(e,PFiso):
+        #     ele=[e,1]
+        # elif tree.elePt[e]>10 and abs(tree.eleEta[e])<2.5 and Fun_loose_ele(e,PFiso):
+        #     ele=[e,0]
+        # elif tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele_antiIso(e,PFiso):
+        #     ele=[e,3]
+
+        if tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and tree.eleIDbit[e]>>3&1==1:
             ele=[e,1]
-        elif tree.elePt[e]>10 and abs(tree.eleEta[e])<2.5 and Fun_loose_ele(e,PFiso):
+        elif tree.elePt[e]>10 and abs(tree.eleEta[e])<2.5 and tree.eleIDbit[e]>>1&1==1:
             ele=[e,0]
         elif tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele_antiIso(e,PFiso):
             ele=[e,3]
-
+        
         else: continue
         
         ele.append(PFiso)

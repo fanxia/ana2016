@@ -6,16 +6,19 @@ from TreePlotter import TreePlotter
 from MergedPlotter import MergedPlotter
 from StackPlotter import StackPlotter
 ROOT.gROOT.SetBatch()
-tag="Feb21_test"
+tag="Mar1_QCD"
 LogY=False
 
+AddQCD=True
+#AddQCD=False
 normaldraw=False
 test=True
-outdir='plots'
 
+outdir='step1_out'
 indir='../ntupleStore'
 
 tree='EventTree_ele'
+treeQCD='EventTree_eQCD'
 #tree='EventTree_eQCD'
 
 lumi=35.8   #1.731    #4.353 #2016D
@@ -48,6 +51,14 @@ cut_SR1_jjj="(BelePt>35 && BnPho==1)*BphoWeight" # add it yourself
 cut_SR2_jjj="(BelePt>35 && BnPho>1)*BphoWeight" # add it yourself
 cut_CR1_jjj="BelePt>35 && BnPho==0 && BnFake==1" # add it yourself
 cut_CR2_jjj="BelePt>35 && BnPho==0 && BnFake>1" # add it yourself
+
+
+# adding cut for qcd scale factor calculation
+cut_pre_bjj_4qcd="Bnbjet>0 && BelePt>35 && BpfMET<20"
+
+# adding cut for egamma scale factor calculation
+cut_SR1_bjj_4gammamatchele="(BelePt>35 && Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1 && BCandphoGenmatch==11)*BphoWeight"
+cut_SR1_bjj_4gammamatchnonele="(BelePt>35 && Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1 && BCandphoGenmatch!=11)*BphoWeight"
 
 
 # adding cut for loosepho_woChiso/woSigmaIetaIeta in 'SR1'
@@ -244,6 +255,8 @@ ST.setFillProperties(1001,ROOT.kRed-10)
 
 # Adding MC bkg ends here
 
+
+
 # Starting adding data
 dataPlotters=[]
 dataSamples = [
@@ -268,13 +281,39 @@ Data = MergedPlotter(dataPlotters)
 
 Data.setAlias("BphoWeight","1.*1")
 
+
+
+
+
+# start Adding QCD here#################
+qcdPlotters=[]
+qcdSamples = [['step1_SingleEle_Run2016B_SepRereco'],['step1_SingleEle_Run2016C_SepRereco'],['step1_SingleEle_Run2016D_SepRereco'],['step1_SingleEle_Run2016E_SepRereco'],['step1_SingleEle_Run2016F_SepRereco'],['step1_SingleEle_Run2016G_sepRereco'],['step1_SingleEle_Run2016H_PRv2'],['step1_SingleEle_Run2016H_PRv3'],['step1p5_WW',110.8],['step1p5_WZ',47.13],['step1p5_ZZ',16.523],['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864],['step1p5_WJetsToLNu',61526.7],['step1p5_DYLL',6025.2],['step1p5_TTWJetsToLNu',0.2043],['step1p5_TTWJetsToQQ',0.4062],['step1p5_TTZToLLNuNu',0.2529],['step1p5_TTZToQQ',0.5297],['step1p5_TTGJets',3.697],['step1p5_ST_tW_antitop_5f_inclus',35.85],['step1p5_ST_tW_top_5f_inclus',35.85],['step1p5_ST_t-channel_top_4f_leptonDecays',44.33],['step1p5_ST_t-channel_antitop_4f_leptonDecays',26.38],['step1p5_ST_s-channel_4f_leptonDecays',3.36]]
+for sample in qcdSamples:
+    qcdPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',treeQCD))
+    if len(sample)==1: 
+         qcdPlotters[-1].addCorrectionFactor(1./(lumi*1000),'lumi')
+#         qcdPlotters[-1].setAlias("BphoWeight","1.*1")
+#         qcdPlotters[-1].setAlias("BCandphoGenmatch","0")
+    if len(sample)>1:
+         qcdPlotters[-1].addCorrectionFactor(sample[1],'xsec')
+    #    qcdPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+         qcdPlotters[-1].addCorrectionFactor('-1./BTotalEventsNumber','norm')
+#         qcdPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+    #    qcdPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+    allPlotters[sample[0]] = qcdPlotters[-1]
+QCD = MergedPlotter(qcdPlotters)
+QCD.setFillProperties(1001,ROOT.kRed)
+
+
+
+# End Adding QCD here#################
+
+
 Stack = StackPlotter(outTag=tag, outDir=outdir)
 Stack.setPaveText(paveText)
 Stack.addPlotter(Data, "data_obs", "Data", "data")
 
 #Stack.addPlotter(VV, "NonReso","VV/WZ/WJets non-reson.", "background")
-
-
 Stack.addPlotter(TTV, "TTV","TTV", "background")
 Stack.addPlotter(TTG, "TTG","TT#gamma", "background")
 Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
@@ -285,6 +324,7 @@ Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 Stack.addPlotter(WJets, "WJets","WJets", "background")
 
 Stack.addPlotter(TT, "TT","TT", "background")
+if AddQCD: Stack.addPlotter(QCD,"QCD","QCD","background")
 
 Stack.setLog(True)
 Stack.doRatio(doRatio)
@@ -358,9 +398,23 @@ if normaldraw:
 
 
 if test:
+     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=100,output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_pre_bjj_4qcd, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj_4qcd',outDir=outdir)#,separateSignal=sepSig)
+
+
+     Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+
+     Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gamma, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+     Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gammamatchele, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+
+     Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gammamatchnonele, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
 
 #    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStackSketch('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+#    Stack.drawStackSketch('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 #    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch>0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchpho_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 #    Stack.drawStackSketch('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch>0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchpho_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 #    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch<0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchjet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)

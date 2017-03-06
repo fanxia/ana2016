@@ -24,8 +24,10 @@ def convertToPoisson(h,blinding=False,blindingCut=100):
         graph.SetPoint(igrbin,x,y)
         graph.SetPointEYlow(igrbin,yLow)
         graph.SetPointEYhigh(igrbin,yHigh)
-        graph.SetPointEXlow(igrbin,0.0)
-        graph.SetPointEXhigh(igrbin,0.0)
+#        graph.SetPointEXlow(igrbin,0.0)
+#        graph.SetPointEXhigh(igrbin,0.0)
+        graph.SetPointEXlow(igrbin,x-xLow)
+        graph.SetPointEXhigh(igrbin,xHigh-x)
         igrbin += 1
 
 
@@ -304,12 +306,12 @@ class StackPlotter(object):
         frame.GetZaxis().SetTitleFont(42)
 
 
-        if len(units)>0:
+        if type(bins)==list:
             frame.GetXaxis().SetTitle(titlex + " (" +units+")")
             frame.GetYaxis().SetTitle("Events /  "+units)
         else:    
             frame.GetXaxis().SetTitle(titlex)
-            frame.GetYaxis().SetTitle("Events")
+            frame.GetYaxis().SetTitle("Events / Bin")
 
 
         frame.Draw()
@@ -328,8 +330,8 @@ class StackPlotter(object):
         ROOT.gStyle.SetErrorX(0.5)
         if dataH !=None:
 
-            dataH.Draw("E1 same")
-#            dataG.Draw("Psame")              
+#            dataH.Draw("E1 same")
+            dataG.Draw("Psame")              
         if separateSignal and len(signalHs)>0:
             for sigH in signalHs:
                 sigH.Draw("HIST,SAME")
@@ -480,6 +482,318 @@ class StackPlotter(object):
         #p2.Delete()
 
         return plot
+
+
+##################################
+
+    def drawStackSketch(self,var,cut,lumi,bins=-1,mini=-1,maxi=-1,channel="",titlex = "", units = "", output = 'out', outDir='.', separateSignal=False, blinding=False, blindingCut=100.0, fakeData=False):
+
+        #fout = ROOT.TFile.Open(outDir+'/'+outputTag+'_'+output+'.root', 'recreate')
+        print"start drawing sketch plot: ",output
+        output=output+"_sketch"
+        self.fout.cd()
+
+        c1 = ROOT.TCanvas(output+'_'+"c1", "c1", 800, 1040); c1.Draw()
+        #c1.SetWindowSize(700 + (700 - c1.GetWw()), (910 + (910 - c1.GetWh())))
+        p1 = ROOT.TPad(output+'_'+"pad1","pad1",0,0.25,1,0.99)
+        p1.SetBottomMargin(0.15)
+        p1.SetLeftMargin(0.15)
+        p1.Draw()
+        p2 = ROOT.TPad(output+'_'+"pad2","pad2",0,0,1,0.25)
+        p2.SetTopMargin(0.03)
+        p2.SetBottomMargin(0.3)
+        p2.SetLeftMargin(0.15)
+        p2.SetFillStyle(0)
+        p2.Draw()
+
+        ROOT.gStyle.SetOptStat(0)
+        ROOT.gStyle.SetOptTitle(0)
+        
+        p1.cd()
+            
+        hists=[]
+        stack = ROOT.THStack(output+'_'+"stack","")
+        
+        signal=0
+        background=0
+        backgroundErr=0
+        
+        signals = []       
+        signalHs = [] 
+        signalLabels = []
+
+        dataH=None
+        dataG=None
+        error=ROOT.Double(0.0)
+
+        cutL="("+self.defaultCut+")*("+cut+")"
+
+        for (plotter,typeP,label,name) in zip(self.plotters,self.types,self.labels,self.names):
+            if (typeP =="background") or (not separateSignal and typeP == "signal"):
+                hist = plotter.drawTH1(output+'_'+name,var,cutL,lumi,bins,mini,maxi,titlex,units)
+                #hist.SetName(output+'_'+name)
+                hist.SetLineWidth(1)
+                stack.Add(hist)
+                hists.append(hist)
+                print label+" : %f\n" % hist.Integral()
+ 
+                if typeP == "signal" :
+                    signal+=hist.Integral()
+                if typeP == "background" :
+                    background+=hist.IntegralAndError(1,hist.GetNbinsX(),error)
+                    backgroundErr+=error*error
+
+            if separateSignal and typeP == "signal":
+                hist = plotter.drawTH1(output+'_'+name,var,cutL,lumi,bins,mini,maxi,titlex,units)
+                #hist.SetName(output+'_'+name)
+                hists.append(hist)
+                signalHs.append(hist)
+                signals.append(hist.Integral())
+                signalLabels.append(label)
+                print label+" : %f\n" % hist.Integral()
+
+            if typeP =="data":
+                hist = plotter.drawTH1(output+'_'+typeP,var,cutL,"1",bins,mini,maxi,titlex,units)
+                #hist.SetName(output+'_'+typeP)
+                hist.SetMarkerStyle(20)
+                hist.SetLineWidth(1)
+                hist.SetMarkerSize(1.)
+                hist.SetMarkerColor(ROOT.kBlack)
+                hist.SetBinErrorOption(1)
+                hists.append(hist)
+                dataH=hist
+                dataH.SetLineWidth(1)
+                dataG=convertToPoisson(hist,blinding,blindingCut)
+                dataG.SetName(output+'_'+'dataG')
+                dataG.SetLineWidth(1)
+                print label+" : %f\n" % hist.Integral()
+                
+
+ 
+        #if data not found plot stack only
+
+        if dataH != None:                  
+            datamax = ROOT.Math.chisquared_quantile_c((1-0.6827)/2.,2*(dataH.GetMaximum()+1))/2.
+        else: 
+            datamax = stack.GetMaximum()
+
+        if not self.log:
+            frame = p1.DrawFrame(mini,0.0,maxi,max(stack.GetMaximum(),datamax)*1.20)
+        else:    
+            frame = p1.DrawFrame(mini,0.1,maxi,max(stack.GetMaximum(),datamax)*100)
+
+        frame.SetName(output+'_'+'frame')
+        frame.GetXaxis().SetLabelFont(42)
+        frame.GetXaxis().SetLabelOffset(0.007)
+        frame.GetXaxis().SetLabelSize(0.03)
+        frame.GetXaxis().SetTitleSize(0.05)
+        frame.GetXaxis().SetTitleOffset(1.15)
+        frame.GetXaxis().SetTitleFont(42)
+        frame.GetYaxis().SetLabelFont(42)
+        frame.GetYaxis().SetLabelOffset(0.007)
+        frame.GetYaxis().SetLabelSize(0.045)
+        frame.GetYaxis().SetTitleSize(0.05)
+        frame.GetYaxis().SetTitleOffset(1.4)
+        frame.GetYaxis().SetTitleFont(42)
+        frame.GetZaxis().SetLabelFont(42)
+        frame.GetZaxis().SetLabelOffset(0.007)
+        frame.GetZaxis().SetLabelSize(0.045)
+        frame.GetZaxis().SetTitleSize(0.05)
+        frame.GetZaxis().SetTitleFont(42)
+
+
+        if type(bins)==list:
+            frame.GetXaxis().SetTitle(titlex + " (" +units+")")
+            frame.GetYaxis().SetTitle("Events /  "+units)
+        else:    
+            frame.GetXaxis().SetTitle(titlex)
+            frame.GetYaxis().SetTitle("Events / Bin")
+
+
+
+        frame.Draw()
+
+
+        channelComment=ROOT.TPaveText(0.25,0.8,0.55,0.88,"NDC")
+        channelComment.SetFillColor(ROOT.kGray)
+#        channelComment.SetFillStyle(0)
+        channelComment.SetLineColor(0)
+        channelComment.SetBorderSize(0)
+        channelComment.AddText(channel)
+        channelComment.Draw("SAME")
+
+
+#        copystack=stack
+        sumstack=stack.GetStack().Last().Clone()
+        sumstack.SetName("summedbkg")
+#        stack.Draw("A,HIST,SAME")
+        sumstack.SetLineColor(ROOT.kBlue)
+        sumstack.SetLineWidth(2)
+        sumstack.SetFillColor(0)
+        sumstack.Draw("HIST,SAME")
+        ROOT.gStyle.SetErrorX(0.5)
+        if dataH !=None:
+
+#            dataH.Draw("E1 same")
+            dataG.Draw("Psame")              
+        if separateSignal and len(signalHs)>0:
+            for sigH in signalHs:
+                sigH.Draw("HIST,SAME")
+
+        legend = ROOT.TLegend(0.62,0.80,0.92,0.90,"","brNDC")
+        legend.SetName(output+'_'+'legend')
+	legend.SetBorderSize(0)
+	legend.SetLineColor(1)
+	legend.SetLineStyle(1)
+	legend.SetLineWidth(1)
+	legend.SetFillColor(0)
+	legend.SetFillStyle(0)
+	legend.SetTextFont(42)
+
+        legend.SetFillColor(ROOT.kWhite)
+        legend.AddEntry(sumstack,"Bkgs Sum","p")
+        for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
+#            if typeP != "data" and typeP !='signal':
+#                legend.AddEntry(histo,label,"f")
+
+            if typeP == 'data':
+                legend.AddEntry(histo,label,"p")
+
+        for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
+            if typeP == "signal":
+                legend.AddEntry(histo,label,"f")
+
+
+ #       ROOT.SetOwnership(legend,False)
+
+        legend.Draw()
+        if self.log:
+            p1.SetLogy()
+        #p1.SetLeftMargin(p1.GetLeftMargin()*1.15)
+        p1.Update()
+        p2.Update()
+        c1.Update()
+
+
+
+
+        print"---------------------------"
+        if not separateSignal:
+            print "Signal = %f" %(signal)
+        elif len(signalHs)>0:
+            for (sig,sigLab) in reversed(zip(signals,signalLabels)):
+                print "Signal "+sigLab+" = "+str(sig)
+        print "Bkg    = %f" %(background)
+        if dataH is not None:
+            print "Observed = %f"%(dataH.Integral())
+            integral = dataH.IntegralAndError(1,dataH.GetNbinsX(),error)
+            if background>0.0:
+                print "Data/Bkg= {ratio} +- {err}".format(ratio=integral/background,err=math.sqrt(error*error/(background*background)+integral*integral*backgroundErr/(background*background*background*background)))
+        print"################################################"
+
+
+
+	pt =ROOT.TPaveText(0.1577181,0.9562937,0.9580537,0.9947552,"brNDC")
+        pt.SetName(output+'_'+'pavetext')
+	pt.SetBorderSize(0)
+	pt.SetTextAlign(12)
+	pt.SetFillStyle(0)
+	pt.SetTextFont(42)
+	pt.SetTextSize(0.03)
+	#text = pt.AddText(0.15,0.3,"CMS Preliminary")
+	text = pt.AddText(0.15,0.3,"CMS Work in progress")
+#	text = pt.AddText(0.25,0.3,"#sqrt{s} = 7 TeV, L = 5.1 fb^{-1}  #sqrt{s} = 8 TeV, L = 19.7 fb^{-1}")
+	#text = pt.AddText(0.55,0.3,"#sqrt{s} = 13 TeV 2015 L = "+"{:.3}".format(float(lumi)/1000)+" fb^{-1}")
+	#text = pt.AddText(0.55,0.3,"#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi)/1000)+" fb^{-1}")
+	text = pt.AddText(0.55,0.3,self.paveText) 
+	pt.Draw()   
+        
+        
+
+
+        if self.doRatioPlot:
+            p2.cd()
+            stack.Draw()
+            hratio = GetRatioHist(dataH,stack,blinding, blindingCut)
+            hratio.SetName(output+'_'+'hratio')
+            hline = hratio.Clone(output+'_'+"hline")
+            for ii in range(hline.GetNbinsX()+1): 
+                hline.SetBinContent(ii,1.0)
+                hline.SetBinError(ii,0.0)
+            hline.SetLineColor(ROOT.kRed)
+            hline.SetFillStyle(0)
+#            p2.cd()
+            hratio.Draw('AXIS')
+            hline.Draw('HIST,SAME')
+            hratio.Draw('E1,P,SAME')
+                
+
+        # blinding mask 
+        if blinding : 
+            hmask_data = dataH.Clone(output+'_'+"hmask_data")
+            for ibb in range(hmask_data.GetNbinsX()+1): 
+                if hmask_data.GetBinCenter(ibb)<=blindingCut: 
+                    hmask_data.SetBinContent(ibb,-100)
+                    hmask_data.SetBinError(ibb,0)
+                else:
+                    hmask_data.SetBinContent(ibb,1e100)
+                    hmask_data.SetBinError(ibb,0)
+            hmask_data.SetFillStyle(3003)
+            hmask_data.SetFillColor(36)
+            hmask_data.SetLineStyle(6)
+            hmask_data.SetLineColor(16)
+            p1.cd()
+            hmask_data.Draw("HIST,SAME")
+
+            if self.doRatioPlot:
+                hmask_ratio = hratio.Clone(output+'_'+"hmask_ratio")
+                for ibb in range(hmask_ratio.GetNbinsX()+1):
+                    if hmask_ratio.GetBinCenter(ibb)<=blindingCut:
+                        hmask_ratio.SetBinContent(ibb,-100)
+                        hmask_ratio.SetBinError(ibb,0)
+                    else:
+                        hmask_ratio.SetBinContent(ibb,1e100)
+                        hmask_ratio.SetBinError(ibb,0)
+                hmask_ratio.SetFillStyle(3003)
+                hmask_ratio.SetFillColor(36)
+                hmask_ratio.SetLineStyle(6)
+                hmask_ratio.SetLineColor(16)
+                p2.cd()
+                hmask_ratio.Draw("HIST,SAME")
+
+        plot={'canvas':c1,'stack':stack,'legend':legend,'data':dataH,'dataG':dataG,'latex1':pt}
+        if separateSignal and len(signalHs)>0:
+            for (sigH,sigLab) in reversed(zip(signalHs,signalLabels)):
+                plot['signal_'+sigLab] = sigH
+
+        p1.RedrawAxis()
+        p1.Update()
+        c1.Update()
+
+        #c1.Print(outDir+'/'+self.outputTag+'_'+output+'.eps')
+        #os.system('epstopdf '+outDir+'/'+output+'.eps')
+        c1.Print(self.outFileName+'.ps')
+        c1.Print(self.outFileName+'.pdf')
+
+        self.fout.cd()
+        c1.Write() 
+        sumstack.Write()
+        #if dataH: dataH.Write()
+        #fout.Close()
+
+        #c1.Delete()
+        #p1.Delete()
+        #p2.Delete()
+
+        return plot
+
+
+
+
+
+
+
+
 
 
 

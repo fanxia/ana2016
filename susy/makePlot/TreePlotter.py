@@ -44,7 +44,7 @@ class TreePlotter(PlotterBase):
         h.SetFillColor(self.fillcolor)
         h.SetMarkerStyle(self.markerstyle)
         h.GetXaxis().SetTitle(titlex+ " ["+units+"]")
-        if len(units)>0: h.Scale(1,"width")
+        if type(bins)==list: h.Scale(1,"width")
     
         #Apply correction factors
         corrString='1'
