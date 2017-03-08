@@ -59,9 +59,9 @@ file_out = ROOT.TFile("step1-dilep_"+OUTPUTName+"_"+str(fileID)+".root","recreat
 
 processdnevent = 0
 # the following list used to count event numbers in order: ele,eQCD,mu,muQCD trees
-Pass_2lep = [0,0,0,0]
-Pass_nHLT = [0,0,0,0]
-Pass_npre = [0,0,0,0]
+Pass_2lep = [0,0]
+Pass_nHLT = [0,0]
+Pass_npre = [0,0]
 
 Pass_npre_btag = [0,0,0,0]
 
@@ -70,9 +70,7 @@ Pass_npre_btag = [0,0,0,0]
 Binlabel= ["TotalEvent","Pass_2lep","Pass_nHLT","Pass_npre","Pass_npre_btag","0","0","0","0","0"]
 H_ee=ROOT.TH1F("H_ee","H_ele",10,0,10)
 for nbin in range(10): H_ee.GetXaxis().SetBinLabel(nbin+1,Binlabel[nbin])
-H_eeQCD=H_ee.Clone("H_eeQCD")
 H_mumu=H_ee.Clone("H_mumu")
-H_mmQCD=H_ee.Clone("H_mmQCD")
 
 
 #--------------define branches to record seleted obj------------
@@ -123,18 +121,18 @@ BjetHadFlvr=vector(int)(0)
 Bbtagged=vector(int)(0)
 BjetM3=array('d',[-99])
 
-BnCandPho=array('i',[-99])
-BCandPhoTag=vector(int)(0)  # tag>>(3,0,1,2)&1 for (photon,fake,wo..,wo..)
-BCandphoEt=vector(float)(0)
-BCandphoEta=vector(float)(0)
-BCandphoSCEta=vector(float)(0)
-BCandphoPhi=vector(float)(0)
-BCandphoR9=vector(float)(0)
-BCandphoHoverE=vector(float)(0)
-BCandphoSigmaIEtaIEta=vector(float)(0)
-BCandphoSigmaIPhiIPhi=vector(float)(0)
-BCandphoPFChIso=vector(float)(0)
-BCandphoGenmatch=vector(int)(0)
+# BnCandPho=array('i',[-99])
+# BCandPhoTag=vector(int)(0)  # tag>>(3,0,1,2)&1 for (photon,fake,wo..,wo..)
+# BCandphoEt=vector(float)(0)
+# BCandphoEta=vector(float)(0)
+# BCandphoSCEta=vector(float)(0)
+# BCandphoPhi=vector(float)(0)
+# BCandphoR9=vector(float)(0)
+# BCandphoHoverE=vector(float)(0)
+# BCandphoSigmaIEtaIEta=vector(float)(0)
+# BCandphoSigmaIPhiIPhi=vector(float)(0)
+# BCandphoPFChIso=vector(float)(0)
+# BCandphoGenmatch=vector(int)(0)
 #BCandphoLepInvMass=vector(float)(0)
 
 
@@ -179,27 +177,24 @@ tree1_out.Branch("BjetHadFlvr",BjetHadFlvr)
 tree1_out.Branch("Bbtagged",Bbtagged)
 tree1_out.Branch("BjetM3",BjetM3,"BjetM3/D")
 
-tree1_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
-tree1_out.Branch("BCandPhoTag",BCandPhoTag)
-tree1_out.Branch("BCandphoEt",BCandphoEt)
-tree1_out.Branch("BCandphoEta",BCandphoEta)
-tree1_out.Branch("BCandphoSCEta",BCandphoSCEta)
-tree1_out.Branch("BCandphoPhi",BCandphoPhi)
-tree1_out.Branch("BCandphoR9",BCandphoR9)
-tree1_out.Branch("BCandphoHoverE",BCandphoHoverE)
-tree1_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
-tree1_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
-tree1_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
-tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
+# tree1_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
+# tree1_out.Branch("BCandPhoTag",BCandPhoTag)
+# tree1_out.Branch("BCandphoEt",BCandphoEt)
+# tree1_out.Branch("BCandphoEta",BCandphoEta)
+# tree1_out.Branch("BCandphoSCEta",BCandphoSCEta)
+# tree1_out.Branch("BCandphoPhi",BCandphoPhi)
+# tree1_out.Branch("BCandphoR9",BCandphoR9)
+# tree1_out.Branch("BCandphoHoverE",BCandphoHoverE)
+# tree1_out.Branch("BCandphoSigmaIEtaIEta",BCandphoSigmaIEtaIEta)
+# tree1_out.Branch("BCandphoSigmaIPhiIPhi",BCandphoSigmaIPhiIPhi)
+# tree1_out.Branch("BCandphoPFChIso",BCandphoPFChIso)
+# tree1_out.Branch("BCandphoGenmatch",BCandphoGenmatch)
 #tree1_out.Branch("BCandphoLepInvMass",BCandphoLepInvMass)
 
 
 tree2_out=tree1_out.CloneTree(0)
-tree3_out=tree1_out.CloneTree(0)
-tree4_out=tree1_out.CloneTree(0)
-tree2_out.SetObject("EventTree_eeQCD","EventTree_eeQCD")
-tree3_out.SetObject("EventTree_mumu","EventTree_mumu")
-tree4_out.SetObject("EventTree_mmQCD","EventTree_mmQCD")
+tree2_out.SetObject("EventTree_mumu","EventTree_mumu")
+
 #--------
 
 
@@ -223,25 +218,22 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
    # ID: 0 for loose, 1 for tight, 3 for QCDmode
-    mulist=Fun_findmu(event)
-    elelist=Fun_findele(event)
+    Originmulist=Fun_findmu(event)
+    mulist=[m for m in Originmulist if m[1]!=3] #don't consider the qcd mu
+
+    Originelelist=Fun_findele(event)
+    elelist=[e for e in Originelelist if e[1]!=3]#don't consider the qcd ele
 
 
-
-#-------------1. Only one tight lepton(OR one tight QCDlep)-------
-    if len(elelist)==2 and elelist[0][1]==1 and elelist[1][1]==1 and len(mulist)==0: 
+#-------------1. Only two tight lepton(OR two tight QCDlep)-------
+    if len(mulist)==0 and len(elelist)==2 and elelist[0][1]==1 and elelist[1][1]==1: 
             Scanmode="eeTree"
-    elif len(elelist)==2 and elelist[0][1]==3 and elelist[1][1]==3 and len(mulist)==0:
-            Scanmode="eeQCDTree"
-        
-        
-    elif len(elelist)==0  and len(mulist)==2 and mulist[0][1]==1 and mulist[1][1]==1: 
+    elif len(elelist)==0 and len(mulist)==2 and mulist[0][1]==1 and mulist[1][1]==1:
             Scanmode="mumuTree"
-    elif len(elelist)==0  and len(mulist)==2 and mulist[0][1]==3 and mulist[1][1]==3:
-            Scanmode="mmQCDTree"
+
     else : continue
 
-    Scanmode_ind=["eeTree","eeQCDTree","mumuTree","mmQCDTree"].index(Scanmode)
+    Scanmode_ind=["eeTree","mumuTree"].index(Scanmode)
     Pass_2lep[Scanmode_ind]+=1
 #--------------1.HLT cut-------------
 
@@ -249,13 +241,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     if CheckHLT:
         if Scanmode=="eeTree": 
             hlt=event.HLTEleMuX>>3&1
-        elif Scanmode=="eeQCDTree": 
-            hlt=1
         elif Scanmode=="mumuTree": 
             hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
-        elif Scanmode=="mmQCDTree": 
-            hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
-
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
         else: continue
 
@@ -271,7 +258,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     #for the dilepton event selection, only save the loose photon(no fake...)
     Candpholist1=Fun_findCandpho(Scanmode,mulist,elelist,event)
     Candpholist=[p for p in Candpholist1 if p[1]>>3&1==1]
-    BnCandPho[0]=len(Candpholist)
+#    BnCandPho[0]=len(Candpholist)
 
 
 #---------------3. more than 3 jets and at least 1 btagged----
@@ -314,7 +301,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
             BelePFRelCombIso.push_back(elelist[0][2])
 
         
-    if Scanmode in ["muTree","mQCDTree"]:
+    if Scanmode in ["mumuTree","mmQCDTree"]:
         BmumuInvMass[0]=Fun_invmass_dilep(Scanmode,mulist,event)
         for mu in mulist:
             BmuPt.push_back(event.muPt[mu[0]])
@@ -340,25 +327,23 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BjetM3[0]=Fun_JetM3(jetlist,event)    
 #-----------------Fill the photons----------------
 
-    for pho in Candpholist:
-        BCandPhoTag.push_back(pho[1]) 
-        BCandphoEt.push_back(event.phoEt[pho[0]])
-        BCandphoEta.push_back(event.phoEta[pho[0]])
-        BCandphoSCEta.push_back(event.phoSCEta[pho[0]])
-        BCandphoPhi.push_back(event.phoPhi[pho[0]])
-        BCandphoR9.push_back(event.phoR9[pho[0]])
-        BCandphoHoverE.push_back(event.phoHoverE[pho[0]])
-        BCandphoSigmaIEtaIEta.push_back(event.phoSigmaIEtaIEta[pho[0]])
-        BCandphoSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[pho[0]])
-        BCandphoPFChIso.push_back(event.phoPFChIso[pho[0]])
-        BCandphoGenmatch.push_back(pho[3])
+    # for pho in Candpholist:
+    #     BCandPhoTag.push_back(pho[1]) 
+    #     BCandphoEt.push_back(event.phoEt[pho[0]])
+    #     BCandphoEta.push_back(event.phoEta[pho[0]])
+    #     BCandphoSCEta.push_back(event.phoSCEta[pho[0]])
+    #     BCandphoPhi.push_back(event.phoPhi[pho[0]])
+    #     BCandphoR9.push_back(event.phoR9[pho[0]])
+    #     BCandphoHoverE.push_back(event.phoHoverE[pho[0]])
+    #     BCandphoSigmaIEtaIEta.push_back(event.phoSigmaIEtaIEta[pho[0]])
+    #     BCandphoSigmaIPhiIPhi.push_back(event.phoSigmaIPhiIPhi[pho[0]])
+    #     BCandphoPFChIso.push_back(event.phoPFChIso[pho[0]])
+    #     BCandphoGenmatch.push_back(pho[3])
 #        BCandphoLepInvMass.push_back(Fun_invmass_pholep(Scanmode,lep_ind,pho[0],event))
 
     
     if Scanmode=="eeTree": tree1_out.Fill()
-    if Scanmode=="eeQCDTree": tree2_out.Fill()
-    if Scanmode=="mumuTree": tree3_out.Fill()
-    if Scanmode=="mmQCDTree": tree4_out.Fill()
+    if Scanmode=="mumuTree": tree2_out.Fill()
 
 #----------------------clean branches for next event
     BmuPt.clear()
@@ -403,25 +388,25 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Bbtagged.clear()
     BjetM3[0]=-99.
 
-    BnCandPho[0]=-99
-    BCandPhoTag.clear()
-    BCandphoEt.clear()
-    BCandphoEta.clear()
-    BCandphoSCEta.clear()
-    BCandphoPhi.clear()
-    BCandphoR9.clear()
-    BCandphoHoverE.clear()
-    BCandphoSigmaIEtaIEta.clear()
-    BCandphoSigmaIPhiIPhi.clear()
-    BCandphoPFChIso.clear()
-    BCandphoGenmatch.clear()
+    # BnCandPho[0]=-99
+    # BCandPhoTag.clear()
+    # BCandphoEt.clear()
+    # BCandphoEta.clear()
+    # BCandphoSCEta.clear()
+    # BCandphoPhi.clear()
+    # BCandphoR9.clear()
+    # BCandphoHoverE.clear()
+    # BCandphoSigmaIEtaIEta.clear()
+    # BCandphoSigmaIPhiIPhi.clear()
+    # BCandphoPFChIso.clear()
+    # BCandphoGenmatch.clear()
 #    BCandphoLepInvMass.clear()
 
 
 
 #---fill the hist----
 Binlist=[Pass_2lep,Pass_nHLT,Pass_npre,Pass_npre_btag]
-Histlist=[H_ee,H_eeQCD,H_mumu,H_mmQCD]
+Histlist=[H_ee,H_mumu]
 for hist in range(len(Histlist)):
     Histlist[hist].SetBinContent(1,processdnevent)
     for bin in range(len(Binlist)):
@@ -435,12 +420,12 @@ file_out.Close()
 
 print "----------------------"
 print "TotalEventNumber = ", processdnevent
-print "Scanmode:-eeTree-|-eeQCDTree-|-mumuTree-|-mmQCDTree"
-print "n_2lep pass = ", Pass_2lep
+print "Scanmode:-eeTree-||-mumuTree-|"
+print "n_1lep pass = ", Pass_2lep
 print "n_HLT pass  = ", Pass_nHLT
 print "n_pre select= ", Pass_npre
 
-print "Scanmode(with >=1 Btagged):-eeTree-|-eeQCDTree-|-mumuTree-|-mmQCDTree"
+print "Scanmode(with >=1 Btagged):-eeTree-||-mumuTree-|"
 print "n_pre select= ",Pass_npre_btag
 print "----------------------"
 
@@ -453,7 +438,7 @@ log.write("\nTotalEventNumber = %s"%(event.GetEntries()))
 log.write("\n%s"%datetime.datetime.now())
 log.write("\nstartEntry: %s endEntry %s"%(startEntryNumber,endEntryNumber))
 log.write("\nProcessedEventNumber = %s"%processdnevent)
-log.write("\nScanmode:-eeTree-|-eeQCDTree-|-mumuTree-|-mumuQCDTree")
+log.write("\nScanmode:-eeTree-||-mumuTree-|")
 log.write( "\nn_2lep pass =%s "%Pass_2lep)
 log.write( "\nn_HLT pass =%s "%Pass_nHLT)
 log.write("\nNoBtag requirement")

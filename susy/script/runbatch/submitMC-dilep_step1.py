@@ -10,6 +10,7 @@ GetIn=sys.argv[1]
 
 outputfile=sys.argv[2]
 ScriptName = "../mc_diLep-ana_step1.py" # script to be used
+print "****************Begin submit jobs for ",outputfile
 if '.root' in GetIn:
    # got nenties as the number of entries
    inputfile=TFile.Open(sys.argv[1])
@@ -43,7 +44,7 @@ echo 'STOP---------------'
       os.system("chmod 755 "+sys.argv[2]+"_dilepjob{0}.sh".format(x))
    ###### sends bjobs ######
       os.system("bsub -q "+queue+" -o "+sys.argv[2]+"_dilep-step1_log/log{0} ".format(x)+sys.argv[2]+"_dilepjob{0}.sh".format(x))
-      print "job nr " + str(x) + " submitted"
+      print "job no. " + str(x) + " submitted"
       os.system("cp "+sys.argv[2]+"_dilepjob{0}.sh ".format(x)+sys.argv[2]+"_dilep-step1_log/")
    #os.chdir("../..")
 
@@ -90,7 +91,7 @@ echo 'STOP---------------'
       os.system("chmod 755 "+sys.argv[2]+"_dilepjob{0}.sh".format(x))
    ###### sends bjobs ######
       os.system("bsub -q "+queue+" -o "+sys.argv[2]+"_dilep-step1_log/log{0} ".format(x)+sys.argv[2]+"_dilepjob{0}.sh".format(x))
-      print "job nr " + str(x) + " submitted"
+      print "job no. " + str(x) + " submitted"
       os.system("cp "+sys.argv[2]+"_dilepjob{0}.sh ".format(x)+sys.argv[2]+"_dilep-step1_log/")
    #os.chdir("../..")
 

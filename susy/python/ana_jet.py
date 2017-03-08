@@ -101,7 +101,7 @@ def Fun_findjetbtag(tree):  # this function only for btageff study
         if tree.jetPt[j]>30 and abs(tree.jetEta[j])<2.4 and tree.jetPFLooseId[j]:
 #            if tree.jetpfCombinedInclusiveSecondaryVertexV2BJetTags[j]>0.8:
             flav=tree.jetHadFlvr[j]
-            if tree.jetCSV2BJetTags[j]>0.8:
+            if tree.jetCSV2BJetTags[j]>0.8484:
                 jet=[j,1,flav]
             else: jet=[j,0,flav]
 
