@@ -134,6 +134,7 @@ Trees_in=[file_in.Get(treename) for treename in Treenames]
 
 #-----------------define the additional branches object--------------
 BTotalEventsNumber=array('d',[1.])
+BgenWeightTotalEventsNumber=array('d',[1.])
 BpileupWeight=array('d',[1.])
 BbtagWeight=array('d',[1.])
 BbtagWeightUp=array('d',[1.])
@@ -168,6 +169,7 @@ BmuWeight2=array('d',[1.])  # for the total weight=muidSF*isoSF*trgSF
 for tree_in in Trees_in:
     tree_out=tree_in.CloneTree(0)
     tree_out.Branch("BTotalEventsNumber",BTotalEventsNumber,"BTotalEventsNumber/D")
+    tree_out.Branch("BgenWeightTotalEventsNumber",BgenWeightTotalEventsNumber,"BgenWeightTotalEventsNumber/D")
     tree_out.Branch("BpileupWeight",BpileupWeight,"BpileupWeight/D")
     tree_out.Branch("BbtagWeight",BbtagWeight,"BbtagWeight/D")
     tree_out.Branch("BbtagWeightUp",BbtagWeightUp,"BbtagWeightUp/D")
@@ -200,7 +202,9 @@ for tree_in in Trees_in:
     tree_out.Branch("BtopPtWeight",BtopPtWeight,"BtopPtWeight/D")
 #----------------ending branches definitions-------------------------
 
-    BTotalEventsNumber[0]=file_in.Get("H_ele").GetBinContent(1)
+    BTotalEventsNumber[0]=file_in.Get("H_event").GetBinContent(1)
+    BgenWeightTotalEventsNumber[0]=file_in.Get("H_event").GetBinContent(2)
+
     if tree_in.GetName() in ['EventTree_ele','EventTree_eQCD']:
         TreeMODE=12
     elif tree_in.GetName() in ['EventTree_mu','EventTree_mQCD']:

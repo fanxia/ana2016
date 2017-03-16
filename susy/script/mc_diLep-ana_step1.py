@@ -72,7 +72,9 @@ H_ee=ROOT.TH1F("H_ee","H_ele",10,0,10)
 for nbin in range(10): H_ee.GetXaxis().SetBinLabel(nbin+1,Binlabel[nbin])
 H_mumu=H_ee.Clone("H_mumu")
 
-
+H_event=ROOT.TH1D("H_event","H_event",2,0,2)
+H_event.GetXaxis().SetBinLabel(1,"Total event number")
+H_event.GetXaxis().SetBinLabel(2,"GenWeighted total event number")
 #--------------define branches to record seleted obj------------
 
 BmuPt=vector(float)(0)
@@ -207,6 +209,10 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     if (processdnevent)%10000 ==0:
         print "Processing entry ", processdnevent
 #    print "Processing entry ", processdnevent
+
+
+    H_event.Fill(0.5)
+    H_event.Fill(1.5,event.genWeight)
 
 #----------0.event clean and modesetting----------
 
@@ -356,6 +362,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BmuPFPUIso.clear()
     BmuPFMiniIso.clear()
     BmuPFRelCombIso.clear()
+    BmumuInvMass[0]=-99.
 
     BelePt.clear()
     BeleEn.clear()
@@ -369,6 +376,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 #    BeleConvVeto.clear()
     BelePFMiniIso.clear()
     BelePFRelCombIso.clear()
+    BeeInvMass[0]=-99.
 
     BnVtx[0]=-99
     Brho[0]=-99.

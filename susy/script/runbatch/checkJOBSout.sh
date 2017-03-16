@@ -6,10 +6,12 @@
 #MClist="TT_powheg TTGJets TTZToQQ TTZToLLNuNu TTWJetsToLNu TTWJetsToQQ WJetsToLNu WW WZ ZZ ZGTo2LG WGToLNuG ST_s-channel_4f_leptonDecays ST_t-channel_antitop_4f_leptonDecays ST_t-channel_top_4f_leptonDecays ST_tW_antitop_5f_inclus ST_tW_top_5f_inclus"
 #EleDatalist="SingleEle_Run2016B_SepRereco0 SingleEle_Run2016B_SepRereco1 SingleEle_Run2016B_SepRereco2 SingleEle_Run2016C_SepRereco SingleEle_Run2016D_SepRereco SingleEle_Run2016E_SepRereco SingleEle_Run2016F_SepRereco1 SingleEle_Run2016F_SepRereco2 SingleEle_Run2016G_sepRereco0  SingleEle_Run2016G_sepRereco1 SingleEle_Run2016G_sepRereco2 SingleEle_Run2016H_PRv3"
 #MuDatalist="SingleMu_Run2016B_SepRereco0 SingleMu_Run2016B_SepRereco1 SingleMu_Run2016B_SepRereco2 SingleMu_Run2016C_SepRereco SingleMu_Run2016D_SepRereco SingleMu_Run2016E_SepRereco"
-#MClist="TTGJets TTGG"
-MClist=""
+MClist="TTGJets TTGG W4JetsToLNu WGToLNuG WW WZ ZGTo2LG ZZ"
+#MClist=""
+#EleDatalist=""
 EleDatalist="SingleEle_Run2016B_FebReminiAOD SingleEle_Run2016C_FebReminiAOD SingleEle_Run2016D_FebReminiAOD SingleEle_Run2016E_FebReminiAOD SingleEle_Run2016F_FebReminiAOD1 SingleEle_Run2016F_FebReminiAOD2 SingleEle_Run2016G_FebReminiAOD SingleEle_Run2016H_FebReminiAODv2 SingleEle_Run2016H_FebReminiAODv3"
-MuDatalist=""
+#MuDatalist=""
+MuDatalist="SingleMu_Run2016B_FebReminiAOD SingleMu_Run2016C_FebReminiAOD SingleMu_Run2016D_FebReminiAOD SingleMu_Run2016E_FebReminiAOD SingleMu_Run2016F_FebReminiAOD1 SingleMu_Run2016F_FebReminiAOD2 SingleMu_Run2016G_FebReminiAOD SingleMu_Run2016H_FebReminiAODv2 SingleMu_Run2016H_FebReminiAODv3"
 for mc in $MClist
 do
     echo "Now checking output jobs of $mc"
@@ -24,6 +26,8 @@ do
     
     echo "*********************************"
 done
+
+exit
 
 for data in $EleDatalist
 do

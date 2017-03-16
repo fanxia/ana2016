@@ -84,6 +84,10 @@ for nbin in range(15): H_ele.GetXaxis().SetBinLabel(nbin+1,Binlabel[nbin])
 H_eQCD=H_ele.Clone("H_eQCD")
 H_mu=H_ele.Clone("H_mu")
 H_mQCD=H_ele.Clone("H_mQCD")
+
+H_event=ROOT.TH1D("H_event","H_event",2,0,2)
+H_event.GetXaxis().SetBinLabel(1,"Total event number")
+H_event.GetXaxis().SetBinLabel(2,"GenWeighted total event number")
 #H_mu=ROOT.TH1F("H_mu","H_mu",15,0,15)
 #H_mQCD=ROOT.TH1F("H_mQCD","H_mQCD",15,0,15)
 
@@ -242,6 +246,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         print "Processing entry ", processdnevent
 #    print "Processing entry ", processdnevent
 
+    H_event.Fill(0.5)
+    H_event.Fill(1.5,event.genWeight)
 #----------0.event clean and modesetting----------
 
 

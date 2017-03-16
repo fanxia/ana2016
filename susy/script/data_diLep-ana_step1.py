@@ -301,7 +301,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
             BelePFRelCombIso.push_back(elelist[0][2])
 
         
-    if Scanmode in ["muTree","mQCDTree"]:
+    if Scanmode in ["mumuTree","mmQCDTree"]:
         BmumuInvMass[0]=Fun_invmass_dilep(Scanmode,mulist,event)
         for mu in mulist:
             BmuPt.push_back(event.muPt[mu[0]])
@@ -356,6 +356,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BmuPFPUIso.clear()
     BmuPFMiniIso.clear()
     BmuPFRelCombIso.clear()
+    BmumuInvMass[0]=-99.
 
     BelePt.clear()
     BeleEn.clear()
@@ -369,6 +370,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 #    BeleConvVeto.clear()
     BelePFMiniIso.clear()
     BelePFRelCombIso.clear()
+    BeeInvMass[0]=-99.
 
     BnVtx[0]=-99
     Brho[0]=-99.

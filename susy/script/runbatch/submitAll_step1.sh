@@ -10,8 +10,8 @@
 ########################################################################
 
 
-#./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGJets/ TTGJets 2
-#./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGG_0Jets/ TTGG 1
+./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGJets/ TTGJets 2
+./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGG_0Jets/ TTGG 1
 
 #TTV
 
@@ -21,21 +21,28 @@
 
 #./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_24_00/job_spring16_W3JetsToLNu/W3JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_job_spring16_W3JetsToLNu/170207_095808/0000/ W3JetsToLNu 2
 
-#./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_24_00/job_spring16_W4JetsToLNu/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_job_spring16_W4JetsToLNu/170202_160516/0000/ W4JetsToLNu 2
 
+./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W4JetsToLNu/ W4JetsToLNu 2
 
 #*******ZJets
 
 
 # diboson
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_WZ/ WZ 2
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_ZZ/ ZZ 2
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_WW/ WW 2
+
 
 
 #V+gamma
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_WGToLNuG/ WGToLNuG 2
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_ZGTo2LG/ ZGTo2LG 2
+
 
 #Single Top
 
 
-
+exit
 ########################################################################
 #################################  DATA  ###############################
 ########################################################################

@@ -14,15 +14,15 @@ python mc_ana_step1p5.py ../ntupleStore/step1_TTGG.root TTGG
 
 
 
-# python mc_ana_step1p5.py ../ntupleStore/step1_WJetsToLNu.root WJetsToLNu
+python mc_ana_step1p5.py ../ntupleStore/step1_W4JetsToLNu.root W4JetsToLNu
 # python mc_ana_step1p5.py ../ntupleStore/step1_DYLL.root DYLL
 
-# python mc_ana_step1p5.py ../ntupleStore/step1_WGToLNuG.root WGToLNuG
-# python mc_ana_step1p5.py ../ntupleStore/step1_ZGTo2LG.root ZGTo2LG
+python mc_ana_step1p5.py ../ntupleStore/step1_WGToLNuG.root WGToLNuG
+python mc_ana_step1p5.py ../ntupleStore/step1_ZGTo2LG.root ZGTo2LG
 
-# python mc_ana_step1p5.py ../ntupleStore/step1_WZ.root WZ
-# python mc_ana_step1p5.py ../ntupleStore/step1_ZZ.root ZZ
-# python mc_ana_step1p5.py ../ntupleStore/step1_WW.root WW
+python mc_ana_step1p5.py ../ntupleStore/step1_WZ.root WZ
+python mc_ana_step1p5.py ../ntupleStore/step1_ZZ.root ZZ
+python mc_ana_step1p5.py ../ntupleStore/step1_WW.root WW
 
 
 
