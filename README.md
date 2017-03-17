@@ -1,24 +1,27 @@
 # analysis topology
-# updata 2016/11/23
+### updata 2016/11/23
 
- dir python:
+## Outline of this package
+### Dir python:
  to store all the function modules
 
- dir plot:
- the script to make plots
+### Dir makeplot:
+ the scripts to make hists, fit to get factors, finalstack plots
 
-#IMPORTANT: dir script
- For data:
- step1 select the signal the QCD events for electron/mu
+### IMPORTANT: Dir script
+#### For data:
+ step1_ana    select the signal the QCD events for electron/mu
+ step1_dilep_ana   select the dilepton events for ele/mu 
+
+#### For MC:
+ step1_ana select the signal the QCD events for electron/mu
+ step1p5_ana adding the reweight, scalefactor...
+ step1_dilep_ana select the dilepton events for ele/mu
+ step1p5_dilep_ana adding the reweight, scalefactor...
 
 
- For MC:
- step1 select the signal the QCD events for electron/mu
- step1p5 adding the reweight, scalefactor...
 
-
-
-1 How to run btag eff:
+### How to run btag eff:
   
 1.1 ./submitMC_btag_step1.sh    This will produce multiple jobs to run through all MC datasets, save in to dir (MC_BtagEff_step1)
 1.2 go check the dir (MC_BtagEff_step1), make sure every mc has got all the outputs
@@ -26,8 +29,10 @@
     for eg. python calBtagEff_step2.py MC_BtagEff_step1/WW/Nov17/ WW    Will finally give WW_BtagEff.root
 1.4 repeat step1.3 for all the bkgs
 
+### How to run pileup reweight
 
-#MakePlots
+
+# MakePlots
  Electron channel
 
  prepare the hists:
@@ -39,3 +44,6 @@
 
  finally, stack the plots while applying all the factors:
    python step3_ELE_finalstack.py Tag
+
+
+## Recipe
