@@ -1,5 +1,5 @@
 # analysis topology
-### updata 2016/11/23
+### updata on 2016/11/23
 
 ## Outline of this package
 ### Dir python:
@@ -23,16 +23,16 @@
 
 ### How to run btag eff:
   
-1.1 ./submitMC_btag_step1.sh    This will produce multiple jobs to run through all MC datasets, save in to dir (MC_BtagEff_step1)
-1.2 go check the dir (MC_BtagEff_step1), make sure every mc has got all the outputs
-1.3 python calBtagEff_step2.py inputdirname/ outputname       
+ 1.1 ./submitMC_btag_step1.sh    This will produce multiple jobs to run through all MC datasets, save in to dir (MC_BtagEff_step1)
+ 1.2 go check the dir (MC_BtagEff_step1), make sure every mc has got all the outputs
+ 1.3 python calBtagEff_step2.py inputdirname/ outputname       
     for eg. python calBtagEff_step2.py MC_BtagEff_step1/WW/Nov17/ WW    Will finally give WW_BtagEff.root
-1.4 repeat step1.3 for all the bkgs
+ 1.4 repeat step1.3 for all the bkgs
 
 ### How to run pileup reweight
 
 
-# MakePlots
+### MakePlots
  Electron channel
 
  prepare the hists:
@@ -46,4 +46,4 @@
    python step3_ELE_finalstack.py Tag
 
 
-## Recipe
+# Recipe

@@ -1,4 +1,4 @@
-#!/bin/python
+1;95;0c#!/bin/python
 
 import os
 import sys
@@ -251,10 +251,10 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 #----------0.event clean and modesetting----------
 
 
-
+    
     Scanmode="None"
     if not event.isPVGood: continue
-
+    if not event.metFilters==0: continue
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
    # ID: 0 for loose, 1 for tight, 3 for QCDmode

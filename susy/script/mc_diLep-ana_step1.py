@@ -220,7 +220,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
     Scanmode="None"
     if not event.isPVGood: continue
-
+    if not event.metFilters==0: continue
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
    # ID: 0 for loose, 1 for tight, 3 for QCDmode

@@ -214,7 +214,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
     Scanmode="None"
     if not event.isPVGood: continue
-
+    if not (event.metFilters>>11&1==0 and event.metFilters&126==0): continue  #make sure bits 1-6th, 11th ==0
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
    # ID: 0 for loose, 1 for tight, 3 for QCDmode
