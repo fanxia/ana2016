@@ -25,7 +25,7 @@ sw.Start()
 print "------------Start--------------"
 
 #---------------btagweight input files-------------------
-file_btagEff = TFile.Open("btag/TT_powheg_BtagEff.root")
+file_btagEff = TFile.Open("btag/TT_BtagEff.root")
 l_btageff=file_btagEff.Get("lEff")
 c_btageff=file_btagEff.Get("cEff")
 b_btageff=file_btagEff.Get("bEff")
@@ -34,7 +34,7 @@ v_sys = getattr(ROOT, 'vector<string>')()
 v_sys.push_back('up')
 v_sys.push_back('down')
 
-file_btagSF = ROOT.BTagCalibration("csvv2","btag/CSVv2_ichep.csv")
+file_btagSF = ROOT.BTagCalibration("csvv2","btag/CSVv2_Moriond17_B_H.csv")
 #file_btagSF = ROOT.BTagCalibration("~/work/private/2016SUSY/CMSSW_8_0_24/src/ana2016/susy/script/btag/CSVv2_ichep.csv")
 #bc_btagsfReader = ROOT.BTagCalibrationReader(file_btagSF,1,"mujets") # 1 for medium working point, mujets for c and b quark
 #l_btagsfReader = ROOT.BTagCalibrationReader(file_btagSF,1,"comb") # 1 for medium working point, comb for light quark
@@ -111,9 +111,10 @@ print "The egamma sf input file is ",file_eleSF_HLT.GetName()
 #---------------END lepton sf input files----------------------- 
 
 #---------------pho sf input files----------------------------
-file_phoSF=TFile.Open("lepgammaSF/gammaEffi.root")
+file_phoSF=TFile.Open("lepgammaSF/gammaIDsf.root")
+file_phoPixSF=TFile.Open("lepgammaSF/gammaPixelvetosf.root")
 phosfHist=file_phoSF.Get("EGamma_SF2D")
-
+phoPixsfHist=file_phoPixSF.Get("Scaling_Factors_HasPix_R9 Inclusive")
 ###################################################################
 ###################################################################
 
@@ -281,8 +282,9 @@ for tree_in in Trees_in:
                 pho_eta=event.BCandphoSCEta[p]
                 
                 pho_sf=Fun_thisSF(pho_eta,pho_pt,phosfHist)
-                phoWeight*=pho_sf[0]
-                phoWeightE2+=(pho_sf[1])**2/(pho_sf[0])**2
+                pho_pixsf=Fun_thisSF(abs(pho_eta),pho_pt,phoPixsfHist) #no pt dependance
+                phoWeight*=pho_sf[0]*pho_pixsf[0]
+                phoWeightE2+=(pho_sf[1])**2/(pho_sf[0])**2+(pho_pixsf[1])**2/(pho_pixsf[0])**2
 #                if pho_sf<0.1: print "photon: ",pho_pt,pho_eta
         BphoWeight[0]=phoWeight
         BphoWeightErr[0]=phoWeightE2**0.5*phoWeight

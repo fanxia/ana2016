@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
- ./runMC_btagjobs.py /store/group/phys_smp/ggNtuples/13TeV/MC/V08_00_24_00/TT_TuneCUETP8M1_13TeV-powheg-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-pythia8_ext3-v2/161211_211239/0000/ TT_powheg 10
+ ./runMC_btagjobs.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TT/ TT 10
 
 
 #          inputpath, outputname, events/jobs

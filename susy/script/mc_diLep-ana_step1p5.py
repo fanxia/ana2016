@@ -25,7 +25,7 @@ sw.Start()
 print "------------Start--------------"
 
 #---------------btagweight input files-------------------
-file_btagEff = TFile.Open("btag/TT_powheg_BtagEff.root")
+file_btagEff = TFile.Open("btag/TT_BtagEff.root")
 l_btageff=file_btagEff.Get("lEff")
 c_btageff=file_btagEff.Get("cEff")
 b_btageff=file_btagEff.Get("bEff")
@@ -34,7 +34,7 @@ v_sys = getattr(ROOT, 'vector<string>')()
 v_sys.push_back('up')
 v_sys.push_back('down')
 
-file_btagSF = ROOT.BTagCalibration("csvv2","btag/CSVv2_ichep.csv")
+file_btagSF = ROOT.BTagCalibration("csvv2","btag/CSVv2_Moriond17_B_H.csv")
 #file_btagSF = ROOT.BTagCalibration("~/work/private/2016SUSY/CMSSW_8_0_24/src/ana2016/susy/script/btag/CSVv2_ichep.csv")
 #bc_btagsfReader = ROOT.BTagCalibrationReader(file_btagSF,1,"mujets") # 1 for medium working point, mujets for c and b quark
 #l_btagsfReader = ROOT.BTagCalibrationReader(file_btagSF,1,"comb") # 1 for medium working point, comb for light quark

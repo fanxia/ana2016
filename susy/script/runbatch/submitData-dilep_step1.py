@@ -44,7 +44,7 @@ echo 'STOP---------------'
       os.system("chmod 755 "+sys.argv[2]+"_dilepjob{0}.sh".format(x))
    ###### sends bjobs ######
       os.system("bsub -q "+queue+" -o "+sys.argv[2]+"_dilep-step1_log/log{0} ".format(x)+sys.argv[2]+"_dilepjob{0}.sh".format(x))
-      print "job nr " + str(x) + " submitted"
+      print "job no " + str(x) + " submitted"
       os.system("cp "+sys.argv[2]+"_dilepjob{0}.sh ".format(x)+sys.argv[2]+"_dilep-step1_log/")
    #os.chdir("../..")
 
@@ -91,7 +91,7 @@ echo 'STOP---------------'
       os.system("chmod 755 "+sys.argv[2]+"_dilepjob{0}.sh".format(x))
    ###### sends bjobs ######
       os.system("bsub -q "+queue+" -o "+sys.argv[2]+"_dilep-step1_log/log{0} ".format(x)+sys.argv[2]+"_dilepjob{0}.sh".format(x))
-      print "job nr " + str(x) + " submitted"
+      print "job no " + str(x) + " submitted"
       os.system("cp "+sys.argv[2]+"_dilepjob{0}.sh ".format(x)+sys.argv[2]+"_dilep-step1_log/")
    #os.chdir("../..")
 
@@ -99,7 +99,7 @@ echo 'STOP---------------'
 
    
 print "\nyour jobs:"
-os.system("bjobs")
+os.system("bjobs | wc -l")
 print '\nEND\n'
 
 

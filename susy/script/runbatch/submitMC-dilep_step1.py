@@ -99,7 +99,7 @@ echo 'STOP---------------'
 
    
 print "\nyour jobs:"
-os.system("bjobs")
+os.system("bjobs | wc -l")
 print '\nEND\n'
 
 
