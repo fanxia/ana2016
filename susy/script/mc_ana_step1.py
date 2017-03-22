@@ -1,4 +1,4 @@
-1;95;0c#!/bin/python
+#!/bin/python
 
 import os
 import sys

@@ -18,7 +18,7 @@
 #TTV
 ./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTWJetsToLNu/ TTWJetsToLNu 1
 ./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTWJetsToQQ/ TTWJetsToQQ 1
-./submitMC-dilep_step1.py /eos/cms/store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTZToLLNuNu/ TTZToLLNuNu 2
+./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTZToLLNuNu/ TTZToLLNuNu 2
 ./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTZToQQ/ TTZToQQ 1
 
 #W+jets

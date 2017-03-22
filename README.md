@@ -1,4 +1,4 @@
-# analysis topology ### updata on 2016/11/23
+# Analysis Topology (updata on 2017/3/21)
 
 ## Outline of this package
 ### Dir python:
@@ -7,7 +7,7 @@
 ### Dir makeplot:
  the scripts to make hists, fit to get factors, finalstack plots
 
-### IMPORTANT: Dir script
+### Dir script(IMPORTANT!):
 #### For data:
  step1_ana    select the signal the QCD events for electron/mu
  step1_dilep_ana   select the dilepton events for ele/mu 
@@ -25,7 +25,7 @@
 
 
 ### How to run btag eff:
- ```python
+ ```
 ./runMC_btagjobs.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TT/ TT 10	
 python calBtagEff_step2.py MC_BtagEff_step1/TT/Mar21/ TT
  ```
