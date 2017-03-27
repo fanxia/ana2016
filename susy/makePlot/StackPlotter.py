@@ -347,6 +347,7 @@ class StackPlotter(object):
 	legend.SetTextFont(42)
 
         legend.SetFillColor(ROOT.kWhite)
+        legend.SetNColumns(2)   #testpoint
         for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
             if typeP != "data" and typeP !='signal':
                 legend.AddEntry(histo,label,"f")

@@ -11,8 +11,8 @@ tag=sys.argv[1]
 tag=tag+"_ELE"
 LogY=False
 
-AddQCD=True
-#AddQCD=False
+#AddQCD=True
+AddQCD=False
 normaldraw=False
 test=True
 
@@ -174,7 +174,7 @@ for sample in zjetsSamples:
     zjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
     zjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
-    wjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+    zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
     zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')

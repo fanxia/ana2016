@@ -70,7 +70,7 @@ def Fun_bEffaSF(eta,pt,btagflvr,effhist):
 
 #----------------lepton sf input files-----------------------
 file_eleSF_HLT = TFile.Open("lepgammaSF/cutAcountEffi_eleHLT.root")
-eleTrgsfHist=file_eleSF_HLT.Get("efficiency_dt")
+eleTrgsfHist=file_eleSF_HLT.Get("scalefactor")
 file_eleSF_reco = TFile.Open("lepgammaSF/eleEffi-reco.root")
 eleRecosfHist=file_eleSF_reco.Get("EGamma_SF2D")
 file_eleSF_id = TFile.Open("lepgammaSF/eleEffi-tightID.root")
@@ -250,7 +250,7 @@ for tree_in in Trees_in:
 #***********************Fill lepton sf & weight info*********************** 
 
         if TreeMODE==12:   #eTree and eQCDtree
-            eletrig=Fun_thisSF(abs(event.BeleSCEta),event.BelePt,eleTrgsfHist)
+            eletrig=Fun_thisSF(event.BeleSCEta,event.BelePt,eleTrgsfHist)
             elereco=Fun_thisSF(event.BeleSCEta,event.BelePt,eleRecosfHist)
             eleid=Fun_thisSF(event.BeleSCEta,event.BelePt,eleIDsfHist)
             BeleTrgsf[0]=eletrig[0]

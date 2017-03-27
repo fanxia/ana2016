@@ -24,7 +24,8 @@
 #W+jets
 
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W4JetsToLNu/ W4JetsToLNu 2
-
+./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_W3JetsToLNu/ W3JetsToLNu 2
+./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_W2JetsToLNu/ W2JetsToLNu 2
 #*******ZJets
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_DYJetsToLL/ DYJetsToLL 2
 
@@ -38,6 +39,9 @@
 ./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_ZGTo2LG/ ZGTo2LG 2
 #Single Top
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_ST_s-channel_4f_leptonDecays/ ST_s-channel_4f_leptonDecays 1
+
+./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_ST_t-channel_top_4f_inclusiveDecays/ ST_t-channel_top_4f_inclusiveDecays 5
+./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_ST_t-channel_antitop_4f_inclusiveDecays/ ST_t-channel_antitop_4f_inclusiveDecays 4
 
 #./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_ST_tW_antitop_5f_NoFullyHadronicDecays/ ST_tW_antitop_5f_NoFullyHadronicDecays 2
 #./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_ST_tW_top_5f_NoFullyHadronicDecays/ ST_tW_top_5f_NoFullyHadronicDecays 2
