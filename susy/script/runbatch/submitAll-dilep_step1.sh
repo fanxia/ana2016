@@ -9,6 +9,11 @@
 #################################  MC  #################################
 ########################################################################
 
+#./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTJets_DiLept/ TTJets_DiLept 2 
+#./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_TTJets_SingleLeptFromTbar/ TTJets_SingleLeptFromTbar 2
+#./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_TTJets_SingleLeptFromT/ TTJets_SingleLeptFromT 2
+
+#exit
 
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TT/ TT 2
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGJets/ TTGJets 2
@@ -24,8 +29,8 @@
 #W+jets
 
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W4JetsToLNu/ W4JetsToLNu 2
-./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_W3JetsToLNu/ W3JetsToLNu 2
-./submitMC-dilep_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_W2JetsToLNu/ W2JetsToLNu 2
+./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W3JetsToLNu/ W3JetsToLNu 2
+./submitMC-dilep_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W2JetsToLNu/ W2JetsToLNu 2
 #*******ZJets
 ./submitMC-dilep_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_DYJetsToLL/ DYJetsToLL 2
 

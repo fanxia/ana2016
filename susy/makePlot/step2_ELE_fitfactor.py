@@ -37,25 +37,16 @@ InvEEFitter.pushdata("SingleEle 2016 Data",eefin.Get(InvEEhistname+"data"))
 
 InvEEFitter.pushmc("Bkgs",eefin.Get(InvEEhistname+"VV"))
 InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"TTG"))
+InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"TTV"))
+InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"ST"))
+InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"TT"))
 InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"Wgamma"))
 InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"WJets"))
 
 InvEEFitter.pushmc("DY/Z#gamma",eefin.Get(InvEEhistname+"Zgamma"))
+InvEEFitter.addmc("DY/Z#gamma",eefin.Get(InvEEhistname+"ZJets"))
 
-# InvEEFitter.pushmc("Bkgs",eefin.Get(InvEEhistname+"TTV"))
-# InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"TTG"))
-# InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"TT"))
-# #InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"TT"),scal=k_ttbar)
-# #InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"WJets"),scal=k_wjets)
-# InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"WJets"))
-# InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"VV"))
-# InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"ST"))
-# InvEEFitter.addmc("Bkgs",eefin.Get(InvEEhistname+"WG"))
-
-
-# InvEEFitter.pushmc("DY/Z#gamma",eefin.Get(InvEEhistname+"ZJets"))
-# InvEEFitter.addmc("DY/Z#gamma",eefin.Get(InvEEhistname+"ZG"))
-
+  
 InvEEFitter.tempfit()
 InvEEFitter_result=InvEEFitter.result
 k_bkgs=InvEEFitter_result['Bkgs'][2]
@@ -75,7 +66,7 @@ print "The scale factor for DY&Zgamma  is",k_ee
 print "The scale factor for bkgs is",k_bkgs
 print "*******************************************************\n\n\n"
 
-
+#sys.exit()
 #################### QCD scale factor ######################
 ###,--.             ,-----.     ,-----. ,------.        ####
 ###|  |,-.         '  .-.  '   '  .--./ |  .-.  \       ####
@@ -89,8 +80,8 @@ hdata=elefin.Get(tag+"_ELE_pfMET_pre_ele_bjj_4qcd_data")
 ndata=hdata.Integral()
 
 summc=0.
-#mcnamelist=['TTV','TTG','VV','Vgamma','ST','ZJets','WJets','TT']
-mcnamelist=['TTG','VV','Zgamma','Wgamma','WJets']
+mcnamelist=['TTV','TTG','VV','Wgamma','Zgamma','ST','ZJets','WJets','TT']
+#mcnamelist=['TTG','VV','Zgamma','Wgamma','WJets']
 for mcname in mcnamelist:
     hmc=elefin.Get(tag+"_ELE_pfMET_pre_ele_bjj_4qcd_"+mcname)
     nmc=hmc.Integral()
@@ -125,12 +116,16 @@ JetM3Fitter=TemplateFitter()
 JetM3histname=tag+"_ELE_BjetM3_pre_ele_bjj_"
 JetM3Fitter.pushdata("SingleEle 2016 Data",elefin.Get(JetM3histname+"data"))
 JetM3Fitter.subdata(elefin.Get(JetM3histname+"VV"))
-#JetM3Fitter.subdata(elefin.Get(JetM3histname+"ZJets"))
+JetM3Fitter.subdata(elefin.Get(JetM3histname+"ZJets"))
 JetM3Fitter.subdata(elefin.Get(JetM3histname+"TTG"))
-JetM3Fitter.subdata(elefin.Get(JetM3histname+"QCD"),scal=k_qcd)
+JetM3Fitter.subdata(elefin.Get(JetM3histname+"TTV"))
+JetM3Fitter.subdata(elefin.Get(JetM3histname+"Wgamma"))
+JetM3Fitter.subdata(elefin.Get(JetM3histname+"Zgamma"))
+JetM3Fitter.subdata(elefin.Get(JetM3histname+"ST"))
+#JetM3Fitter.subdata(elefin.Get(JetM3histname+"QCD"),scal=k_qcd)
 
 JetM3Fitter.pushmc("wjets",elefin.Get(JetM3histname+"WJets"))
-JetM3Fitter.pushmc("ttbar",elefin.Get(JetM3histname+"TTG"))
+JetM3Fitter.pushmc("ttbar",elefin.Get(JetM3histname+"TT"))
 #JetM3Fitter.pushmc("ttbar",elefin.Get(JetM3histname+"TT"))
 #JetM3Fitter.addmc("ttbar",elefin.Get(JetM3histname+"TTG"))
 
@@ -154,7 +149,7 @@ print "The scale factor for ttbar is",k_ttbar
 print "*******************************************************\n\n\n"
 
 
-sys.exit()
+#sys.exit()
 
 
 ########################################################################################################
@@ -177,11 +172,13 @@ InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"WJets"),scal=k_wjets)
 InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"VV"))
 InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"ST"))
 InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"gammamatchnonele_ZJets"))
-InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"gammamatchnonele_Vgamma"))
+InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"gammamatchnonele_Wgamma"))
+InvEGFitter.addmc("Bkgs",elefin.Get(InvEGhistname+"gammamatchnonele_Zgamma"))
 
 
 InvEGFitter.pushmc("DY/V#gamma",elefin.Get(InvEGhistname+"gammamatchele_ZJets"))
-InvEGFitter.addmc("DY/V#gamma",elefin.Get(InvEGhistname+"gammamatchele_Vgamma"))
+InvEGFitter.addmc("DY/V#gamma",elefin.Get(InvEGhistname+"gammamatchele_Wgamma"))
+InvEGFitter.addmc("DY/V#gamma",elefin.Get(InvEGhistname+"gammamatchele_Zgamma"))
 
 InvEGFitter.tempfit()
 InvEGFitter_result=InvEGFitter.result

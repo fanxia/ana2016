@@ -11,8 +11,8 @@ tag=sys.argv[1]
 tag=tag+"_ELE"
 LogY=False
 
-#AddQCD=True
-AddQCD=False
+AddQCD=True
+#AddQCD=False
 normaldraw=False
 test=True
 
@@ -35,6 +35,7 @@ if not Blind: tag = tag+'unblind_'
 paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi))+" fb^{-1}"
 #paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(12.88))+" fb^{-1}"
 
+#lumi=lumi*0.96
 #metfilter='(Flag_EcalDeadCellTriggerPrimitiveFilter&&Flag_HBHENoiseIsoFilter&&Flag_goodVertices&&Flag_HBHENoiseFilter&&Flag_globalTightHalo2016Filter&&Flag_eeBadScFilter)'
 
 cut_pre_bjj="Bnbjet>0 && BelePt>35 " # add it yourself
@@ -64,8 +65,17 @@ cut_SR1_bjj_4gammamatchnonele="(BelePt>35 && Bnbjet>0 && BnPho==1 && BCandPhoTag
 
 
 # adding cut for loosepho_woChiso/woSigmaIetaIeta in 'SR1'
-cut_bjj_1phowoIEtaIEta="Bnbjet>0 && BelePt>35 && BCandPhoTag>>1&1==1 && Sum$(BCandPhoTag>>1&1==1)==1 && BpfMET<50"
-cut_bjj_1phowoChHadIso="Bnbjet>0 && BelePt>35 && BCandPhoTag>>2&1==1 && Sum$(BCandPhoTag>>2&1==1)==1 && BpfMET<50"
+#cut_bjj_1phowoIEtaIEta="Bnbjet>0 && BelePt>35 && BCandPhoTag>>1&1==1 && Sum$(BCandPhoTag>>1&1==1)==1 && BpfMET<50"
+#cut_bjj_1phowoChHadIso="Bnbjet>0 && BelePt>35 && BCandPhoTag>>2&1==1 && Sum$(BCandPhoTag>>2&1==1)==1 && BpfMET<50"
+
+cut_bjj_4gammawoietaieta="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>1&1==1)==1 && BCandPhoTag>>1&1==1)" # add it yourself
+cut_bjj_4gammawoietaieta_genmatchnojet="(BelePt>35 && BpfMET<50 && Bnbjet>0 && Sum$(BCandPhoTag>>1&1==1)==1 && BCandPhoTag>>1&1==1 && BCandphoGenmatch>0)" # add it yourself
+cut_bjj_4gammawoietaieta_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>1&1==1)==1 && BCandPhoTag>>1&1==1 && BCandphoGenmatch<0)" # add it yourself
+
+cut_bjj_4gammawochhadiso="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>2&1==1)==1 && BCandPhoTag>>2&1==1)" # add it yourself
+cut_bjj_4gammawochhadiso_genmatchnojet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>2&1==1)==1 && BCandPhoTag>>2&1==1 && BCandphoGenmatch>0)" # add it yourself
+cut_bjj_4gammawochhadiso_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>2&1==1)==1 && BCandPhoTag>>2&1==1 && BCandphoGenmatch<0)" # add it yourself
+
 
 #if UseMETFilter:
 #    cuts = '('+cuts+'&&'+metfilter+')'
@@ -152,8 +162,9 @@ ZG.setFillProperties(1001,ROOT.kMagenta)
 # WJets.setFillProperties(1001,ROOT.kBlue-6)
 
 wjetsPlotters=[]
-#wjetsSamples = [['step1p5_W3JetsToLNu',1160],['step1p5_W4JetsToLNu',600]]
-wjetsSamples = [['step1p5_W4JetsToLNu',600]]
+wjetsSamples = [['step1p5_W3JetsToLNu',1160],['step1p5_W4JetsToLNu',600]]
+#wjetsSamples = [['step1p5_W3JetsToLNu',1160],['step1p5_W4JetsToLNu',600],['step1p5_W2JetsToLNu',3841]]
+#wjetsSamples = [['step1p5_W4JetsToLNu',600]]
 for sample in wjetsSamples:
     wjetsPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
     wjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
@@ -198,17 +209,18 @@ ZJets.setFillProperties(1001,ROOT.kOrange+7)
 # ZJets.setFillProperties(1001,ROOT.kGreen+2)
 
 ttPlotters=[]
-ttSamples = ['step1p5_TT']
+ttSamples = [['step1p5_TT',831.76]]
+#ttSamples = [['step1p5_TTJets_DiLept',87.3],['step1p5_TTJets_SingleLeptFromT',182.7],['step1p5_TTJets_SingleLeptFromTbar',182.7]]
 for sample in ttSamples:
-    ttPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+    ttPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
     ttPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
-    ttPlotters[-1].addCorrectionFactor(831.76,'xsec')
+    ttPlotters[-1].addCorrectionFactor(sample[1],'xsec')
     ttPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
     ttPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
     ttPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     ttPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
     ttPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
-    allPlotters[sample] = ttPlotters[-1]
+    allPlotters[sample[0]] = ttPlotters[-1]
 TT = MergedPlotter(ttPlotters)
 TT.setFillProperties(1001,ROOT.kAzure-9)
 
@@ -245,7 +257,7 @@ TTV = MergedPlotter(ttvPlotters)
 TTV.setFillProperties(1001,ROOT.kYellow)
 
 stPlotters=[]
-stSamples = [['step1p5_ST_tW_antitop_5f_inclusiveDecays',35.85],['step1p5_ST_tW_top_5f_inclusiveDecays',35.85],['step1p5_ST_s-channel_4f_leptonDecays',3.36]]
+stSamples = [['step1p5_ST_tW_antitop_5f_inclusiveDecays',35.85],['step1p5_ST_tW_top_5f_inclusiveDecays',35.85],['step1p5_ST_s-channel_4f_leptonDecays',3.36],['step1p5_ST_t-channel_top_4f_inclusiveDecays',136.02],['step1p5_ST_t-channel_antitop_4f_inclusiveDecays',80.95]]
 for sample in stSamples:
     stPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
     stPlotters[-1].addCorrectionFactor(sample[1],'xsec')
@@ -289,8 +301,7 @@ Data.setAlias("BCandphoGenmatch","1.*0")
 
 # start Adding QCD here#################
 qcdPlotters=[]
-#qcdSamples = [['step1_SingleEle_Run2016B_SepRereco'],['step1_SingleEle_Run2016C_SepRereco'],['step1_SingleEle_Run2016D_SepRereco'],['step1_SingleEle_Run2016E_SepRereco'],['step1_SingleEle_Run2016F_SepRereco'],['step1_SingleEle_Run2016G_sepRereco'],['step1_SingleEle_Run2016H_PRv2'],['step1_SingleEle_Run2016H_PRv3'],['step1p5_WW',110.8],['step1p5_WZ',47.13],['step1p5_ZZ',16.523],['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864],['step1p5_WJetsToLNu',61526.7],['step1p5_DYLL',6025.2],['step1p5_TTWJetsToLNu',0.2043],['step1p5_TTWJetsToQQ',0.4062],['step1p5_TTZToLLNuNu',0.2529],['step1p5_TTZToQQ',0.5297],['step1p5_TTGJets',3.697],['step1p5_ST_tW_antitop_5f_inclus',35.85],['step1p5_ST_tW_top_5f_inclus',35.85],['step1p5_ST_t-channel_top_4f_leptonDecays',44.33],['step1p5_ST_t-channel_antitop_4f_leptonDecays',26.38],['step1p5_ST_s-channel_4f_leptonDecays',3.36]]
-qcdSamples = [['step1_SingleEle_Run2016B_FebReminiAOD'],['step1_SingleEle_Run2016C_FebReminiAOD'],['step1_SingleEle_Run2016D_FebReminiAOD'],['step1_SingleEle_Run2016E_FebReminiAOD'],['step1_SingleEle_Run2016F_FebReminiAOD1'],['step1_SingleEle_Run2016F_FebReminiAOD2'],['step1_SingleEle_Run2016G_FebReminiAOD'],['step1_SingleEle_Run2016H_FebReminiAODv2'],['step1_SingleEle_Run2016H_FebReminiAODv3'],['step1p5_WW',110.8],['step1p5_WZ',47.13],['step1p5_ZZ',16.523],['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864],['step1p5_W4JetsToLNu',600],['step1p5_TTGJets',3.697],['step1p5_DYJetsToLL',6025.2],['step1p5_TT',831.76],['step1p5_TTWJetsToLNu',0.2043],['step1p5_TTWJetsToQQ',0.4062],['step1p5_TTZToLLNuNu',0.2529],['step1p5_TTZToQQ',0.5297],['step1p5_ST_tW_antitop_5f_inclusiveDecays',35.85],['step1p5_ST_tW_top_5f_inclusiveDecays',35.85],['step1p5_ST_s-channel_4f_leptonDecays',3.36]]
+qcdSamples = [['step1_SingleEle_Run2016B_FebReminiAOD'],['step1_SingleEle_Run2016C_FebReminiAOD'],['step1_SingleEle_Run2016D_FebReminiAOD'],['step1_SingleEle_Run2016E_FebReminiAOD'],['step1_SingleEle_Run2016F_FebReminiAOD1'],['step1_SingleEle_Run2016F_FebReminiAOD2'],['step1_SingleEle_Run2016G_FebReminiAOD'],['step1_SingleEle_Run2016H_FebReminiAODv2'],['step1_SingleEle_Run2016H_FebReminiAODv3'],['step1p5_WW',110.8],['step1p5_WZ',47.13],['step1p5_ZZ',16.523],['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864],['step1p5_W3JetsToLNu',1160],['step1p5_W4JetsToLNu',600],['step1p5_TTGJets',3.697],['step1p5_DYJetsToLL',6025.2],['step1p5_TT',831.76],['step1p5_TTWJetsToLNu',0.2043],['step1p5_TTWJetsToQQ',0.4062],['step1p5_TTZToLLNuNu',0.2529],['step1p5_TTZToQQ',0.5297],['step1p5_ST_tW_antitop_5f_inclusiveDecays',35.85],['step1p5_ST_tW_top_5f_inclusiveDecays',35.85],['step1p5_ST_s-channel_4f_leptonDecays',3.36],['step1p5_ST_t-channel_top_4f_inclusiveDecays',136.02],['step1p5_ST_t-channel_antitop_4f_inclusiveDecays',80.95]]
 for sample in qcdSamples:
     qcdPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',treeQCD))
     if len(sample)==1: 
@@ -301,7 +312,7 @@ for sample in qcdSamples:
          qcdPlotters[-1].addCorrectionFactor(sample[1],'xsec')
          qcdPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
          qcdPlotters[-1].addCorrectionFactor('-1./BgenWeightTotalEventsNumber','norm')
-#         qcdPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+         qcdPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
     #    qcdPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     allPlotters[sample[0]] = qcdPlotters[-1]
 QCD = MergedPlotter(qcdPlotters)
@@ -337,7 +348,8 @@ Stack.doRatio(doRatio)
 
 tag+='_'
 
-xBins_pfMET=[0,20,40,60,80,100,150,200,250,300,500,1000]
+#xBins_pfMET=[0,20,40,60,80,100,150,200,250,300,500,1000]
+xBins_pfMET=[0,20,40,60,80,100,150,200,300,500,1000]
 xBins_Pt=[0,20,40,60,80,100,120,140,160,180,200,250,300,400,500,600,800,1000,1250]
 
 #print cuts
@@ -374,7 +386,7 @@ if normaldraw:
 
     Stack.drawStack('Bnjet', cut_pre_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
-    Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), xBins_Pt[:-1], 0, 1000, channel = "ele_bjj: pre", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
     Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
     Stack.drawStack('BelePt', cut_CR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: CR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
@@ -409,6 +421,10 @@ if test:
      Stack.drawStack('BpfMET', cut_pre_bjj_4qcd, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj_4qcd',outDir=outdir)#,separateSignal=sepSig)
 
 
+     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+
      Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
 
@@ -418,16 +434,17 @@ if test:
 
      Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gammamatchnonele, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
 
+     Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
-#    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStackSketch('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch>0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchpho_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStackSketch('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch>0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchpho_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch<0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchjet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStackSketch('BCandphoSigmaIEtaIEta', cut_bjj_1phowoIEtaIEta+" && BCandphoGenmatch<0", str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_matchjet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BCandphoPFChIso', cut_bjj_1phowoChHadIso, str(lumi*1000), 20, 0, 2, channel = "ele_bjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BCandphoPFChIso', cut_bjj_1phowoChHadIso+" && BCandphoGenmatch>0", str(lumi*1000), 20, 0, 2, channel = "ele_bjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_matchpho_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BCandphoPFChIso', cut_bjj_1phowoChHadIso+" && BCandphoGenmatch<0", str(lumi*1000), 20, 0, 2, channel = "ele_bjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_matchjet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+     Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_bjj_4gammawoietaieta, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_bjj_4gammawoietaieta_genmatchnojet, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_gammagennojet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_bjj_4gammawoietaieta_genmatchjet, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_gammagenjet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+     Stack.drawStack('BCandphoPFCorChIso', cut_bjj_4gammawochhadiso, str(lumi*1000), 20, 0, 2, channel = "ele_bjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoPFCorChIso', cut_bjj_4gammawochhadiso_genmatchnojet, str(lumi*1000), 20, 0, 2, channel = "ele_bjj", titlex = "chargedHadIso #gamma gen nojet", units = "",output=tag+'PFChIso_gammagennojet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoPFCorChIso', cut_bjj_4gammawochhadiso_genmatchjet, str(lumi*1000), 20, 0, 2, channel = "ele_bjj", titlex = "chargedHadIso #gamma gen jet", units = "",output=tag+'PFChIso_gammagenjet_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
 
 
 

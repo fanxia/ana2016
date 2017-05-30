@@ -6,7 +6,8 @@ import math
 
 date=sys.argv[1]
 
-MClist=['TT','TTGJets','TTGG','TTWJetsToLNu','TTWJetsToQQ','TTZToLLNuNu','TTZToQQ','W4JetsToLNu','DYJetsToLL','WGToLNuG','WW','WZ','ZGTo2LG','ZZ','ST_s-channel_4f_leptonDecays','ST_tW_antitop_5f_inclusiveDecays','ST_tW_top_5f_inclusiveDecays']
+MClist=['TT','TTGJets','TTGG','TTWJetsToLNu','TTWJetsToQQ','TTZToLLNuNu','TTZToQQ']
+#MClist=['TT','TTGJets','TTGG','TTWJetsToLNu','TTWJetsToQQ','TTZToLLNuNu','TTZToQQ','W4JetsToLNu','DYJetsToLL','WGToLNuG','WW','WZ','ZGTo2LG','ZZ','ST_s-channel_4f_leptonDecays','ST_tW_antitop_5f_inclusiveDecays','ST_tW_top_5f_inclusiveDecays','ST_t-channel_antitop_4f_inclusiveDecays','ST_t-channel_top_4f_inclusiveDecays','W3JetsToLNu','W2JetsToLNu']
 #MClist=[]
 
 #EleDatalist=['SingleEle_Run2016B_FebReminiAOD']
@@ -19,6 +20,7 @@ for mc in MClist:
     os.system("hadd -k step1_{0}_dilep.root MC_dilepOut_step1/{0}/dilepana_root{1}/step1*.root".format(mc,date))
     os.system("mv step1_{0}_dilep.root ../../ntupleStore".format(mc))
 
+sys.exit()
 
 for Eledata in EleDatalist:
     os.system("hadd -k -f step1_{0}_dilep.root Data_dilepOut_step1/{0}/dilepana_root{1}/step1*.root".format(Eledata,date))

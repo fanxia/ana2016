@@ -4,12 +4,23 @@
 # Second method to submit jobs for dir containing many inputfiles:  script   dirpath(/store/../)         OUTName files/jobs
 # 
 
+######################################################################
+######################## Signal MC ###################################
+######################################################################
+./submitSig_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_SMS-T6ttZg/ SMS-T6ttZg 1
+
+exit
+
 
 ########################################################################
 #################################  MC  #################################
 ########################################################################
 
+#./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTJets_DiLept/ TTJets_DiLept 2 
+#./submitMC_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_TTJets_SingleLeptFromTbar/ TTJets_SingleLeptFromTbar 2
+#./submitMC_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_TTJets_SingleLeptFromT/ TTJets_SingleLeptFromT 2
 
+#exit
 #TT
 ./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TT/ TT 2
 
@@ -25,8 +36,8 @@
 #W+jets
 
 ./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W4JetsToLNu/ W4JetsToLNu 2
-./submitMC_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_W3JetsToLNu/ W3JetsToLNu 2
-./submitMC_step1.py /store/user/yanchu/ggntuples/mc/V08_00_26_01/job_summer16_W2JetsToLNu/ W2JetsToLNu 2
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W3JetsToLNu/ W3JetsToLNu 2
+./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_W2JetsToLNu/ W2JetsToLNu 2
 
 
 #*******ZJets

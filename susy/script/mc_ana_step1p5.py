@@ -277,7 +277,7 @@ for tree_in in Trees_in:
         phoWeight=1.
         phoWeightE2=0.
         for p in range(event.BnCandPho):
-            if event.BCandPhoTag[p]>>3&1==1:  #only consider real loose photon's sf
+            if (event.BCandPhoTag[p]>>3&1)==1:  #only consider real loose photon's sf
                 pho_pt=event.BCandphoEt[p]
                 pho_eta=event.BCandphoSCEta[p]
                 

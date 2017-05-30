@@ -56,8 +56,8 @@ print "endEntryNumber: ",endEntryNumber
 
 
 dd=datetime.datetime.now().strftime("%b%d")
-os.system('mkdir -p MC_Out_step1/'+OUTPUTName+'/ana_root'+dd)
-os.chdir('MC_Out_step1/'+OUTPUTName+'/ana_root'+dd)
+os.system('mkdir -p Sig_Out_step1/'+OUTPUTName+'/ana_root'+dd)
+os.chdir('Sig_Out_step1/'+OUTPUTName+'/ana_root'+dd)
 log = open("logstep1_"+OUTPUTName+"_"+str(fileID)+".txt","w")
 file_out = ROOT.TFile("step1_"+OUTPUTName+"_"+str(fileID)+".root","recreate")
 
@@ -90,6 +90,10 @@ H_event.GetXaxis().SetBinLabel(1,"Total event number")
 H_event.GetXaxis().SetBinLabel(2,"GenWeighted total event number")
 #H_mu=ROOT.TH1F("H_mu","H_mu",15,0,15)
 #H_mQCD=ROOT.TH1F("H_mQCD","H_mQCD",15,0,15)
+
+
+#---------signal scan plane----------
+H_sigscan=ROOT.TH2D("H_sigscan","H_sigscan",1240,280.5,1520.5,1420,0.5,1420.5) #x:stop, y:nlsp
 
 
 #--------------define branches to record seleted obj------------
@@ -162,6 +166,14 @@ BnFake=array('i',[-99])
 BGenTopAPt=array('d',[-99.])
 BGenTopBPt=array('d',[-99.])
 
+#############for signal mc#################
+BGenStopAMass=array('d',[-99.])
+BGenStopBMass=array('d',[-99.])
+
+BGenNLSPAMass=array('d',[-99.])
+BGenNLSPBMass=array('d',[-99.])
+BNLSPDecay=array('i',[-99])   # nlsp decay mode: 99:gammagamma, 29: zgamma,  22:zz
+###########################################
 
 #-----------------Define tree------------------------------
 tree1_out=TTree("EventTree_ele","EventTree_ele")
@@ -224,7 +236,11 @@ tree1_out.Branch("BnFake",BnFake,"BnFake/I")
 tree1_out.Branch("BGenTopAPt",BGenTopAPt,"BGenTopAPt/D")
 tree1_out.Branch("BGenTopBPt",BGenTopBPt,"BGenTopBPt/D")
 
-
+tree1_out.Branch("BGenStopAMass",BGenStopAMass,"BGenStopAMass/D")
+tree1_out.Branch("BGenStopBMass",BGenStopBMass,"BGenStopBMass/D")
+tree1_out.Branch("BGenNLSPAMass",BGenNLSPAMass,"BGenNLSPAMass/D")
+tree1_out.Branch("BGenNLSPBMass",BGenNLSPBMass,"BGenNLSPBMass/D")
+tree1_out.Branch("BNLSPDecay",BNLSPDecay,"BNLSPDecay/I")
 
 
 tree2_out=tree1_out.CloneTree(0)
@@ -248,6 +264,24 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
     H_event.Fill(0.5)
     H_event.Fill(1.5,event.genWeight)
+
+
+##------------Sprecial step for signal-------------##
+    signalresult=Fun_SigFindGen(event)
+    BGenStopAMass[0]=signalresult[0][0]
+    BGenStopBMass[0]=signalresult[0][1]
+    BGenNLSPAMass[0]=signalresult[1][0]
+    BGenNLSPBMass[0]=signalresult[1][1]
+    Nfinalgamma=signalresult[2]
+    if Nfinalgamma==0: # zz mode
+        BNLSPDecay[0]=22
+    elif Nfinalgamma==1: #zgamma mode
+        BNLSPDecay[0]=29
+    elif Nfinalgamma==2: #gammagamma mode
+        BNLSPDecay[0]=99
+    H_sigscan.Fill(BGenStopAMass[0],BGenNLSPAMass[0])
+##------------End step for signal------------------##
+
 #----------0.event clean and modesetting----------
 
 
@@ -297,7 +331,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     Pass_1lep[Scanmode_ind]+=1
 #--------------1.HLT cut-------------
 
-    CheckHLT=True
+    CheckHLT=False
     if CheckHLT:
         if Scanmode=="eleTree": 
             hlt=(event.HLTEleMuX>>3&1)
@@ -510,6 +544,12 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
     BGenTopAPt[0]=-99.    
     BGenTopBPt[0]=-99.    
+
+    BGenStopAMass[0]=-99.
+    BGenStopBMass[0]=-99.
+    BGenNLSPAMass[0]=-99.
+    BGenNLSPBMass[0]=-99. 
+    BNLSPDecay[0]=-99
 
 #---fill the hist----
 Binlist=[Pass_1lep,Pass_nHLT,Pass_npre,Pass_nSR1,Pass_nSR2,Pass_nCR1,Pass_nCR2,Pass_npre_btag,Pass_nSR1_btag,Pass_nSR2_btag,Pass_nCR1_btag,Pass_nCR2_btag]

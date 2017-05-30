@@ -24,6 +24,10 @@ OUTPUTName=sys.argv[2]
 print "input: ",INPUTFileN
 print "output: ",OUTPUTName
 
+DoTopPt=False
+if "TT" in OUTPUTName:
+    DoTopPt=True
+    print "Will find gen top pair pt for this bkg"
 
 chain_in = ROOT.TChain("ggNtuplizer/EventTree")
 for inputf in INPUTFileN.split():
@@ -123,6 +127,10 @@ BjetHadFlvr=vector(int)(0)
 Bbtagged=vector(int)(0)
 BjetM3=array('d',[-99])
 
+BGenTopAPt=array('d',[-99.])
+BGenTopBPt=array('d',[-99.])
+
+
 # BnCandPho=array('i',[-99])
 # BCandPhoTag=vector(int)(0)  # tag>>(3,0,1,2)&1 for (photon,fake,wo..,wo..)
 # BCandphoEt=vector(float)(0)
@@ -178,6 +186,10 @@ tree1_out.Branch("BjetPhi",BjetPhi)
 tree1_out.Branch("BjetHadFlvr",BjetHadFlvr)
 tree1_out.Branch("Bbtagged",Bbtagged)
 tree1_out.Branch("BjetM3",BjetM3,"BjetM3/D")
+
+tree1_out.Branch("BGenTopAPt",BGenTopAPt,"BGenTopAPt/D")
+tree1_out.Branch("BGenTopBPt",BGenTopBPt,"BGenTopBPt/D")
+
 
 # tree1_out.Branch("BnCandPho",BnCandPho,"BnCandPho/I")
 # tree1_out.Branch("BCandPhoTag",BCandPhoTag)
@@ -246,7 +258,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     CheckHLT=True
     if CheckHLT:
         if Scanmode=="eeTree": 
-            hlt=event.HLTEleMuX>>3&1
+            hlt=(event.HLTEleMuX>>3&1)
         elif Scanmode=="mumuTree": 
             hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
@@ -263,7 +275,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     #original Candpholist: [[index,phoTag,dr_lep,genmatch(only4mc)],[],[],,,]
     #for the dilepton event selection, only save the loose photon(no fake...)
     Candpholist1=Fun_findCandpho(Scanmode,mulist,elelist,event)
-    Candpholist=[p for p in Candpholist1 if p[1]>>3&1==1]
+    Candpholist=[p for p in Candpholist1 if (p[1]>>3&1)==1]
 #    BnCandPho[0]=len(Candpholist)
 
 
@@ -347,6 +359,11 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     #     BCandphoGenmatch.push_back(pho[3])
 #        BCandphoLepInvMass.push_back(Fun_invmass_pholep(Scanmode,lep_ind,pho[0],event))
 
+#---------------Fill gen top pair pt for sm ttbar bkgs-------------                                                            
+    if DoTopPt:
+        GenTopPairpt=Fun_FindGenTopPair(event)
+        BGenTopAPt[0]=GenTopPairpt[0]
+        BGenTopBPt[0]=GenTopPairpt[1]
     
     if Scanmode=="eeTree": tree1_out.Fill()
     if Scanmode=="mumuTree": tree2_out.Fill()
@@ -395,6 +412,10 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BjetHadFlvr.clear()
     Bbtagged.clear()
     BjetM3[0]=-99.
+
+    BGenTopAPt[0]=-99.
+    BGenTopBPt[0]=-99.
+
 
     # BnCandPho[0]=-99
     # BCandPhoTag.clear()

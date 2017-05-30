@@ -124,10 +124,10 @@ INPUTFile=sys.argv[1]
 file_in=TFile.Open(INPUTFile)
 file_out=TFile("../ntupleStore/step1p5_"+sys.argv[2]+"_dilep.root","recreate")
 
-#DoTopPtReweight=False
-#if "TT" in sys.argv[2]:
-#    DoTopPtReweight=True
-#    print "Add top pair pt reweighting info!"
+DoTopPtReweight=False
+if "TT" in sys.argv[2]:
+    DoTopPtReweight=True
+    print "Add top pair pt reweighting info!"
 
 print "input: ",INPUTFile
 print "output: ",sys.argv[2]+"_step1p5.root"
@@ -148,7 +148,7 @@ BeleIDsf=array('d',[1.])
 BeleIsosf=array('d',[1.])
 BeleTrgsf=array('d',[1.])
 BeleWeight=array('d',[1.])  # for the total weight=eleidSF*isoSF*trgSF
-#BtopPtWeight=array('d',[1.])
+BtopPtWeight=array('d',[1.])
 
 BmuID1sf=array('d',[1.]) # These are for 2016RunBCDEF~period1 
 BmuIso1sf=array('d',[1.])
@@ -193,7 +193,7 @@ for tree_in in Trees_in:
     tree_out.Branch("BmuTrk2sf",BmuTrk2sf,"BmuTrk2sf/D")
     tree_out.Branch("BmuWeight2",BmuWeight2,"BmuWeight2/D")
 
-#    tree_out.Branch("BtopPtWeight",BtopPtWeight,"BtopPtWeight/D")
+    tree_out.Branch("BtopPtWeight",BtopPtWeight,"BtopPtWeight/D")
 #----------------ending branches definitions-------------------------
 
     BTotalEventsNumber[0]=file_in.Get("H_event").GetBinContent(1)
@@ -213,8 +213,8 @@ for tree_in in Trees_in:
 
 
 #***********************Fill top pair pt reweight info************
-#        if DoTopPtReweight:
-#            BtopPtWeight[0]=Fun_TopPtWeight(event.BGenTopAPt,event.BGenTopBPt)
+        if DoTopPtReweight:
+            BtopPtWeight[0]=Fun_TopPtWeight(event.BGenTopAPt,event.BGenTopBPt)
 
 #***********************Fill Btag weight info***********************
         Jetlist=[]

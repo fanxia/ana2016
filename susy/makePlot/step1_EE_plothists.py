@@ -52,7 +52,6 @@ vvSamples = [['step1p5_WW',110.8],['step1p5_WZ',47.13],['step1p5_ZZ',16.523]]
 for sample in vvSamples:
      vvPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'_dilep.root',tree))
      vvPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
-#     vvPlotters[-1].addCorrectionFactor(1./sample[1],'norm')
      vvPlotters[-1].addCorrectionFactor(sample[1],'xsec')
      vvPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
      vvPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
@@ -125,8 +124,8 @@ ZG.setFillProperties(1001,ROOT.kMagenta)
 # WJets.setFillProperties(1001,ROOT.kBlue-6)
 
 wjetsPlotters=[]
-#wjetsSamples = [['step1p5_W3JetsToLNu',1160],['step1p5_W4JetsToLNu',600]]
-wjetsSamples = [['step1p5_W4JetsToLNu',600]]
+wjetsSamples = [['step1p5_W3JetsToLNu',1160],['step1p5_W4JetsToLNu',600]]
+#wjetsSamples = [['step1p5_W4JetsToLNu',600]]
 for sample in wjetsSamples:
     wjetsPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'_dilep.root',tree))
     wjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
@@ -145,7 +144,6 @@ zjetsPlotters=[]
 zjetsSamples = ['step1p5_DYJetsToLL']
 for sample in zjetsSamples:
     zjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'_dilep.root',tree))
-#    zjetsPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
     zjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
     zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
@@ -181,7 +179,7 @@ for sample in ttSamples:
     ttPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
     ttPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     ttPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
-#    ttPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
+    ttPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
     allPlotters[sample] = ttPlotters[-1]
 TT = MergedPlotter(ttPlotters)
 TT.setFillProperties(1001,ROOT.kAzure-9)
@@ -197,7 +195,7 @@ for sample in ttgSamples:
     ttgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
     ttgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     ttgPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
-#    ttgPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
+    ttgPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
     allPlotters[sample] = ttgPlotters[-1]
 TTG = MergedPlotter(ttgPlotters)
 TTG.setFillProperties(1001,ROOT.kGreen-3)
@@ -213,14 +211,13 @@ for sample in ttvSamples:
     ttvPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
     ttvPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     ttvPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
-#    ttvPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
+    ttvPlotters[-1].addCorrectionFactor("BtopPtWeight",'ttreweight')
     allPlotters[sample[0]] = ttvPlotters[-1]
 TTV = MergedPlotter(ttvPlotters)
 TTV.setFillProperties(1001,ROOT.kYellow)
 
 stPlotters=[]
-#stSamples = [['step1p5_ST_tW_antitop_5f_inclus',35.85],['step1p5_ST_tW_top_5f_inclus',35.85],['step1p5_ST_t-channel_top_4f_leptonDecays',44.33],['step1p5_ST_t-channel_antitop_4f_leptonDecays',26.38],['step1p5_ST_s-channel_4f_leptonDecays',3.36]]
-stSamples = [['step1p5_ST_tW_antitop_5f_inclusiveDecays',35.85],['step1p5_ST_tW_top_5f_inclusiveDecays',35.85],['step1p5_ST_s-channel_4f_leptonDecays',3.36]]
+stSamples = [['step1p5_ST_tW_antitop_5f_inclusiveDecays',35.85],['step1p5_ST_tW_top_5f_inclusiveDecays',35.85],['step1p5_ST_s-channel_4f_leptonDecays',3.36],['step1p5_ST_t-channel_top_4f_inclusiveDecays',136.02],['step1p5_ST_t-channel_antitop_4f_inclusiveDecays',80.95]]
 for sample in stSamples:
     stPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'_dilep.root',tree))
     stPlotters[-1].addCorrectionFactor(sample[1],'xsec')

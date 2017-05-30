@@ -111,10 +111,27 @@ def Fun_mht(ml,el,pl,jl,tree):
 def Fun_FindGenTopPair(tree):
     result=[]
     for genp in range(tree.nMC):
-        if abs(tree.mcPID[genp])==6 and tree.mcStatusFlag[genp]>>2&1==1:  # is hardprocess top
+        if abs(tree.mcPID[genp])==6 and (tree.mcStatusFlag[genp]>>2&1)==1:  # is hardprocess top
             result.append(tree.mcPt[genp])
     return result
 
 def Fun_TopPtWeight(apt,bpt):
     result=(math.exp(0.0615-0.0005*apt)*math.exp(0.0615-0.0005*bpt))**0.5
     return result
+
+def Fun_SigFindGen(tree):
+    resultstop=[]
+    resultnlsp=[]
+    ngamma=0
+    for genp in range(tree.nMC):
+        #-------find nlsp mass
+        if tree.mcPID[genp]==1000022 and (tree.mcStatusFlag[genp]&4)==4 and tree.mcMomPID[genp]==1000023:
+            resultnlsp.append(tree.mcMomMass[genp])
+        #-------find stop mass
+        if abs( tree.mcPID[genp])==1000006 and (tree.mcStatusFlag[genp]&4)==4:
+            resultstop.append(tree.mcMass[genp])
+        #-------find how many final photon, to determin decay modes
+        if tree.mcPID[genp]==22 and (tree.mcStatusFlag[genp]&4)==4 and tree.mcMomPID[genp]==1000023:
+            ngamma+=1
+
+    return [resultstop,resultnlsp,ngamma]

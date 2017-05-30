@@ -214,7 +214,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
     Scanmode="None"
     if not event.isPVGood: continue
-    if not (event.metFilters>>11&1==0 and event.metFilters&126==0): continue  #make sure bits 1-6th, 11th ==0
+    if not ((event.metFilters>>11&1)==0 and (event.metFilters&126)==0): continue  #make sure bits 1-6th, 11th ==0
    # elelist:[[index,ID,iso],[]...]
    # mulist: [[index,ID,iso],[]...]
    # ID: 0 for loose, 1 for tight, 3 for QCDmode
@@ -240,7 +240,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     CheckHLT=True
     if CheckHLT:
         if Scanmode=="eeTree": 
-            hlt=event.HLTEleMuX>>3&1
+            hlt=(event.HLTEleMuX>>3&1)
         elif Scanmode=="mumuTree": 
             hlt=(event.HLTEleMuX>>19&1 and event.HLTEleMuX>>20&1)
         if hlt==1: Pass_nHLT[Scanmode_ind] +=1
@@ -257,7 +257,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     #original Candpholist: [[index,phoTag,dr_lep,genmatch(only4mc)],[],[],,,]
     #for the dilepton event selection, only save the loose photon(no fake...)
     Candpholist1=Fun_findCandpho(Scanmode,mulist,elelist,event)
-    Candpholist=[p for p in Candpholist1 if p[1]>>3&1==1]
+    Candpholist=[p for p in Candpholist1 if (p[1]>>3&1)==1]
 #    BnCandPho[0]=len(Candpholist)
 
 
