@@ -13,6 +13,7 @@ from ana2016.susy.ana_ele import *
 from ana2016.susy.ana_jet import *
 from ana2016.susy.ana_photon import *
 from ana2016.susy.Utilfunc import *
+from ana2016.susy.Utilfunc_sig import *
 
 
 sw = ROOT.TStopwatch()
@@ -167,11 +168,13 @@ BGenTopAPt=array('d',[-99.])
 BGenTopBPt=array('d',[-99.])
 
 #############for signal mc#################
-BGenStopAMass=array('d',[-99.])
-BGenStopBMass=array('d',[-99.])
+BlheStopMass=array('d',[-99.])  #mass get from lumiblock/lhe directly
+BlheNLSPMass=array('d',[-99.])  #mass get from lumiblock/lhe directly
+BGenStopAMass=array('d',[-99.]) #mass get from gen particle by selection
+BGenStopBMass=array('d',[-99.]) #mass get from gen particle by selection
 
-BGenNLSPAMass=array('d',[-99.])
-BGenNLSPBMass=array('d',[-99.])
+BGenNLSPAMass=array('d',[-99.]) #mass get from gen particle by selection
+BGenNLSPBMass=array('d',[-99.]) #mass get from gen particle by selection
 BNLSPDecay=array('i',[-99])   # nlsp decay mode: 99:gammagamma, 29: zgamma,  22:zz
 ###########################################
 
@@ -236,6 +239,8 @@ tree1_out.Branch("BnFake",BnFake,"BnFake/I")
 tree1_out.Branch("BGenTopAPt",BGenTopAPt,"BGenTopAPt/D")
 tree1_out.Branch("BGenTopBPt",BGenTopBPt,"BGenTopBPt/D")
 
+tree1_out.Branch("BlheStopMass",BlheStopMass,"BlheStopMass/D")
+tree1_out.Branch("BlheNLSPMass",BlheNLSPMass,"BlheNLSPMass/D")
 tree1_out.Branch("BGenStopAMass",BGenStopAMass,"BGenStopAMass/D")
 tree1_out.Branch("BGenStopBMass",BGenStopBMass,"BGenStopBMass/D")
 tree1_out.Branch("BGenNLSPAMass",BGenNLSPAMass,"BGenNLSPAMass/D")
@@ -262,24 +267,14 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         print "Processing entry ", processdnevent
 #    print "Processing entry ", processdnevent
 
+##-----------events number needs be filled before selection filters---------
     H_event.Fill(0.5)
     H_event.Fill(1.5,event.genWeight)
 
-
 ##------------Sprecial step for signal-------------##
-    signalresult=Fun_SigFindGen(event)
-    BGenStopAMass[0]=signalresult[0][0]
-    BGenStopBMass[0]=signalresult[0][1]
-    BGenNLSPAMass[0]=signalresult[1][0]
-    BGenNLSPBMass[0]=signalresult[1][1]
-    Nfinalgamma=signalresult[2]
-    if Nfinalgamma==0: # zz mode
-        BNLSPDecay[0]=22
-    elif Nfinalgamma==1: #zgamma mode
-        BNLSPDecay[0]=29
-    elif Nfinalgamma==2: #gammagamma mode
-        BNLSPDecay[0]=99
-    H_sigscan.Fill(BGenStopAMass[0],BGenNLSPAMass[0])
+    BlheStopMass[0]=event.SigMass_b
+    BlheNLSPMass[0]=event.SigMass_a
+    H_sigscan.Fill(event.SigMass_b,event.SigMass_a)
 ##------------End step for signal------------------##
 
 #----------0.event clean and modesetting----------
@@ -452,6 +447,20 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
         BGenTopAPt[0]=GenTopPairpt[0]
         BGenTopBPt[0]=GenTopPairpt[1]
 
+#---------------Fill the gen level susy stop-nlsp mass, these masses just used for check, will use lhemass for real results-----
+    signalresult=Fun_SigFindGen(event)
+    BGenStopAMass[0]=signalresult[0][0]
+    BGenStopBMass[0]=signalresult[0][1]
+    BGenNLSPAMass[0]=signalresult[1][0]
+    BGenNLSPBMass[0]=signalresult[1][1]
+    Nfinalgamma=signalresult[2]
+    if Nfinalgamma==0: # zz mode
+        BNLSPDecay[0]=22
+    elif Nfinalgamma==1: #zgamma mode
+        BNLSPDecay[0]=29
+    elif Nfinalgamma==2: #gammagamma mode
+        BNLSPDecay[0]=99
+
 
 #-----------------Fill the photons/fakes----------------
 
@@ -545,6 +554,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BGenTopAPt[0]=-99.    
     BGenTopBPt[0]=-99.    
 
+    BlheStopMass[0]=-99. 
+    BlheNLSPMass[0]=-99. 
     BGenStopAMass[0]=-99.
     BGenStopBMass[0]=-99.
     BGenNLSPAMass[0]=-99.
