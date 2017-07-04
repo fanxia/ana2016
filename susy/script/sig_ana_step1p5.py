@@ -31,6 +31,7 @@ l_btageff=file_btagEff.Get("lEff")
 c_btageff=file_btagEff.Get("cEff")
 b_btageff=file_btagEff.Get("bEff")
 
+#--------------------------
 v_sys = getattr(ROOT, 'vector<string>')()
 v_sys.push_back('up')
 v_sys.push_back('down')
@@ -56,6 +57,22 @@ btagSFreader.load(
 )
 btagSFreader.load(file_btagSF, 1, measure_type  )
 btagSFreader.load(file_btagSF, 2, "incl"  ) #eta:0~2.4
+#------------------------------------
+
+file_btagCF_fastsim = ROOT.BTagCalibration("csvv","btag/CSVv2_fastsim_ttbar_26_1_2017.csv")
+btagCFreader_fastsim = ROOT.BTagCalibrationReader(
+    1,              # 0 is for loose op, 1: medium, 2: tight, 3: discr. reshaping
+    "central",      # central systematic type
+    v_sys,          # vector of other sys. types
+)    
+btagCFreader_fastsim.load(
+    file_btagCF_fastsim, 
+    0,          # 0 is for b flavour, 1: FLAV_C, 2: FLAV_UDSG 
+    "fastsim"      # measurement type
+)
+btagCFreader_fastsim.load(file_btagCF_fastsim, 1, "fastsim"  )
+btagCFreader_fastsim.load(file_btagCF_fastsim, 2, "fastsim"  ) 
+#-------------------------------------
 
 def Fun_bEffaSF(eta,pt,btagflvr,effhist):
     eff=effhist.GetBinContent(effhist.FindBin(pt,eta))
@@ -66,12 +83,23 @@ def Fun_bEffaSF(eta,pt,btagflvr,effhist):
     sf_down=btagSFreader.eval_auto_bounds('down',btagflvr,eta,pt)
     return [eff,eff_err,sf,sf_up,sf_down]
 
+def Fun_bEffaSF_fastsim(eta,pt,btagflvr,effhist):
+    cf=btagCFreader_fastsim.eval_auto_bounds('central',btagflvr,eta,pt)
+
+    eff=effhist.GetBinContent(effhist.FindBin(pt,eta))*cf
+    eff_err=effhist.GetBinError(effhist.FindBin(pt,eta))*cf
+    if btagflvr==2: eta=abs(eta)
+    sf=btagSFreader.eval_auto_bounds('central',btagflvr,eta,pt)/cf
+    sf_up=btagSFreader.eval_auto_bounds('up',btagflvr,eta,pt)/cf
+    sf_down=btagSFreader.eval_auto_bounds('down',btagflvr,eta,pt)/cf
+    return [eff,eff_err,sf,sf_up,sf_down]
+
 #---------------END btagweight input files-------------------
 
 
 #----------------lepton sf input files-----------------------
 file_eleSF_HLT = TFile.Open("lepgammaSF/cutAcountEffi_eleHLT.root")
-eleTrgsfHist=file_eleSF_HLT.Get("scalefactor")
+eleTrgsfHist=file_eleSF_HLT.Get("efficiency_dt")
 file_eleSF_reco = TFile.Open("lepgammaSF/eleEffi-reco.root")
 eleRecosfHist=file_eleSF_reco.Get("EGamma_SF2D")
 file_eleSF_id = TFile.Open("lepgammaSF/eleEffi-tightID.root")
@@ -79,8 +107,8 @@ eleIDsfHist=file_eleSF_id.Get("EGamma_SF2D")
 
 file_muSF1_HLT = TFile.Open("lepgammaSF/MuonHLTEffi_RunB2F.root")
 file_muSF2_HLT = TFile.Open("lepgammaSF/MuonHLTEffi_RunGH.root")
-muTrgsf1Hist=file_muSF1_HLT.Get("IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio")
-muTrgsf2Hist=file_muSF2_HLT.Get("IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio")
+muTrgsf1Hist=file_muSF1_HLT.Get("IsoMu24_OR_IsoTkMu24_PtEtaBins/efficienciesDATA/abseta_pt_DATA")
+muTrgsf2Hist=file_muSF2_HLT.Get("IsoMu24_OR_IsoTkMu24_PtEtaBins/efficienciesDATA/abseta_pt_DATA")
 
 file_muSF1_id=TFile.Open("lepgammaSF/MuonIDEffi_RunB2F.root")
 file_muSF2_id=TFile.Open("lepgammaSF/MuonIDEffi_RunGH.root")
@@ -119,8 +147,8 @@ phoPixsfHist=file_phoPixSF.Get("Scaling_Factors_HasPix_R9 Inclusive")
 
 
 ###------------find stop xsec from .dat file-------------------
-stopxsfile="sigxsec/stop_pair_13TeVxs.dat"
-stopxslist=[[float(element) for element in line.strip().split()] for line in open(stopxsfile).read().strip().split('\n')]
+#stopxsfile="sigxsec/stop_pair_13TeVxs.dat"
+stopxslist=[[float(element) for element in line.strip().split()] for line in open("sigxsec/stop_pair_13TeVxs.dat").read().strip().split('\n')]
 stopxsdic={i[0]:i[1:] for i in stopxslist}
 
 
@@ -241,7 +269,7 @@ for tree_in in Trees_in:
         
         nprocessed+=1
 #***********************Fill PU weight info***********************
-        BpileupWeight[0]=Fun_pileupweight(event.BPUTrue)
+        BpileupWeight[0]=Fun_pileupweight_fastsim(event.BPUTrue)
 
 
 #***********************Fill top pair pt reweight info************
@@ -253,11 +281,11 @@ for tree_in in Trees_in:
         for j in range(event.Bnjet):
             Jet_flavor=event.BjetHadFlvr[j]
             if abs(Jet_flavor)==0: #light
-                bEffaSF=Fun_bEffaSF(event.BjetEta[j],event.BjetPt[j],2,l_btageff)
+                bEffaSF=Fun_bEffaSF_fastsim(event.BjetEta[j],event.BjetPt[j],2,l_btageff)
             elif abs(Jet_flavor)==4: #c
-                bEffaSF=Fun_bEffaSF(event.BjetEta[j],event.BjetPt[j],1,c_btageff)
+                bEffaSF=Fun_bEffaSF_fastsim(event.BjetEta[j],event.BjetPt[j],1,c_btageff)
             elif abs(Jet_flavor)==5: #b
-                bEffaSF=Fun_bEffaSF(event.BjetEta[j],event.BjetPt[j],0,b_btageff)
+                bEffaSF=Fun_bEffaSF_fastsim(event.BjetEta[j],event.BjetPt[j],0,b_btageff)
             else: continue
 
             Jet=[event.Bbtagged[j]]

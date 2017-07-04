@@ -127,7 +127,7 @@ def Fun_findCandpho(scanmode,muonlist,electronlist,tree):
         if tree.phoEt[p]>20 and abs(tree.phoEta[p])<1.4442 and abs(tree.phoSCEta[p])<1.4442 and not tree.phohasPixelSeed[p]:
             phoTag=0
 #            if Fun_loosepho(p): 
-            if tree.phoIDbit[p]&1==1:  #loose photon
+            if (tree.phoIDbit[p]&1)==1:  #loose photon
                 phoTag |= (1<<3)
             elif Fun_loosefake(p): 
                 phoTag |= (1<<0)

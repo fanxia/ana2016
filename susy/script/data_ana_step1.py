@@ -88,7 +88,6 @@ H_mQCD=H_ele.Clone("H_mQCD")
 #--------------define branches to record seleted obj------------
 
 BmuPt=array('d',[-99.])
-BmuPt=array('d',[-99.])
 BmuEn=array('d',[-99.])
 BmuEta1=array('d',[-99.])
 BmuPhi=array('d',[-99.])

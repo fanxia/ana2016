@@ -69,11 +69,11 @@ def Fun_findele(tree):
         # elif tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele_antiIso(e,PFiso):
         #     ele=[e,3]
 
-        if tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and (tree.eleIDbit[e]>>3&1)==1:
+        if tree.elePt[e]>35 and abs(tree.eleEta[e])<2.1 and (tree.eleIDbit[e]>>3&1)==1:
             ele=[e,1]
         elif tree.elePt[e]>10 and abs(tree.eleEta[e])<2.5 and (tree.eleIDbit[e]>>1&1)==1:
             ele=[e,0]
-        elif tree.elePt[e]>30 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele_antiIso(e,PFiso):
+        elif tree.elePt[e]>35 and abs(tree.eleEta[e])<2.1 and Fun_tight_ele_antiIso(e,PFiso):
             ele=[e,3]
         
         else: continue

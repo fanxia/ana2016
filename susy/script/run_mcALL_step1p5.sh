@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# ./run_mcALL_step1p5.sh 
+# ./run_mcALL_step1p5.sh dilep
 
 # python mc_ana_step1p5.py ../ntupleStore/step1_TT_powheg.root TT_powheg
 
@@ -37,9 +38,9 @@ fi
 
 
 #MClist="TTJets_DiLept TTJets_SingleLeptFromT TTJets_SingleLeptFromTbar"
-MClist="TT TTGJets TTGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
-#MClist="TT TTGJets TTGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ W4JetsToLNu DYJetsToLL WGToLNuG WW WZ ZGTo2LG ZZ ST_s-channel_4f_leptonDecays ST_tW_antitop_5f_inclusiveDecays ST_tW_top_5f_inclusiveDecays ST_t-channel_antitop_4f_inclusiveDecays ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
-#MClist="TTGJets TTGG W4JetsToLNu WGToLNuG WW WZ ZGTo2LG ZZ"
+#MClist="TT TTGJets TTGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
+MClist="TT TTGJets TTGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ W4JetsToLNu DYJetsToLL WGToLNuG WW WZ ZGTo2LG ZZ ST_s-channel_4f_leptonDecays ST_tW_antitop_5f_inclusiveDecays ST_tW_top_5f_inclusiveDecays ST_t-channel_antitop_4f_inclusiveDecays ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
+#MClist="ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
 
 for mc in $MClist
 do

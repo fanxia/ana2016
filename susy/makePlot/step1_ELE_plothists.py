@@ -40,12 +40,12 @@ paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi))+" fb^{-1}"
 
 cut_pre_bjj="Bnbjet>0 && BelePt>35 " # add it yourself
 cut_SR1_bjj="(Bnbjet>0 && BnPho==1 && BelePt>35)*BphoWeight " # add it yourself
-cut_SR1_bjj_4gamma="(BelePt>35 && Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1)*BphoWeight" # add it yourself
+cut_SR1_bjj_4gamma="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1)*BphoWeight" # add it yourself
 
 
 cut_SR2_bjj="(BelePt>35 && Bnbjet>0 && BnPho>1)*BphoWeight" # add it yourself
 cut_CR1_bjj="BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1" # add it yourself
-cut_CR1_bjj_4fake="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1 && BCandPhoTag>>0&1==1)" # add it yourself
+cut_CR1_bjj_4fake="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1 && (BCandPhoTag>>0&1)==1)" # add it yourself
 
 cut_CR2_bjj="BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake>1" # add it yourself
 
@@ -60,21 +60,21 @@ cut_CR2_jjj="BelePt>35 && BnPho==0 && BnFake>1" # add it yourself
 cut_pre_bjj_4qcd="Bnbjet>0 && BelePt>35 && BpfMET<20"
 
 # adding cut for egamma scale factor calculation
-cut_SR1_bjj_4gammamatchele="(BelePt>35 && Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1 && BCandphoGenmatch==11)*BphoWeight"
-cut_SR1_bjj_4gammamatchnonele="(BelePt>35 && Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1 && BCandphoGenmatch!=11)*BphoWeight"
+cut_SR1_bjj_4gammamatchele="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch==11)*BphoWeight"
+cut_SR1_bjj_4gammamatchnonele="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch!=11)*BphoWeight"
 
 
 # adding cut for loosepho_woChiso/woSigmaIetaIeta in 'SR1'
 #cut_bjj_1phowoIEtaIEta="Bnbjet>0 && BelePt>35 && BCandPhoTag>>1&1==1 && Sum$(BCandPhoTag>>1&1==1)==1 && BpfMET<50"
 #cut_bjj_1phowoChHadIso="Bnbjet>0 && BelePt>35 && BCandPhoTag>>2&1==1 && Sum$(BCandPhoTag>>2&1==1)==1 && BpfMET<50"
 
-cut_bjj_4gammawoietaieta="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>1&1==1)==1 && BCandPhoTag>>1&1==1)" # add it yourself
-cut_bjj_4gammawoietaieta_genmatchnojet="(BelePt>35 && BpfMET<50 && Bnbjet>0 && Sum$(BCandPhoTag>>1&1==1)==1 && BCandPhoTag>>1&1==1 && BCandphoGenmatch>0)" # add it yourself
-cut_bjj_4gammawoietaieta_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>1&1==1)==1 && BCandPhoTag>>1&1==1 && BCandphoGenmatch<0)" # add it yourself
+cut_bjj_4gammawoietaieta="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1)" # add it yourself
+cut_bjj_4gammawoietaieta_genmatchnojet="(BelePt>35 && BpfMET<50 && Bnbjet>0 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1 && BCandphoGenmatch>0)" # add it yourself
+cut_bjj_4gammawoietaieta_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1 && BCandphoGenmatch<0)" # add it yourself
 
-cut_bjj_4gammawochhadiso="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>2&1==1)==1 && BCandPhoTag>>2&1==1)" # add it yourself
-cut_bjj_4gammawochhadiso_genmatchnojet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>2&1==1)==1 && BCandPhoTag>>2&1==1 && BCandphoGenmatch>0)" # add it yourself
-cut_bjj_4gammawochhadiso_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$(BCandPhoTag>>2&1==1)==1 && BCandPhoTag>>2&1==1 && BCandphoGenmatch<0)" # add it yourself
+cut_bjj_4gammawochhadiso="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1)" # add it yourself
+cut_bjj_4gammawochhadiso_genmatchnojet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1 && BCandphoGenmatch>0)" # add it yourself
+cut_bjj_4gammawochhadiso_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1 && BCandphoGenmatch<0)" # add it yourself
 
 
 #if UseMETFilter:
@@ -413,7 +413,7 @@ if normaldraw:
     Stack.drawStack('BeleEta', cut_SR1_jjj, str(lumi*1000), 30, -3, 3, channel = "ele_jjj: SR1", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_SR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
 
 
-
+##################################################
 if test:
      Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=100,output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_pre_jjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_jjj: Pre", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=100,output=tag+'pfMET_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
