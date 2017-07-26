@@ -258,7 +258,8 @@ class StackPlotter(object):
                 print label+" : %f\n" % hist.Integral()
 
             if typeP =="data":
-                hist = plotter.drawTH1(output+'_'+typeP,var,cutL,"1",bins,mini,maxi,titlex,units)
+#                hist = plotter.drawTH1(output+'_'+typeP,var,cutL,"1",bins,mini,maxi,titlex,units)
+                hist = plotter.drawTH1(output+'_'+name,var,cutL,"1",bins,mini,maxi,titlex,units)
                 #hist.SetName(output+'_'+typeP)
                 hist.SetMarkerStyle(20)
                 hist.SetLineWidth(1)

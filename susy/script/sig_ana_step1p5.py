@@ -210,12 +210,14 @@ Bstopxsec=array('d',[-99.])
 BstopxsecErr=array('d',[-99.])
 BnlspBr=array('d',[-99.])
 Bnlspdecayweight=array('d',[-99.])
+BTotalScanpointEventsNumber=array('d',[-99.])
 
 #-----------------define the branches-------------------------------
 for tree_in in Trees_in:
     tree_out=tree_in.CloneTree(0)
     tree_out.Branch("BTotalEventsNumber",BTotalEventsNumber,"BTotalEventsNumber/D")
     tree_out.Branch("BgenWeightTotalEventsNumber",BgenWeightTotalEventsNumber,"BgenWeightTotalEventsNumber/D")
+    tree_out.Branch("BTotalScanpointEventsNumber",BTotalScanpointEventsNumber,"BTotalScanpointEventsNumber/D")
     tree_out.Branch("BpileupWeight",BpileupWeight,"BpileupWeight/D")
     tree_out.Branch("BbtagWeight",BbtagWeight,"BbtagWeight/D")
     tree_out.Branch("BbtagWeightUp",BbtagWeightUp,"BbtagWeightUp/D")
@@ -266,7 +268,7 @@ for tree_in in Trees_in:
     nprocessed=0
 #-----------------Starting loop------------
     for event in tree_in:
-        
+        BTotalScanpointEventsNumber[0]=H_sigscan.GetBinContent(H_sigscan.FindBin(event.BlheStopMass,event.BlheNLSPMass))
         nprocessed+=1
 #***********************Fill PU weight info***********************
         BpileupWeight[0]=Fun_pileupweight_fastsim(event.BPUTrue)

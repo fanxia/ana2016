@@ -168,7 +168,7 @@ for x in range(300,1501):
             xsec=stopxsdic[x]
             scanpoints.append([x,y,scanNumber,xsec[0]])
 
-ind=0
+Ind=0
 for point in scanpoints:
     Mst=point[0]
     Mnlsp=point[1]
