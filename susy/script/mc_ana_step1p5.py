@@ -7,6 +7,7 @@ import sys
 import time
 import datetime
 import ROOT
+import math
 from ROOT import *
 from array import array
 from ana2016.susy import *
@@ -118,6 +119,10 @@ phoPixsfHist=file_phoPixSF.Get("Scaling_Factors_HasPix_R9 Inclusive")
 ###################################################################
 ###################################################################
 
+lumi=35.86   #1.731    #4.353 #2016D                                                                                                                        
+lumisf1=19.714/lumi   #2016BCDEF                                                                                                                            
+lumisf2=16.146/lumi   #2016GH
+
 INPUTFile=sys.argv[1]
 file_in=TFile.Open(INPUTFile)
 file_out=TFile("../ntupleStore/step1p5_"+sys.argv[2]+".root","recreate")
@@ -150,6 +155,7 @@ BeleIDsf=array('d',[1.])
 BeleIsosf=array('d',[1.])
 BeleTrgsf=array('d',[1.])
 BeleWeight=array('d',[1.])  # for the total weight=eleidSF*isoSF*trgSF
+BeleWeightErr=array('d',[0.])  # for the total relative error, it's < 1.0
 #BtopPtWeight=array('d',[1.])
 
 BmuID1sf=array('d',[1.]) # These are for 2016RunBCDEF~period1 
@@ -157,15 +163,17 @@ BmuIso1sf=array('d',[1.])
 BmuTrg1sf=array('d',[1.])
 BmuTrk1sf=array('d',[1.])
 BmuWeight1=array('d',[1.])  # for the total weight=muidSF*isoSF*trgSF
+BmuWeight1Err=array('d',[0.])  #total relative error
 
 BmuID2sf=array('d',[1.]) # These are for 2016RunGH~period2
 BmuIso2sf=array('d',[1.])
 BmuTrg2sf=array('d',[1.])
 BmuTrk2sf=array('d',[1.])
 BmuWeight2=array('d',[1.])  # for the total weight=muidSF*isoSF*trgSF
+BmuWeight2Err=array('d',[0.])
 
-
-
+BmuWeight=array('d',[1.])
+BmuWeightErr=array('d',[0.])
 #-----------------define the branches-------------------------------
 for tree_in in Trees_in:
     tree_out=tree_in.CloneTree(0)
@@ -182,6 +190,7 @@ for tree_in in Trees_in:
     tree_out.Branch("BeleIsosf",BeleIsosf,"BeleIsosf/D")
     tree_out.Branch("BeleTrgsf",BeleTrgsf,"BeleTrgsf/D")
     tree_out.Branch("BeleWeight",BeleWeight,"BeleWeight/D")
+    tree_out.Branch("BeleWeightErr",BeleWeightErr,"BeleWeightErr/D")
 
 #    tree_out.Branch("BmuRecosf",BmuRecosf,"BmuRecosf/D")
     tree_out.Branch("BmuID1sf",BmuID1sf,"BmuID1sf/D")
@@ -189,13 +198,17 @@ for tree_in in Trees_in:
     tree_out.Branch("BmuTrg1sf",BmuTrg1sf,"BmuTrg1sf/D")
     tree_out.Branch("BmuTrk1sf",BmuTrk1sf,"BmuTrk1sf/D")
     tree_out.Branch("BmuWeight1",BmuWeight1,"BmuWeight1/D")
+    tree_out.Branch("BmuWeight1Err",BmuWeight1Err,"BmuWeight1Err/D")
 
     tree_out.Branch("BmuID2sf",BmuID2sf,"BmuID2sf/D")
     tree_out.Branch("BmuIso2sf",BmuIso2sf,"BmuIso2sf/D")
     tree_out.Branch("BmuTrg2sf",BmuTrg2sf,"BmuTrg2sf/D")
     tree_out.Branch("BmuTrk2sf",BmuTrk2sf,"BmuTrk2sf/D")
     tree_out.Branch("BmuWeight2",BmuWeight2,"BmuWeight2/D")
+    tree_out.Branch("BmuWeight2Err",BmuWeight2Err,"BmuWeight2Err/D")
 
+    tree_out.Branch("BmuWeight",BmuWeight,"BmuWeight/D")
+    tree_out.Branch("BmuWeightErr",BmuWeightErr,"BmuWeightErr/D")
 
     tree_out.Branch("BphoWeight",BphoWeight,"BphoWeight/D")
     tree_out.Branch("BphoWeightErr",BphoWeightErr,"BphoWeightErr/D")
@@ -253,10 +266,15 @@ for tree_in in Trees_in:
             eletrig=Fun_thisSF(event.BeleSCEta,event.BelePt,eleTrgsfHist)
             elereco=Fun_thisSF(event.BeleSCEta,event.BelePt,eleRecosfHist)
             eleid=Fun_thisSF(event.BeleSCEta,event.BelePt,eleIDsfHist)
+            if abs(eletrig[0])<0.00001: eletrig=[1.,0.] # some eletrig sf bin is empty, set sf=1 and err=0, further invest.
             BeleTrgsf[0]=eletrig[0]
             BeleRecosf[0]=elereco[0]
             BeleIDsf[0]=eleid[0]
+            if abs(elereco[0])<0.00001: elereco=[1.,0.] # there are event with abs(sceta)>2.5
+            if abs(eleid[0])<0.00001: eleid=[1.,0.] # 
+
             BeleWeight[0]=BeleRecosf[0]*BeleIDsf[0]*BeleIsosf[0]*BeleTrgsf[0]                                          
+            BeleWeightErr[0]=((elereco[1]/elereco[0])**2+(eleid[1]/eleid[0])**2+(eletrig[1]/eletrig[0]+0.0005)**2)**0.5      
         elif TreeMODE==34:
             mutrk=[Fun_thisSFTGraph(abs(event.BmuEta),muTrksf1Hist),Fun_thisSFTGraph(abs(event.BmuEta),muTrksf2Hist)]  #[[period1SF,period1SFerr],[period2SF,period2SFerr]]
             mutrig=[Fun_thisSF(abs(event.BmuEta),event.BmuPt,muTrgsf1Hist),Fun_thisSF(abs(event.BmuEta),event.BmuPt,muTrgsf2Hist)]  #[[period1SF,period1SFerr],[period2SF,period2SFerr]]
@@ -272,7 +290,11 @@ for tree_in in Trees_in:
             BmuTrk2sf[0]=mutrk[1][0]
             BmuWeight1[0]=BmuID1sf[0]*BmuIso1sf[0]*BmuTrg1sf[0]*BmuTrk1sf[0]
             BmuWeight2[0]=BmuID2sf[0]*BmuIso2sf[0]*BmuTrg2sf[0]*BmuTrk2sf[0]
+            BmuWeight1Err[0]=((muid[0][1]/muid[0][0]+0.001)**2+(muiso[0][1]/muiso[0][0]+0.0005)**2+(mutrig[0][1]/mutrig[0][0]+0.0005)**2)**0.5
+            BmuWeight2Err[0]=((muid[1][1]/muid[1][0]+0.001)**2+(muiso[1][1]/muiso[1][0]+0.0005)**2+(mutrig[1][1]/mutrig[1][0]+0.0005)**2)**0.5
 
+            BmuWeight[0]=lumisf1*BmuWeight1[0]+lumisf2*BmuWeight2[0]
+            BmuWeightErr[0]=((lumisf1*BmuWeight1Err[0]*BmuWeight1[0])**2+(lumisf2*BmuWeight2Err[0]*BmuWeight2[0])**2)**0.5/BmuWeight[0]
 #***********************Fil photon sf & weight info***********************
         phoWeight=1.
         phoWeightE2=0.
@@ -287,7 +309,7 @@ for tree_in in Trees_in:
                 phoWeightE2+=(pho_sf[1])**2/(pho_sf[0])**2+(pho_pixsf[1])**2/(pho_pixsf[0])**2
 #                if pho_sf<0.1: print "photon: ",pho_pt,pho_eta
         BphoWeight[0]=phoWeight
-        BphoWeightErr[0]=phoWeightE2**0.5*phoWeight
+        BphoWeightErr[0]=phoWeightE2**0.5
                                                   
 
         tree_out.Fill()
@@ -303,16 +325,21 @@ for tree_in in Trees_in:
         BeleIsosf[0]=1.
         BeleTrgsf[0]=1.
         BeleWeight[0]=1.
+        BeleWeightErr[0]=0.
         BmuID1sf[0]=1.
         BmuIso1sf[0]=1.
         BmuTrg1sf[0]=1.
         BmuTrk1sf[0]=1.
         BmuWeight1[0]=1.
+        BmuWeight1Err[0]=0.
         BmuID2sf[0]=1.
         BmuIso2sf[0]=1.
         BmuTrg2sf[0]=1.
         BmuTrk2sf[0]=1.
         BmuWeight2[0]=1.
+        BmuWeight2Err[0]=0.
+        BmuWeight[0]=1.
+        BmuWeightErr[0]=0.
 
         BphoWeight[0]=1.
         BphoWeightErr[0]=1.

@@ -56,8 +56,8 @@ echo 'STOP---------------'
 
 
 if not '.root' in GetIn:
-   tmpinputfilelist=getoutput('eos ls '+GetIn+'*.root').split('\n')
-   inputfilelist=[("root://eoscms/"+GetIn+lis) for lis in tmpinputfilelist ]
+   tmpinputfilelist=getoutput('ls /eos/cms'+GetIn+'*.root').split('\n')
+   inputfilelist=[("root://eoscms/"+lis) for lis in tmpinputfilelist ]
 #   inputfilelist.extend(getoutput().split('\n'))
    totalfilenumber=len(inputfilelist)
 ########   customization  area #########

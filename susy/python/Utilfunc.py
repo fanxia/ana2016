@@ -59,6 +59,38 @@ def Fun_btagweight(jets,sys="central"):
 
     return [weight1,weight1_err]
 
+def Fun_btagweight_1b(jets,sys="central"):
+#    jetlist[[btagged,btageff,btagsf],[]..]
+    Pmcnotag=1.0
+    Pdatanotag=1.0
+    PmcErr2=0.0     # acturally, it's (d(Pmc)/Pmc)^2
+    PdataErr2=0.0
+    btagnum=0
+    for jet in jets:
+        btagnum+=jet[0]
+        btagged=jet[0]
+        btageff=jet[1]
+        btageff_err=jet[2]
+        if sys=='central':    btagsf=jet[3]
+        elif sys=='up':    btagsf=jet[4]
+        elif sys=='down':    btagsf=jet[5]
+
+        if btageff==0.0 or btageff==1.0:continue
+
+        Pmcnotag*=(1-btageff)
+        Pdatanotag*=(1-btageff*btagsf)
+#        PmcErr2+=(btageff_err)**2/(1.0-btageff)**2
+#        PdataErr2+=(btagsf*btageff_err)**2/(1.0-btagsf*btageff)**2
+
+    if btagnum>0:
+        weight1=(1-Pdatanotag)/(1-Pmcnotag)
+        weight1_err=0.
+    else:
+         weight1=1.0
+         weight1_err=0.
+
+    return [weight1,weight1_err]
+
 
 
 def Fun_invmass_dilep(scanmode,lep,tree):

@@ -318,7 +318,7 @@ class StackPlotter(object):
         frame.Draw()
 
 
-        channelComment=ROOT.TPaveText(0.25,0.8,0.55,0.88,"NDC")
+        channelComment=ROOT.TPaveText(0.20,0.81,0.50,0.88,"NDC")
         channelComment.SetFillColor(ROOT.kGray)
 #        channelComment.SetFillStyle(0)
         channelComment.SetLineColor(0)
@@ -337,9 +337,9 @@ class StackPlotter(object):
             for sigH in signalHs:
                 sigH.Draw("HIST,SAME")
 
-        legend = ROOT.TLegend(0.62,0.65,0.92,0.90,"","brNDC")
+        legend = ROOT.TLegend(0.58,0.70,0.92,0.92,"","brNDC")
         legend.SetName(output+'_'+'legend')
-	legend.SetBorderSize(0)
+	legend.SetBorderSize(1)
 	legend.SetLineColor(1)
 	legend.SetLineStyle(1)
 	legend.SetLineWidth(1)
@@ -349,15 +349,23 @@ class StackPlotter(object):
 
         legend.SetFillColor(ROOT.kWhite)
         legend.SetNColumns(2)   #testpoint
+#        for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
+#            if typeP != "data" and typeP !='signal':
+#                legend.AddEntry(histo,label,"f")
+#            elif typeP == 'data':
+#                legend.AddEntry(histo,label,"p")
+
+        for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
+            if typeP == 'data':
+                legend.AddEntry(histo,label,"lp")
         for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
             if typeP != "data" and typeP !='signal':
                 legend.AddEntry(histo,label,"f")
-            elif typeP == 'data':
-                legend.AddEntry(histo,label,"p")
 
         for (histo,label,typeP) in reversed(zip(hists,self.labels,self.types)):
             if typeP == "signal":
-                legend.AddEntry(histo,label,"f")
+#                legend.AddEntry(histo,label,"f")
+                legend.AddEntry(histo,label,"l")
 
 
  #       ROOT.SetOwnership(legend,False)

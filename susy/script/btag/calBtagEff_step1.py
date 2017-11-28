@@ -9,6 +9,7 @@ import time
 import datetime
 import ROOT
 from ROOT import *
+from array import array
 
 from ana2016.susy import *
 from ana2016.susy.ana_muon import *
@@ -56,19 +57,21 @@ os.chdir('MC_BtagEff_step1/'+OUTPUTName+'/'+dd)
 file_out = ROOT.TFile("BtagEff_step1_"+OUTPUTName+"_"+str(fileID)+".root","recreate")
 file_out.cd()
 
-ptNBins=200
+ptNBins=17
 ptMin=0
 ptMax=1000
-etaNBins=24
+etaNBins=6
 etaMin=-2.4
 etaMax=2.4
 
-num_bjets = ROOT.TH2D("bjets", "bjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_bjets.Sumw2();
-num_btags = ROOT.TH2D("btags", "btags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_btags.Sumw2();
-num_cjets = ROOT.TH2D("cjets", "cjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_cjets.Sumw2();
-num_ctags = ROOT.TH2D("ctags", "ctags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ctags.Sumw2();
-num_ljets = ROOT.TH2D("ljets", "ljets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ljets.Sumw2();
-num_ltags = ROOT.TH2D("ltags", "ltags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_ltags.Sumw2();
+ptBin=array('d',[20,30,40,50,60,70,80,100,120,160,210,260,320,400,500,600,800,99999])
+etaBin=array('d',[-2.4,-1.6,-0.8,0.0,0.8,1.6,2.4])
+num_bjets = ROOT.TH2D("bjets", "bjets", ptNBins, ptBin, etaNBins, etaBin); num_bjets.Sumw2();
+num_btags = ROOT.TH2D("btags", "btags", ptNBins, ptBin, etaNBins, etaBin); num_btags.Sumw2();
+num_cjets = ROOT.TH2D("cjets", "cjets", ptNBins, ptBin, etaNBins, etaBin); num_cjets.Sumw2();
+num_ctags = ROOT.TH2D("ctags", "ctags", ptNBins, ptBin, etaNBins, etaBin); num_ctags.Sumw2();
+num_ljets = ROOT.TH2D("ljets", "ljets", ptNBins, ptBin, etaNBins, etaBin); num_ljets.Sumw2();
+num_ltags = ROOT.TH2D("ltags", "ltags", ptNBins, ptBin, etaNBins, etaBin); num_ltags.Sumw2();
 
 #num_tempjets = ROOT.TH2D("tempjets", "tempjets", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_tempjets.Sumw2();
 #num_temptags = ROOT.TH2D("temptags", "temptags", ptNBins, ptMin, ptMax, etaNBins, etaMin, etaMax); num_temptags.Sumw2();

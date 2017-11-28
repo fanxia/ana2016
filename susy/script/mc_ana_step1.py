@@ -125,6 +125,8 @@ Brho=array('d',[-99.])
 BrhoCentral=array('d',[-99.])
 BpfMET=array('d',[-99.])
 BpfMeTPhi=array('d',[-99.])
+BpfMeT1JESUp=array('d',[-99.])
+BpfMeT1JESDo=array('d',[-99.])
 BPUTrue=array('d',[-99.])
 BgenWeight=array('d',[-99.])
 BlepMt=array('d',[-99.])
@@ -173,6 +175,8 @@ tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
 tree1_out.Branch("BgenWeight",BgenWeight,"BgenWeight/D")
 tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
 tree1_out.Branch("BpfMeTPhi",BpfMeTPhi,"BpfMeTPhi/D")
+tree1_out.Branch("BpfMeT1JESUp",BpfMeT1JESUp,"BpfMeT1JESUp/D")
+tree1_out.Branch("BpfMeT1JESDo",BpfMeT1JESDo,"BpfMeT1JESDo/D")
 tree1_out.Branch("BlepMt",BlepMt,"BlepMt/D")
 tree1_out.Branch("BMHT",BMHT,"BMHT/D")
 tree1_out.Branch("BHT",BHT,"BHT/D")
@@ -369,6 +373,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
     BpfMET[0]=event.pfMET
     BpfMeTPhi[0]=event.pfMETPhi
+    BpfMeT1JESUp[0]=event.pfMET_T1JERUp
+    BpfMeT1JESDo[0]=event.pfMET_T1JERDo
     BnVtx[0]=event.nVtx
     Brho[0]=event.rho
     BrhoCentral[0]=event.rhoCentral
@@ -476,6 +482,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BrhoCentral[0]=-99.
     BpfMET[0]=-99.
     BpfMeTPhi[0]=-99.
+    BpfMeT1JESUp[0]=-99.
+    BpfMeT1JESDo[0]=-99.
     BgenWeight[0]=-99.
     BPUTrue[0]=-99.
     BlepMt[0]=-99.

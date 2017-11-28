@@ -4,10 +4,10 @@
 # Second method to submit jobs for dir containing many inputfiles:  script   dirpath(/store/../)         OUTName files/jobs
 # 
 
-runMC=false
-runSig=false
+runMC=true
+runSig=true
 runDataEle=false
-runDataMu=true
+runDataMu=false
 
 ######################################################################
 ######################## Signal MC ###################################
