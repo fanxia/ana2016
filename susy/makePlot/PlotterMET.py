@@ -1,4 +1,5 @@
 from ROOT import *
+import math
 
 class PlotterMET(object):
     def __init__(self):
@@ -21,6 +22,12 @@ class PlotterMET(object):
         self.afthist.SetFillColor(0)
     def addaft(self,hist,scal=1):
         self.afthist.Add(hist,scal)
+
+    def syserror(self,hista,histb,erra,errb):
+        numa=hista.Integral()
+        numb=histb.Integral()
+        self.ratiosysErr= math.sqrt(erra*erra*numa*numa+errb*errb*numb*numb)/(numa+numb)
+        
 
     def plotMETcompare(self,foutname,plotname,xtitle,ytitle):
         self.fout=TFile.Open(foutname+".root", 'UPDATE')

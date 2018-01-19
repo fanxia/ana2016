@@ -185,7 +185,7 @@ def doChHadIsofit(k_wjets,k_ttbar,k_zjets=1.0):
     print "*******************************************************\n\n\n"
     return [k_promptgamma,k_promptgamma_err,k_bkgs_gammagenjet,k_bkgs_gammagenjet_err]
 
-def doCombTT(sf_promptgamma,sf_nonpromptgamma):
+def doCombTT(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma):
     print "#####################################################"
     print "plot SR1 MET comparison before/after TT sfs"
     PlotMETTT=PlotterMET()
@@ -194,10 +194,12 @@ def doCombTT(sf_promptgamma,sf_nonpromptgamma):
     PlotMETTT.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),col=kRed,scal=sf_promptgamma)
     PlotMETTT.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"),scal=sf_nonpromptgamma)
 
+    PlotMETTT.syserror(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"),sferr_promptgamma,sferr_nonpromptgamma)
     PlotMETTT.plotMETcompare(foutname,"combTT_pfMET","pfMET(GeV)","")
     print "In SR1, TT samples, SF for non-prompt photon(jet) events is ",sf_nonpromptgamma," and for prompt gamma is ",sf_promptgamma
     print "Before/After applying the above sfs, the total ratio for the whole sample is ",PlotMETTT.ratio
     print "And the ratio Error is ",PlotMETTT.ratioErr
+    print "And the ratio Sys. Error is ",PlotMETTT.ratiosysErr
     print "You need to carefully check the before/after ratio hists to make sure the seperate sfs won't affect the MET shape"
     print "*******************************************************\n\n\n"
 
@@ -206,6 +208,7 @@ def doCombTT(sf_promptgamma,sf_nonpromptgamma):
     log.write("This sf is additional to the jetM3 k_ttbar, apply both in SR1")
     log.write("\n For SR1, the scale factor for TT is %s"%PlotMETTT.ratio)
     log.write("\n For SR1, the scale factor for TT Err is %s"%PlotMETTT.ratioErr)
+    log.write("\n For SR1, the scale factor for TT Sys. Err is %s"%PlotMETTT.ratiosysErr)
     log.write("\n#################################################################\n\n\n")
 
 
@@ -233,7 +236,7 @@ def doCombTTSR2(sf_promptgamma,sf_nonpromptgamma):
     log.write("\n#################################################################\n\n\n")
 
 
-def doCombTTG(sf_promptgamma,sf_nonpromptgamma):
+def doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma):
     print "#####################################################"
     print "plot MET comparison before/after TTG sfs"
     PlotMETTTG=PlotterMET()
@@ -242,10 +245,12 @@ def doCombTTG(sf_promptgamma,sf_nonpromptgamma):
     PlotMETTTG.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kRed,scal=sf_promptgamma)
     PlotMETTTG.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"),scal=sf_nonpromptgamma)
 
+    PlotMETTTG.syserror(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"),sferr_promptgamma,sferr_nonpromptgamma)
     PlotMETTTG.plotMETcompare(foutname,"combTTG_pfMET","pfMET(GeV)","")
     print "In TTG samples, SF for non-prompt photon(jet) events is ",sf_nonpromptgamma," and for prompt gamma is ",sf_promptgamma
     print "Before/After applying the above sfs, the total ratio for the whole sample is ",PlotMETTTG.ratio
     print "And the ratio Error is ",PlotMETTTG.ratioErr
+    print "And the ratio sys. Error is ",PlotMETTTG.ratiosysErr
     print "You need to carefully check the before/after ratio hists to make sure the seperate sfs won't affect the MET shape"
     print "*******************************************************\n\n\n"
 
@@ -253,6 +258,7 @@ def doCombTTG(sf_promptgamma,sf_nonpromptgamma):
     log.write("Combine the sfs for TTG(prompt and non-prompt photons) into one sf")
     log.write("\n For SR1, the scale factor for TTG is %s"%PlotMETTTG.ratio)
     log.write("\n For SR1, the scale factor for TTG Err is %s"%PlotMETTTG.ratioErr)
+    log.write("\n For SR1, the scale factor for TTG Sys. Err is %s"%PlotMETTTG.ratiosysErr)
     log.write("\n#################################################################\n\n\n")
 
 
@@ -313,10 +319,12 @@ else:
            [k_promptgamma,k_promptgamma_err,k_bkgs_gammagenjet,k_bkgs_gammagenjet_err]=ChHadIsoresult
 
 sf_promptgamma=k_promptgamma
+sferr_promptgamma=k_promptgamma_err
 sf_nonpromptgamma=k_bkgs_gammagenjet
+sferr_nonpromptgamma=k_bkgs_gammagenjet_err
 
-doCombTT(sf_promptgamma,sf_nonpromptgamma)
-doCombTTG(sf_promptgamma,sf_nonpromptgamma)
+doCombTT(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma)
+doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma)
 doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar)
 
 log.close()

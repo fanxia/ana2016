@@ -472,8 +472,8 @@ if test:
      Stack.drawStack('BpfMET', cut_SR1_bjj_4gammamatchnonele, str(lumi*1000), xBins_pfMET,0,500, channel = "ele_bjj: SR1", titlex = "pfMET(#gamma-->no e)", units = "GeV",output=tag+'pfMET_SR1_ele_bjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
 
 
-     Stack.drawStack('Bnjet', cut_SR1_bjj_4gammamatchele, str(lumi*1000), 20,0,20, channel = "ele_bjj: SR1", titlex = "N_{jets}(#gamma-->e)", units = "",output=tag+'Bnjet_SR1_ele_bjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('Bnjet', cut_SR1_bjj_4gammamatchnonele, str(lumi*1000), 20,0,20, channel = "ele_bjj: SR1", titlex = "N_{jets}(#gamma-->no e)", units = "",output=tag+'Bnjet_SR1_ele_bjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('Bnjet', cut_SR1_bjj_4gammamatchele, str(lumi*1000), 15,0,15, channel = "ele_bjj: SR1", titlex = "N_{jets}(#gamma-->e)", units = "",output=tag+'Bnjet_SR1_ele_bjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('Bnjet', cut_SR1_bjj_4gammamatchnonele, str(lumi*1000), 15,0,15, channel = "ele_bjj: SR1", titlex = "N_{jets}(#gamma-->no e)", units = "",output=tag+'Bnjet_SR1_ele_bjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
 
 #     Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 

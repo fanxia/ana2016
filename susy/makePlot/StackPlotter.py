@@ -98,7 +98,7 @@ def GetRatioHist(h1, hstack,blinding=False,blindingCut=100):
     for hist in hstack.GetHists():
         h2.Add(hist)
 
-    for i in xrange(h1.GetXaxis().GetNbins()):
+    for i in xrange(1,h1.GetXaxis().GetNbins()+1,1):
         N1 = h1.GetBinContent(i)
         N2 = h2.GetBinContent(i)
         E1 = h1.GetBinError(i)
@@ -139,6 +139,28 @@ def GetRatioHist(h1, hstack,blinding=False,blindingCut=100):
     hratio.GetZaxis().SetTitleFont(42)
 
     return hratio
+
+
+def GetMCstatsHist(hstack):
+
+    h2 = hstack.GetHistogram()
+    h2.SetName('hstackmerge')
+    hmcstats=h2.Clone('hMCstats')
+    for hist in hstack.GetHists():
+        h2.Add(hist)
+
+    for i in xrange(1,h2.GetXaxis().GetNbins()+1,1):
+        N2 = h2.GetBinContent(i)
+        E2 = h2.GetBinError(i)
+        RR = 1. if N2>0 else 0
+        EE = 0 if (N2<=0 or RR ==0) else E2/N2
+
+        hmcstats.SetBinContent(i, 1.)
+        hmcstats.SetBinError(i, EE)
+
+    hmcstats.SetFillColor(ROOT.kGray)
+    hmcstats.SetFillStyle(1001)
+    return hmcstats
 
 class StackPlotter(object):
     def __init__(self,defaultCut="1",outDir='.', outTag="stack_plotter"):
@@ -247,7 +269,7 @@ class StackPlotter(object):
                 if typeP == "background" :
                     background+=hist.IntegralAndError(1,hist.GetNbinsX(),error)
                     backgroundErr+=error*error
-
+                    print label,"+-",error,"\n"
             if separateSignal and typeP == "signal":
                 hist = plotter.drawTH1(output+'_'+name,var,cutL,lumi,bins,mini,maxi,titlex,units)
                 #hist.SetName(output+'_'+name)
@@ -387,7 +409,7 @@ class StackPlotter(object):
         elif len(signalHs)>0:
             for (sig,sigLab) in reversed(zip(signals,signalLabels)):
                 print "Signal "+sigLab+" = "+str(sig)
-        print "Bkg    = %f" %(background)
+        print "Bkg    = %f" %(background),"+-",math.sqrt(backgroundErr)
         if dataH is not None:
             print "Observed = %f"%(dataH.Integral())
             integral = dataH.IntegralAndError(1,dataH.GetNbinsX(),error)
@@ -415,6 +437,7 @@ class StackPlotter(object):
             hratio = GetRatioHist(dataH,stack,blinding, blindingCut)
             hratio.SetName(output+'_'+'hratio')
             hline = hratio.Clone(output+'_'+"hline")
+            hmcstats=GetMCstatsHist(stack)
             for ii in range(hline.GetNbinsX()+1): 
                 hline.SetBinContent(ii,1.0)
                 hline.SetBinError(ii,0.0)
@@ -422,6 +445,8 @@ class StackPlotter(object):
             hline.SetFillStyle(0)
             p2.cd()
             hratio.Draw('AXIS')
+            hmcstats.Draw("E2,SAME")
+            hratio.Draw('AXIS,SAME')
             hline.Draw('HIST,SAME')
             hratio.Draw('E1,P,SAME')
                 
