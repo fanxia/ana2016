@@ -7,13 +7,14 @@ from MergedPlotter import MergedPlotter
 from StackPlotter import StackPlotter
 ROOT.gROOT.SetBatch()
 
-#SF_tt=0.8694
-#SF_wjets=1.6365
 SF_tt=0.81
 SF_wjets=1.72
 #SF_tt= 1.
 #SF_wjets =1.
 SF_QCD=0.39
+SF_Zjets=1.4
+SF_gpurity_tt=0.99
+SF_gpurity_ttg=0.81
 
 tag=sys.argv[1]
 tag=tag+"_ELE"
@@ -94,50 +95,48 @@ for sample in vvSamples:
 VV = MergedPlotter(vvPlotters)
 VV.setFillProperties(1001,ROOT.kCyan-3)
 
-wgPlotters=[]
-wgSamples = [['step1p5_WGToLNuG',405.271]]
-for sample in wgSamples:
-    wgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
-    wgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
-    wgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-    wgPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
-    wgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
-#    wgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-    wgPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
-    allPlotters[sample[0]] = wgPlotters[-1]
-WG = MergedPlotter(wgPlotters)
-WG.setFillProperties(1001,ROOT.kMagenta)
+# wgPlotters=[]
+# wgSamples = [['step1p5_WGToLNuG',405.271]]
+# for sample in wgSamples:
+#     wgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+#     wgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
+#     wgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+#     wgPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
+#     wgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+# #    wgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+#     wgPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
+#     allPlotters[sample[0]] = wgPlotters[-1]
+# WG = MergedPlotter(wgPlotters)
+# WG.setFillProperties(1001,ROOT.kMagenta)
 
-zgPlotters=[]
-zgSamples = [['step1p5_ZGTo2LG',117.864]]
-for sample in zgSamples:
-    zgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
-    zgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
-    zgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-    zgPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
-    zgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
-#    zgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-    zgPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
-    allPlotters[sample[0]] = zgPlotters[-1]
-ZG = MergedPlotter(zgPlotters)
-ZG.setFillProperties(1001,ROOT.kMagenta)
+# zgPlotters=[]
+# zgSamples = [['step1p5_ZGTo2LG',117.864]]
+# for sample in zgSamples:
+#     zgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+#     zgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
+#     zgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+#     zgPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
+#     zgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+# #    zgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+#     zgPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
+#     allPlotters[sample[0]] = zgPlotters[-1]
+# ZG = MergedPlotter(zgPlotters)
+# ZG.setFillProperties(1001,ROOT.kMagenta)
 
-# vgPlotters=[]
-# vgSamples = [['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864]]
-# for sample in vgSamples:
-#     vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
-# #    SumEvents=vgPlotters[-1].file.Get("H_ele").GetBinContent(1)
-# #    vgPlotters[-1].addCorrectionFactor(1./SumEvents,'norm')
-#     vgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
-# #    vgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-#     vgPlotters[-1].addCorrectionFactor('1./BTotalEventsNumber','norm')
-#     vgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
-#     vgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-# #    vgPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
-#     vgPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
-#     allPlotters[sample[0]] = vgPlotters[-1]
-# VG = MergedPlotter(vgPlotters)
-# VG.setFillProperties(1001,ROOT.kMagenta)
+vgPlotters=[]
+vgSamples = [['step1p5_WGToLNuG',405.271],['step1p5_ZGTo2LG',117.864]]
+for sample in vgSamples:
+    vgPlotters.append(TreePlotter(sample[0], indir+'/'+sample[0]+'.root',tree))
+    vgPlotters[-1].addCorrectionFactor(sample[1],'xsec')
+    vgPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+    vgPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
+    vgPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+#    vgPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+#    vgPlotters[-1].addCorrectionFactor("BlepTrgsf",'trgWeight')
+    vgPlotters[-1].addCorrectionFactor("BeleWeight", 'lepsf')
+    allPlotters[sample[0]] = vgPlotters[-1]
+VG = MergedPlotter(vgPlotters)
+VG.setFillProperties(1001,ROOT.kMagenta)
 
 
 # wjetsPlotters=[]
@@ -175,21 +174,6 @@ WJets.setFillProperties(1001,ROOT.kBlue-6)
 
 
 
-# zjetsPlotters=[]
-# zjetsSamples = ['step1p5_DYJetsToLL']
-# for sample in zjetsSamples:
-#     zjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
-#     zjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
-#     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
-#     zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-#     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
-# #    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-#     zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
-#     allPlotters[sample] = zjetsPlotters[-1] 
-# ZJets = MergedPlotter(zjetsPlotters)
-# ZJets.setFillProperties(1001,ROOT.kOrange+7)
-
-#for SR
 zjetsPlotters=[]
 zjetsSamples = ['step1p5_DYJetsToLL']
 for sample in zjetsSamples:
@@ -200,20 +184,36 @@ for sample in zjetsSamples:
     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
-    zjetsPlotters[-1].addCorrectionFactor("(Sum$((BCandPhoTag>>3&1)==1 && BCandphoGenmatch==11)==1)*1.89",'efakedphoton')
-    allPlotters[sample] = zjetsPlotters[-1] 
-
-    zjetsPlotters.append(TreePlotter(sample+"copy", indir+'/'+sample+'.root',tree))
-    zjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
-    zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
-    zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
-    zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
-#    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
-    zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
-    zjetsPlotters[-1].addCorrectionFactor("(Sum$((BCandPhoTag>>3&1)==1 && BCandphoGenmatch!=11)==1)*1.09",'realphoton')
+    zjetsPlotters[-1].addCorrectionFactor(SF_Zjets,'efakecorr')
     allPlotters[sample] = zjetsPlotters[-1] 
 ZJets = MergedPlotter(zjetsPlotters)
 ZJets.setFillProperties(1001,ROOT.kOrange+7)
+
+#for SR
+# zjetsPlotters=[]
+# zjetsSamples = ['step1p5_DYJetsToLL']
+# for sample in zjetsSamples:
+#     zjetsPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+#     zjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
+#     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
+#     zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+#     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+# #    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+#     zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
+#     zjetsPlotters[-1].addCorrectionFactor("(Sum$((BCandPhoTag>>3&1)==1 && BCandphoGenmatch==11)==1)*1.89",'efakedphoton')
+#     allPlotters[sample] = zjetsPlotters[-1] 
+
+#     zjetsPlotters.append(TreePlotter(sample+"copy", indir+'/'+sample+'.root',tree))
+#     zjetsPlotters[-1].addCorrectionFactor('1./BgenWeightTotalEventsNumber','norm')
+#     zjetsPlotters[-1].addCorrectionFactor(6025.2,'xsec')
+#     zjetsPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')
+#     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
+# #    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
+#     zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
+#     zjetsPlotters[-1].addCorrectionFactor("(Sum$((BCandPhoTag>>3&1)==1 && BCandphoGenmatch!=11)==1)*1.09",'realphoton')
+#     allPlotters[sample] = zjetsPlotters[-1] 
+# ZJets = MergedPlotter(zjetsPlotters)
+# ZJets.setFillProperties(1001,ROOT.kOrange+7)
 
 # zjetsPlotters=[]
 # zjetsSamples = ['DYJetsToLL_M50_BIG_RcDataB2H33fbinv']
@@ -383,9 +383,9 @@ Stack.addPlotter(Data, "data_obs", "Data", "data")
 Stack.addPlotter(TTV, "TTV","TTV", "background")
 Stack.addPlotter(TTG, "TTG","TT#gamma", "background")
 Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
-#Stack.addPlotter(VG, "Vgamma","V#gamma", "background")
-Stack.addPlotter(WG, "Wgamma","W#gamma", "background")
-Stack.addPlotter(ZG, "Zgamma","Z#gamma", "background")
+Stack.addPlotter(VG, "Vgamma","V#gamma", "background")
+#Stack.addPlotter(WG, "Wgamma","W#gamma", "background")
+#Stack.addPlotter(ZG, "Zgamma","Z#gamma", "background")
 Stack.addPlotter(ST, "ST","single top", "background")
 Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 
@@ -408,54 +408,63 @@ Stack.doRatio(doRatio)
 tag+='_'
 
 #xBins_pfMET=[0,20,40,60,80,100,150,200,250,300,500,1000]
-xBins_pfMET=[0,20,60,100,150,200,300,500,1000]
+xBins_pfMET=[0,20,60,100,150,300,500,1000]
 xBins_Pt=[0,20,40,60,80,100,120,160,200,250,300,400,500,600,800,1000,1250]
 
 #print cuts
 
 if normaldraw: 
-     if AddQCD==True:
-          Stack.addPlotter(QCD,"QCD","QCD","background")
-
-     sepSig=True
-     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",blinding=True, blindingCut=50,output=tag+'pfMET_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), xBins_Pt, 0, 500, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BMHT', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "MHT", units = "GeV",output=tag+'MHT_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BHT', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BCandphoEt', cut_SR1_bjj_4gamma, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "#gamma E_{T}", units = "GeV",output=tag+'phoEt_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('Bnjet', cut_SR1_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: SR1", titlex = "NJets", units = "",output=tag+'njets_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gamma, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
-
-     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BelePt', cut_CR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BMHT', cut_CR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "MHT", units = "GeV",output=tag+'MHT_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BHT', cut_CR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: CR1", titlex = "HT_jets", units = "GeV",output=tag+'HT_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BCandphoEt', cut_CR1_bjj_4fake, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "fake E_{T}", units = "GeV",output=tag+'fakeEt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('Bnjet', cut_CR1_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: CR1", titlex = "NJets", units = "",output=tag+'njets_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-
-     Stack.drawStack('BpfMET', cut_CR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-
 #     if AddQCD==True:
 #          Stack.addPlotter(QCD,"QCD","QCD","background")
 
+     TT.addCorrectionFactor(SF_gpurity_tt,"photon purity")
+     TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
+
+     sepSig=True
+     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",output=tag+'pfMETbin_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETblind_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",blinding=True, blindingCut=60,output=tag+'pfMETbinblind_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
+
+     Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), xBins_Pt, 0, 500, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePtbin_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "MHT", units = "GeV",output=tag+'MHT_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR1_bjj, str(lumi*1000),  xBins_pfMET, 0, 500, channel = "ele_bjj: SR1", titlex = "MHT", units = "GeV",output=tag+'MHTbin_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BHT', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoEt', cut_SR1_bjj_4gamma, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "#gamma_{E_{T}}", units = "GeV",output=tag+'phoEt_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoEt', cut_SR1_bjj_4gamma, str(lumi*1000), xBins_Pt, 0, 500, channel = "ele_bjj: SR1", titlex = "#gamma_{E_{T}}", units = "GeV",output=tag+'phoEtbin_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('Bnjet', cut_SR1_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: SR1", titlex = "NJets", units = "",output=tag+'njets_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gamma, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+
+     TT.addCorrectionFactor(SF_gpurity_tt,"photon purity")
+     TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
+
+     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMETbin_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETbinblind_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR2_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",output=tag+'MHT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BHT', cut_SR2_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR2", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+
+
+     if AddQCD==True:
+          Stack.addPlotter(QCD,"QCD","QCD","background")
+     TT.addCorrectionFactor(1./SF_gpurity_tt/SF_gpurity_tt,"photon purity")
+     TTG.addCorrectionFactor(1./SF_gpurity_ttg/SF_gpurity_ttg,"photon purity")
+
      Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500,channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 500,channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500,channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=50,output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), 80, 0, 800, channel = "ele_bjj: Pre",titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BnVtx', cut_pre_bjj, str(lumi*1000), 100, 0, 100, channel = "ele_bjj: Pre", titlex = "nVtx", units = "",output=tag+'nVtx_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('Bnjet', cut_pre_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 500,channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMETbin_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500,channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=60,output=tag+'pfMETblind_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), 80, 0, 800, channel = "ele_bjj: Pre",titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), xBins_Pt, 0, 800, channel = "ele_bjj: Pre",titlex = "ele_Pt", units = "GeV",output=tag+'elePtbin_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BnVtx', cut_pre_bjj, str(lumi*1000), 100, 0, 100, channel = "ele_bjj: Pre", titlex = "nVtx", units = "",output=tag+'nVtx_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('Bnjet', cut_pre_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BnPho', cut_pre_bjj, str(lumi*1000), 3, 0, 3, channel = "ele_bjj: Pre", titlex = "N_{#gamma}", units = "",output=tag+'BnPho_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BeleEta', cut_pre_bjj, str(lumi*1000), 30, -3, 3, channel = "ele_bjj: pre", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BMHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "MHT", units = "GeV",output=tag+'MHT_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "HT_jets", units = "GeV",output=tag+'HT_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "MHT", units = "GeV",output=tag+'MHT_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: pre", titlex = "MHT", units = "GeV",output=tag+'MHTbin_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "HT_jets", units = "GeV",output=tag+'HT_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
 
 
      Stack.closePSFile()

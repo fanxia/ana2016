@@ -316,6 +316,7 @@ Data.setAlias("BbtagWeight","1.*1")
 Data.setAlias("BbtagWeightUp","1.*1")
 Data.setAlias("BbtagWeightDown","1.*1")
 Data.setAlias("BeleWeightErr","1.*0")
+Data.setAlias("BphoWeightErr","1.*0")
 Data.setAlias("BpfMeT1JESUp","BpfMET")
 Data.setAlias("BpfMeT1JESDo","BpfMET")
 
@@ -441,7 +442,8 @@ Stack.doRatio(doRatio)
 tag+='_'
 
 #xBins_pfMET=[0,20,40,60,80,100,150,200,250,300,500,1000]
-xBins_pfMET=[0,20,40,60,80,100,150,200,300,500,1000]
+#xBins_pfMET=[0,20,40,60,80,100,150,200,300,500,1000]
+xBins_pfMET=[0,20,40,60,80,100,150,300,500,1000]
 xBins_Pt=[0,20,40,60,80,100,120,140,160,180,200,250,300,400,500,600,800,1000,1250]
 
 #print cuts
@@ -464,6 +466,8 @@ if normaldraw:
      Stack.drawStack('BpfMeT1JESUp', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_bjj_BJESUp',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BpfMeT1JESDo', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_bjj_BJESDown',outDir=outdir)#,separateSignal=sepSig)
 
+     Stack.drawStack('BpfMET', cut_SR2_bjj+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_bjj_BphoWeightDown',outDir=outdir)#,separateSignal=sepSig)                                                                     
+     Stack.drawStack('BpfMET', cut_SR2_bjj+"*(1.+BphoWeightErr/BphoWeight)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_bjj_BphoWeightUp',outDir=outdir)#,separateSignal=sepSig)
 
      Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
      TT.addCorrectionFactor(1./SF_gpurity_tt,"photon purity")
@@ -481,6 +485,9 @@ if normaldraw:
      Stack.drawStack('BpfMeT1JESUp', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj_BJESUp',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BpfMeT1JESDo', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj_BJESDown',outDir=outdir)#,separateSignal=sepSig)
 
+
+     Stack.drawStack('BpfMET', cut_SR1_bjj+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj_BphoWeightDown',outDir=outdir)#,separateSignal=sepSig)                                                          
+     Stack.drawStack('BpfMET', cut_SR1_bjj+"*(1.+BphoWeightErr/BphoWeight)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj_BphoWeightUp',outDir=outdir)#,separateSignal=sepSig)
 
 
 #     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR1",titlex = "pfMET", units = "GeV",blinding=True, blindingCut=50,output=tag+'pfMET_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)

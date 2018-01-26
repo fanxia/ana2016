@@ -252,6 +252,7 @@ class StackPlotter(object):
         dataH=None
         dataG=None
         error=ROOT.Double(0.0)
+        sigerror=ROOT.Double(0.0)
 
         cutL="("+self.defaultCut+")*("+cut+")"
 
@@ -273,11 +274,12 @@ class StackPlotter(object):
             if separateSignal and typeP == "signal":
                 hist = plotter.drawTH1(output+'_'+name,var,cutL,lumi,bins,mini,maxi,titlex,units)
                 #hist.SetName(output+'_'+name)
+                hist.IntegralAndError(1,hist.GetNbinsX(),sigerror)
                 hists.append(hist)
                 signalHs.append(hist)
                 signals.append(hist.Integral())
                 signalLabels.append(label)
-                print label+" : %f\n" % hist.Integral()
+                print label+" : %f\n" % hist.Integral(),"+-",sigerror
 
             if typeP =="data":
 #                hist = plotter.drawTH1(output+'_'+typeP,var,cutL,"1",bins,mini,maxi,titlex,units)
