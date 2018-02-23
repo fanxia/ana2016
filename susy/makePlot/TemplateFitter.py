@@ -5,8 +5,10 @@ class TemplateFitter(object):
         self.mcsample={}
         self.mcorder={}
         self.data=TH1F()
+
+
     def pushdata(self,datan,datahist):
-        self.data=datahist
+        self.data=datahist.Clone()
         self.dataname=datan
     def adddata(self,datahist,scal=1):
         self.data.Add(datahist,scal*1)
@@ -14,7 +16,7 @@ class TemplateFitter(object):
         self.data.Add(subhist,-1*scal)
     def pushmc(self,mcname,mchist,scal=1,col=0):
         self.mcorder[mcname]=len(self.mcsample)
-        self.mcsample[self.mcorder[mcname]]=mchist
+        self.mcsample[self.mcorder[mcname]]=mchist.Clone()
         self.mcsample[self.mcorder[mcname]].Scale(scal)
         if col!=0:self.mcsample[self.mcorder[mcname]].SetFillColor(col)
     def addmc(self,mcname,mchist,scal=1):

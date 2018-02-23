@@ -429,6 +429,7 @@ if normaldraw:
      Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), xBins_Pt, 0, 500, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePtbin_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "MHT", units = "GeV",output=tag+'MHT_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "MHT", units = "GeV",blinding=True, blindingCut=50,output=tag+'MHTblind_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_SR1_bjj, str(lumi*1000),  xBins_pfMET, 0, 500, channel = "ele_bjj: SR1", titlex = "MHT", units = "GeV",output=tag+'MHTbin_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BHT', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BCandphoEt', cut_SR1_bjj_4gamma, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR1", titlex = "#gamma_{E_{T}}", units = "GeV",output=tag+'phoEt_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
@@ -443,6 +444,7 @@ if normaldraw:
      Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMETbin_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETbinblind_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_SR2_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",output=tag+'MHT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR2_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",blinding=True, blindingCut=50,output=tag+'MHTblind_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BHT', cut_SR2_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR2", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
 
