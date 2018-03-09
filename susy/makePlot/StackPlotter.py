@@ -118,8 +118,8 @@ def GetRatioHist(h1, hstack,blinding=False,blindingCut=100):
     hratio.SetMarkerColor(ROOT.kBlack)
     hratio.GetXaxis().SetTitle('')
     hratio.GetYaxis().SetTitle('Data/MC')
-    #hratio.GetYaxis().SetRangeUser(0.0,2.0)
-    hratio.GetYaxis().SetRangeUser(0.5,1.5)
+    hratio.GetYaxis().SetRangeUser(0.0,2.0)
+#    hratio.GetYaxis().SetRangeUser(0.5,1.5)
     hratio.GetXaxis().SetLabelFont(42)
     hratio.GetXaxis().SetLabelOffset(0.007)
     hratio.GetXaxis().SetLabelSize(0.1)
@@ -332,8 +332,10 @@ class StackPlotter(object):
 
 
         if type(bins)==list:
+#            frame.GetXaxis().SetTitle(titlex + " (" +units+")")
+#            frame.GetYaxis().SetTitle("Events /  "+units)
             frame.GetXaxis().SetTitle(titlex + " (" +units+")")
-            frame.GetYaxis().SetTitle("Events /  "+units)
+            frame.GetYaxis().SetTitle("Events /  Bin")
         else:    
             frame.GetXaxis().SetTitle(titlex)
             frame.GetYaxis().SetTitle("Events / Bin")
@@ -445,11 +447,16 @@ class StackPlotter(object):
                 hline.SetBinError(ii,0.0)
             hline.SetLineColor(ROOT.kRed)
             hline.SetFillStyle(0)
+
+            leg2=ROOT.TLegend(0.68,0.8,0.88,0.9,"","brNDC")
+            leg2.SetName(output+'_'+'leg2')
+            leg2.AddEntry(hmcstats,"Stat. Uncertainty","f")
             p2.cd()
             hratio.Draw('AXIS')
             hmcstats.Draw("E2,SAME")
             hratio.Draw('AXIS,SAME')
             hline.Draw('HIST,SAME')
+            leg2.Draw("same")
             hratio.Draw('E1,P,SAME')
                 
 
