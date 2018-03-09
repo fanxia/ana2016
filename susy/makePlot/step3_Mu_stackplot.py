@@ -85,7 +85,7 @@ Stack.addPlotter(TTG, "TTG","TT#gamma", "background")
 Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
 Stack.addPlotter(VG, "Vgamma","V#gamma", "background")
 Stack.addPlotter(ST, "ST","single top", "background")
-#Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
+Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 Stack.addPlotter(WJets, "WJets","WJets", "background")
 Stack.addPlotter(TT, "TT","TT", "background")
 
@@ -109,10 +109,10 @@ xBins_Pt=[0,20,40,60,80,100,120,160,200,250,300,400,500,600,800,1000,1250]
 #print cuts
 
 if normaldraw: 
-     Stack.drawStack('BpfMET', cut_CR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: CR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_CR2_mu_bjj',outDir=outdir)#,separateSignal=sepSig) 
+     Stack.drawStack('BpfMET', cut_CR2_bjj+'*BgenWeight>0.', str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: CR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_CR2_mu_bjj',outDir=outdir)#,separateSignal=sepSig) 
 
      if AddQCD: Stack.addPlotter(QCD,"QCD","QCD","background")
-     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
+#     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
      Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: CR1", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_CR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 100, 0, 500, channel = "mu_bjj: CR1", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_CR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BmuPt', cut_CR1_bjj, str(lumi*1000), xBins_Pt, 0, 800, channel = "mu_bjj: CR1", titlex = "mu_Pt", units = "GeV",output=tag+'muPt_CR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)

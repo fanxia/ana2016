@@ -158,6 +158,7 @@ for sample in qcdSamples:
     if len(sample)==1: 
          qcdPlotters[-1].addCorrectionFactor(1./(lumi*1000),'lumi')
          qcdPlotters[-1].setAlias("BphoWeight","(1*1.)")
+         qcdPlotters[-1].setAlias("BgenWeight","(1*1.)")
          qcdPlotters[-1].setAlias("BCandphoGenmatch","(1*1.)")
          qcdPlotters[-1].setAlias("BCandphoGenmatch","(1*1.)")
          qcdPlotters[-1].setAlias("BbtagWeight","(1*1.)")  
@@ -193,6 +194,7 @@ for sample in dataSamples:
     dataPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
 Data = MergedPlotter(dataPlotters)
 
+Data.setAlias("BgenWeight","1.*1")
 Data.setAlias("BphoWeight","1.*1")
 Data.setAlias("BphoWeightErr","1.*0")
 Data.setAlias("BCandphoGenmatch","1.*0")

@@ -94,7 +94,7 @@ Stack.addPlotter(TTG, "TTG","TT#gamma", "background")
 Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
 Stack.addPlotter(VG, "Vgamma","V#gamma", "background")
 Stack.addPlotter(ST, "ST","single top", "background")
-#Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
+Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 Stack.addPlotter(WJets, "WJets","WJets", "background")
 Stack.addPlotter(TT, "TT","TT", "background")
 #if AddQCD: Stack.addPlotter(QCD,"QCD","QCD","background")
@@ -139,7 +139,7 @@ if normaldraw:
 
 
 
-
+#     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
      TT.addCorrectionFactor(SF_gpurity_tt,"photon purity")
      TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
 

@@ -102,7 +102,7 @@ for sample in zjetsSamples:
     zjetsPlotters[-1].addCorrectionFactor("BpileupWeight",'puWeight')
 #    zjetsPlotters[-1].addCorrectionFactor("BbtagWeight",'btagWeight')
     zjetsPlotters[-1].addCorrectionFactor("BeleWeight",'lepsf')
-    zjetsPlotters[-1].addCorrectionFactor(SF_Zjets,'efakecorr')
+
     allPlotters[sample] = zjetsPlotters[-1] 
 ZJets = MergedPlotter(zjetsPlotters)
 ZJets.setFillProperties(1001,ROOT.kOrange+7)
@@ -233,6 +233,7 @@ for sample in dataSamples:
     dataPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
 Data = MergedPlotter(dataPlotters)
 
+Data.setAlias("BgenWeight","1.*1")
 Data.setAlias("BphoWeight","1.*1")
 Data.setAlias("BCandphoGenmatch","1.*0")
 Data.setAlias("BtopPtWeight","1.*1")
@@ -256,6 +257,7 @@ for sample in qcdSamples:
          qcdPlotters[-1].addCorrectionFactor(1./(lumi*1000),'lumi')
          qcdPlotters[-1].setAlias("BphoWeight","(1*1.)")
          qcdPlotters[-1].setAlias("BCandphoGenmatch","(1*1.)")
+	 qcdPlotters[-1].setAlias("BbtagWeight",'(1*1.)')
     if len(sample)>1:
          qcdPlotters[-1].addCorrectionFactor(sample[1],'xsec')
          qcdPlotters[-1].addCorrectionFactor('BgenWeight','genWeight')

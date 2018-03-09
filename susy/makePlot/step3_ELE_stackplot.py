@@ -82,7 +82,7 @@ Stack.addPlotter(TTG, "TTG","TT#gamma", "background")
 Stack.addPlotter(VV, "VV","ZZ WZ WW.", "background")
 Stack.addPlotter(VG, "Vgamma","V#gamma", "background")
 Stack.addPlotter(ST, "ST","single top", "background")
-#Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
+Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 Stack.addPlotter(WJets, "WJets","WJets", "background")
 Stack.addPlotter(TT, "TT","TT", "background")
 
@@ -108,7 +108,7 @@ if normaldraw:
      if AddQCD==True:
           Stack.addPlotter(QCD,"QCD","QCD","background")
 
-     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
+#     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
      Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: CR1", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMETbin_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BelePt', cut_CR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
