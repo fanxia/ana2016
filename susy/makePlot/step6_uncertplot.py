@@ -60,10 +60,26 @@ ratio=c.FindObject(tagname+"_pad2").GetPrimitive("hMCstats")
 leg=c.FindObject(tagname+"_pad2").GetPrimitive(tagname+"_leg2")
 leg.Clear()
 leg.AddEntry(ratio,'uncertainty','f')
-for i in range(1,ratio.GetNbinsX()):ratio.SetBinError(i,summc.GetBinError(i)/summc.GetBinContent(i))
+for i in range(1,ratio.GetNbinsX()):
+    if summc.GetBinContent(i)<0.000001: continue
+    ratio.SetBinError(i,summc.GetBinError(i)/summc.GetBinContent(i))
 ratio.SetFillColor(kGray)
 ratio.SetFillStyle(1001)
 c.Print("step6_out/"+tagname+".pdf")
+
+c.Clear()
+c=inf.Get(blindtagname+'_c1')
+ratio=c.FindObject(blindtagname+"_pad2").GetPrimitive("hMCstats")
+leg=c.FindObject(blindtagname+"_pad2").GetPrimitive(blindtagname+"_leg2")
+leg.Clear()
+leg.AddEntry(ratio,'uncertainty','f')
+for i in range(1,ratio.GetNbinsX()):
+    if summc.GetBinContent(i)<0.000001: continue
+    ratio.SetBinError(i,summc.GetBinError(i)/summc.GetBinContent(i))
+ratio.SetFillColor(kGray)
+ratio.SetFillStyle(1001)
+c.Print("step6_out/"+blindtagname+".pdf")
+
 
 ########################### MC bkgs and their systematics  ####################################
 err=Double()

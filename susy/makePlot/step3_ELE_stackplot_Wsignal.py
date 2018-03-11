@@ -137,10 +137,10 @@ if normaldraw:
      TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
 
      Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_SR2_bjj+"*BgenWeight>0", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETbinblind_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BMHT', cut_SR2_bjj+"*BgenWeight>0", str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",output=tag+'MHT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BMHT', cut_SR2_bjj+"*BgenWeight>0", str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",blinding=True, blindingCut=50,output=tag+'MHTblind_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BHT', cut_SR2_bjj+"*BgenWeight>0", str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR2", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETbinblind_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",output=tag+'MHT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BMHT', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",blinding=True, blindingCut=50,output=tag+'MHTblind_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BHT', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR2", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
 
 

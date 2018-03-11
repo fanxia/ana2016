@@ -29,14 +29,17 @@ class PlotterMET(object):
         self.ratiosysErr= math.sqrt(erra*erra*numa*numa+errb*errb*numb*numb)/(numa+numb)
         
 
-    def plotMETcompare(self,foutname,plotname,xtitle,ytitle):
+    def plotMETcompare(self,foutname,plotname,xtitle,ytitle,sys):
         self.fout=TFile.Open(foutname+".root", 'UPDATE')
         c1 = TCanvas("c1","c1", 800, 800)
 
+        self.befhist.SetLineWidth(2)
+        self.afthist.SetLineWidth(2)
         self.befhist.Draw()
-        self.befhist.GetXaxis().SetTitleOffset(0.8)
+#        self.befhist.GetXaxis().SetTitleOffset(0.9)
         self.befhist.SetTitle(";"+xtitle+";"+ytitle)
         self.befhist.SetMinimum(0.0)
+        self.befhist.GetXaxis().SetTitleSize(0.8*self.befhist.GetXaxis().GetTitleSize())
         self.befhist.SetMaximum(max(self.befhist.GetMaximum(),self.afthist.GetMaximum())*1.2)
 
         gStyle.SetOptStat(0)
@@ -48,7 +51,7 @@ class PlotterMET(object):
 
 
         pad1.cd()
-        leg= TLegend(0.62,0.65,0.90,0.90,"","brNDC")
+        leg= TLegend(0.62,0.7,0.90,0.90,"","brNDC")
         leg.AddEntry(self.befhist,self.befhistname,"l")
         leg.AddEntry(self.afthist,self.afthistname,"l")
 
@@ -57,15 +60,20 @@ class PlotterMET(object):
         leg.Draw("same")
 
         pad2.cd()
+        leg2= TLegend(0.72,0.65,0.88,0.80,"","brNDC")
+        leg2.SetBorderSize(0)
         hratio=self.afthist.Clone("hratio")
         hratio.Divide(self.befhist)
-        hratio.SetTitle(";;after/before    ")
+        hratio.SetTitle(";;After/Before    ")
         hratio.GetXaxis().SetTitle("")
-        hratio.GetYaxis().SetTitleOffset(0.5)
+        hratio.GetYaxis().SetTitleOffset(0.3)
         hratio.GetXaxis().SetTitleOffset(2)
+        hratio.GetYaxis().SetTitleSize(0.6)
         hratio.Draw("e")
+        leg2.AddEntry(hratio,"After/Before","l")
 
         hratio.Fit("pol0")
-        c1.Print(foutname+"_"+plotname+".pdf")
+        leg2.Draw("same")
+        c1.Print(foutname+"_"+sys+plotname+".pdf")
         self.ratio=hratio.GetFunction("pol0").GetParameter(0)
         self.ratioErr=hratio.GetFunction("pol0").GetParError(0)

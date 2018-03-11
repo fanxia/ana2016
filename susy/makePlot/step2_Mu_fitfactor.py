@@ -196,17 +196,17 @@ def doChHadIsofit(k_wjets,k_ttbar,sys='',k_zjets=1.0):
     print "*******************************************************\n\n\n"
     return [k_promptgamma,k_promptgamma_err,k_bkgs_gammagenjet,k_bkgs_gammagenjet_err]
 
-def doCombTT(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma):
+def doCombTT(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma,sys=""):
     print "#####################################################"
     print "plot SR1 MET comparison before/after TT sfs"
     PlotMETTT=PlotterMET()
-    PlotMETTT.pushbef("before",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),col=kBlue)
+    PlotMETTT.pushbef("before",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),col=kBlack)
     PlotMETTT.addbef(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"))
-    PlotMETTT.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),col=kRed,scal=sf_promptgamma)
+    PlotMETTT.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),col=kBlue,scal=sf_promptgamma)
     PlotMETTT.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"),scal=sf_nonpromptgamma)
 
     PlotMETTT.syserror(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"),sferr_promptgamma,sferr_nonpromptgamma)
-    PlotMETTT.plotMETcompare(foutname,"combTT_pfMET","pfMET(GeV)","")
+    PlotMETTT.plotMETcompare(foutname,"combTT_pfMET","E_{T}^{miss} (GeV)","",sys)
     print "In SR1, TT samples, SF for non-prompt photon(jet) events is ",sf_nonpromptgamma," and for prompt gamma is ",sf_promptgamma
     print "Before/After applying the above sfs, the total ratio for the whole sample is ",PlotMETTT.ratio
     print "And the ratio Error is ",PlotMETTT.ratioErr
@@ -249,17 +249,17 @@ def doCombTTSR2(sf_promptgamma,sf_nonpromptgamma):
     log.write("\n#################################################################\n\n\n")
 
 
-def doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma):
+def doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma,sys=""):
     print "#####################################################"
     print "plot MET comparison before/after TTG sfs"
     PlotMETTTG=PlotterMET()
-    PlotMETTTG.pushbef("before",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kBlue)
+    PlotMETTTG.pushbef("before",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kBlack)
     PlotMETTTG.addbef(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"))
-    PlotMETTTG.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kRed,scal=sf_promptgamma)
+    PlotMETTTG.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kBlue,scal=sf_promptgamma)
     PlotMETTTG.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"),scal=sf_nonpromptgamma)
 
     PlotMETTTG.syserror(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"),sferr_promptgamma,sferr_nonpromptgamma)
-    PlotMETTTG.plotMETcompare(foutname,"combTTG_pfMET","pfMET(GeV)","")
+    PlotMETTTG.plotMETcompare(foutname,"combTTG_pfMET","pfMET(GeV)","",sys)
     print "In TTG samples, SF for non-prompt photon(jet) events is ",sf_nonpromptgamma," and for prompt gamma is ",sf_promptgamma
     print "Before/After applying the above sfs, the total ratio for the whole sample is ",PlotMETTTG.ratio
     print "And the ratio Error is ",PlotMETTTG.ratioErr
@@ -277,20 +277,20 @@ def doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonprompt
     log.write("\n#################################################################\n\n\n")
     return [PlotMETTTG.ratio,fitAstatErr]
 
-def doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar):
+def doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar,sys=""):
     print "#####################################################"
     print "plot MET comparison before/after TT&TTG sfs, use only plot, don't use the following sf"
     PlotMETTTcom=PlotterMET()
-    PlotMETTTcom.pushbef("before",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kBlue)
+    PlotMETTTcom.pushbef("before",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kBlack)
     PlotMETTTcom.addbef(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"))
     PlotMETTTcom.addbef(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"),scal=k_ttbar)
     PlotMETTTcom.addbef(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),scal=k_ttbar)
-    PlotMETTTcom.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kRed,scal=sf_promptgamma)
+    PlotMETTTcom.pushaft("after",fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TTG"),col=kBlue,scal=sf_promptgamma)
     PlotMETTTcom.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TTG"),scal=sf_nonpromptgamma)
     PlotMETTTcom.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagenjet_TT"),scal=sf_nonpromptgamma*k_ttbar)
     PlotMETTTcom.addaft(fin.Get(tag+"_Mu_pfMET_SR1_mu_bjj_gammagennojet_TT"),scal=sf_promptgamma*k_ttbar)
 
-    PlotMETTTcom.plotMETcompare(foutname,"combTTaTTG_pfMET","pfMET(GeV)","")
+    PlotMETTTcom.plotMETcompare(foutname,"combTTaTTG_pfMET","E_{T}^{miss} (GeV)","",sys)
     print "In TT/TTG samples, SF for non-prompt photon(jet) events is ",sf_nonpromptgamma," and for prompt gamma is ",sf_promptgamma
     print "Before/After applying the above sfs, the total ratio for the whole sample is ",PlotMETTTcom.ratio
     print "And the ratio Error is ",PlotMETTTcom.ratioErr
@@ -364,7 +364,7 @@ sferr_nonpromptgamma=k_bkgs_gammagenjet_err
 
 combTTresult=doCombTT(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma)
 combTTGresult=doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma)
-doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar)
+doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar,"")
 sumlog.write("\n\n####################################################################")
 sumlog.write("\n photon purity template fit scale factor for promptphoton and nonpromptphoton and combinedsf for tt, ttg\n")
 sumlog.write("\nSYSTEMATIC:SigIEIE sf_promptg, sf_promptg_err, sf_nong, sf_nong_err, combinedSF_tt,tt_err, combineSF_ttg, ttg_err \n")
@@ -375,8 +375,8 @@ sysIEIE_tt=CombineSys(combTTresult[0])
 sysIEIE_ttg=CombineSys(combTTGresult[0])
 for sys in ['BbtagWeightUp','BbtagWeightDown','BmuWeightUp','BmuWeightDown','BtopPtWeightDown','BtopPtWeightUp','BphoWeightUp','BphoWeightDown']:
     [sysa,sysb,sysc,sysd]=doSigmaIEIEfit(k_wjets,k_ttbar,sys)
-    [systt,systterr]=doCombTT(sysa,sysb,sysc,sysd)
-    [systtg,systtgerr]=doCombTTG(sysa,sysb,sysc,sysd)
+    [systt,systterr]=doCombTT(sysa,sysb,sysc,sysd,sys)
+    [systtg,systtgerr]=doCombTTG(sysa,sysb,sysc,sysd,sys)
     sumlog.write("%s:%s\n"%(sys,[sysa,sysb,sysc,sysd,systt,systterr,systtg,systtgerr]))
     sysIEIE_ppurity_promptgamma.pushsys(sysa)
     sysIEIE_ppurity_nongamma.pushsys(sysc)

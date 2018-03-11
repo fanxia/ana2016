@@ -1,18 +1,41 @@
 ## config for cuts for ele channel: step3,4,5
 
-cut_pre_bjj="(Bnbjet>0 && BelePt>35)*BbtagWeight " # add it yourself
-cut_SR1_bjj="(Bnbjet>0 && BnPho==1 && BelePt>35)*BphoWeight*BbtagWeight " # add it yourself
-cut_SR1_bjj_4gamma="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1)*BphoWeight*BbtagWeight" # add it yourself
+cut_pre_bjj="(Bnbjet>0 && BelePt>35)*BbtagWeight " 
+cut_SR1_bjj="(Bnbjet>0 && BnPho==1 && BelePt>35)*BphoWeight*BbtagWeight " 
+cut_SR1_bjj_4gamma="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1)*BphoWeight*BbtagWeight" 
+cut_SR1_bjj_4gamma_genmatchnojet="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch>0)*BphoWeight*BbtagWeight"
+cut_SR1_bjj_4gamma_genmatchjet="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch<0)*BphoWeight*BbtagWeight"
+
+cut_SR2_bjj="(BelePt>35 && Bnbjet>0 && BnPho>1)*BphoWeight*BbtagWeight" 
+cut_CR1_bjj="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1)*BbtagWeight" 
+cut_CR1_bjj_4fake="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1 && (BCandPhoTag>>0&1)==1)*BbtagWeight" 
+cut_CR2_bjj="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake>1)*BbtagWeight"  
+
+# adding cut for qcd scale factor calculation
+cut_pre_bjj_4qcd="(Bnbjet>0 && BelePt>35 && BpfMET<20)*BbtagWeight"
+
+# adding cut for egamma scale factor calculation
+cut_SR1_bjj_4gammamatchele="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch==11)*BphoWeight*BbtagWeight"
+cut_SR1_bjj_4gammamatchnonele="(BelePt>35 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch!=11)*BphoWeight*BbtagWeight"
+
+# ##################
+# adding cut for loosepho_woChiso/woSigmaIetaIeta in 'SR1'
+#cut_bjj_1phowoIEtaIEta="Bnbjet>0 && BelePt>35 && BCandPhoTag>>1&1==1 && Sum$(BCandPhoTag>>1&1==1)==1 && BpfMET<50"
+#cut_bjj_1phowoChHadIso="Bnbjet>0 && BelePt>35 && BCandPhoTag>>2&1==1 && Sum$(BCandPhoTag>>2&1==1)==1 && BpfMET<50"
+
+cut_bjj_4gammawoietaieta="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1)*BbtagWeight" 
+cut_bjj_4gammawoietaieta_genmatchnojet="(BelePt>35 && BpfMET<50 && Bnbjet>0 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1 && BCandphoGenmatch>0)*BbtagWeight" 
+cut_bjj_4gammawoietaieta_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1 && BCandphoGenmatch<0)*BbtagWeight" 
+
+cut_bjj_4gammawochhadiso="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1)*BbtagWeight" 
+cut_bjj_4gammawochhadiso_genmatchnojet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1 && BCandphoGenmatch>0)*BbtagWeight" 
+cut_bjj_4gammawochhadiso_genmatchjet="(BelePt>35 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1 && BCandphoGenmatch<0)*BbtagWeight" 
 
 
-cut_SR2_bjj="(BelePt>35 && Bnbjet>0 && BnPho>1)*BphoWeight*BbtagWeight" # add it yourself
-cut_CR1_bjj="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1)*BbtagWeight" # add it yourself
-cut_CR1_bjj_4fake="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake==1 && (BCandPhoTag>>0&1)==1)*BbtagWeight" # add it yourself
-
-cut_CR2_bjj="(BelePt>35 && Bnbjet>0 && BnPho==0 && BnFake>1)*BbtagWeight" # add it yourself 
-cut_pre_jjj="BelePt>35 && Bnjet>2 && BelePt>35" # add it yourself
-cut_SR1_jjj="(BelePt>35 && BnPho==1)*BphoWeight" # add it yourself
-cut_SR2_jjj="(BelePt>35 && BnPho>1)*BphoWeight" # add it yourself
-cut_CR1_jjj="BelePt>35 && BnPho==0 && BnFake==1" # add it yourself
-cut_CR2_jjj="BelePt>35 && BnPho==0 && BnFake>1" # add it yourself
+# ##################jjj
+cut_pre_jjj="BelePt>35 && Bnjet>2 && BelePt>35" 
+cut_SR1_jjj="(BelePt>35 && BnPho==1)*BphoWeight" 
+cut_SR2_jjj="(BelePt>35 && BnPho>1)*BphoWeight" 
+cut_CR1_jjj="BelePt>35 && BnPho==0 && BnFake==1" 
+cut_CR2_jjj="BelePt>35 && BnPho==0 && BnFake>1" 
 

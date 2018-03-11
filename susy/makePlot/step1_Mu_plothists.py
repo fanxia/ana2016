@@ -22,7 +22,7 @@ indir='../ntupleStore'
 tree='EventTree_mu'
 treeQCD='EventTree_mQCD'
 
-lumi=35.86   #1.731    #4.353 #2016D
+lumi=35.87   #1.731    #4.353 #2016D
 lumisf1=19.714/lumi   #2016BCDEF
 lumisf2=16.146/lumi   #2016GH
 doRatio=True
@@ -33,49 +33,10 @@ if not os.path.exists(outdir): os.system('mkdir '+outdir)
 if not Blind: tag = tag+'unblind_'
 
 paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(lumi))+" fb^{-1}"
-#paveText="#sqrt{s} = 13 TeV 2016 L = "+"{:.3}".format(float(12.88))+" fb^{-1}"
 
 
-cut_pre_bjj="(Bnbjet>0 && BmuPt>30)*BbtagWeight " # add it yourself
-cut_SR1_bjj="(Bnbjet>0 && BnPho==1 && BmuPt>30)*BphoWeight*BbtagWeight " # add it yourself
-cut_SR1_bjj_4gamma="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1)*BphoWeight*BbtagWeight" # add it yourself
-cut_SR1_bjj_4gamma_genmatchnojet="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch>0)*BphoWeight*BbtagWeight" # add it yourself
-cut_SR1_bjj_4gamma_genmatchjet="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch<0)*BphoWeight*BbtagWeight" # add it yourself
 
-
-cut_SR2_bjj="(BmuPt>30 && Bnbjet>0 && BnPho>1)*BphoWeight*BbtagWeight" # add it yourself
-cut_CR1_bjj="(BmuPt>30 && Bnbjet>0 && BnPho==0 && BnFake==1)*BbtagWeight" # add it yourself
-cut_CR1_bjj_4fake="(BmuPt>30 && Bnbjet>0 && BnPho==0 && BnFake==1 && (BCandPhoTag>>0&1)==1)*BbtagWeight" # add it yourself
-
-cut_CR2_bjj="(BmuPt>30 && Bnbjet>0 && BnPho==0 && BnFake>1)*BbtagWeight" # add it yourself
-
-cut_pre_jjj="BmuPt>30 && Bnjet>2 && BmuPt>30" # add it yourself
-cut_SR1_jjj="(BmuPt>30 && BnPho==1)*BphoWeight" # add it yourself
-cut_SR2_jjj="(BmuPt>30 && BnPho>1)*BphoWeight" # add it yourself
-cut_CR1_jjj="BmuPt>30 && BnPho==0 && BnFake==1" # add it yourself
-cut_CR2_jjj="BmuPt>30 && BnPho==0 && BnFake>1" # add it yourself
-
-
-# adding cut for qcd scale factor calculation
-cut_pre_bjj_4qcd="(Bnbjet>0 && BmuPt>30 && BpfMET<20)*BbtagWeight"
-
-# adding cut for egamma scale factor calculation
-cut_SR1_bjj_4gammamatchele="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch==11)*BphoWeight*BbtagWeight"
-cut_SR1_bjj_4gammamatchnonele="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch!=11)*BphoWeight*BbtagWeight"
-
-
-# adding cut for loosepho_woChiso/woSigmaIetaIeta in 'SR1'
-cut_bjj_4gammawoietaieta="(BmuPt>30 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1)*BbtagWeight" # add it yourself
-cut_bjj_4gammawoietaieta_genmatchnojet="(BmuPt>30 && BpfMET<50 && Bnbjet>0 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1 && BCandphoGenmatch>0)*BbtagWeight" # add it yourself
-cut_bjj_4gammawoietaieta_genmatchjet="(BmuPt>30 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>1&1)==1)==1 && (BCandPhoTag>>1&1)==1 && BCandphoGenmatch<0)*BbtagWeight" # add it yourself
-
-cut_bjj_4gammawochhadiso="(BmuPt>30 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1)*BbtagWeight" # add it yourself
-cut_bjj_4gammawochhadiso_genmatchnojet="(BmuPt>30 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1 && BCandphoGenmatch>0)*BbtagWeight" # add it yourself
-cut_bjj_4gammawochhadiso_genmatchjet="(BmuPt>30 && Bnbjet>0 && BpfMET<50 && Sum$((BCandPhoTag>>2&1)==1)==1 && (BCandPhoTag>>2&1)==1 && BCandphoGenmatch<0)*BbtagWeight" # add it yourself
-
-
-#if UseMETFilter:
-#    cuts = '('+cuts+'&&'+metfilter+')'
+execfile("cut_config_Mu.txt")
 
 ROOT.gROOT.ProcessLine('.x ./tdrstyle.C') 
 
@@ -344,8 +305,9 @@ Stack.doRatio(doRatio)
 
 tag+='_'
 
-xBins_pfMET=[0,20,40,60,80,100,150,200,250,300,500,1000]
-xBins_Pt=[0,20,40,60,80,100,120,140,160,180,200,250,300,400,500,600,800,1000,1250]
+xBins_pfMET=[0,20,60,100,150,300,500,1000]
+xBins_Pt=[0,20,40,60,80,100,120,160,200,250,300,400,500,600,800,1000,1250]
+
 
 #print cuts
 
@@ -416,8 +378,8 @@ if test:
      Stack.drawStack('BpfMET', cut_pre_bjj_4qcd, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "mu_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_mu_bjj_4qcd',outDir=outdir)#,separateSignal=sepSig)
 
 
-     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "mu_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "mu_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
 
      Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "mu_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BjetM3', cut_pre_bjj+"*BbtagWeightUp/BbtagWeight", str(lumi*1000), 100, 0, 1000, channel = "mu_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_mu_bjj_BbtagWeightUp',outDir=outdir)#,separateSignal=sepSig)
@@ -474,8 +436,8 @@ if test:
      Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_bjj_4gammawoietaieta_genmatchnojet+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "mu_bjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_mu_bjj_BphoWeightDown_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
 
 
-     Stack.drawStack('BpfMET', cut_SR1_bjj_4gamma_genmatchnojet, str(lumi*1000), xBins_pfMET,0,1000, channel = "mu_bjj", titlex ="pfMET #gamma gen nojet", units = "GeV",output=tag+'pfMET_SR1_mu_bjj_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_SR1_bjj_4gamma_genmatchjet, str(lumi*1000), xBins_pfMET,0,1000, channel = "mu_bjj", titlex ="pfMET #gamma gen jet", units = "GeV",output=tag+'pfMET_SR1_mu_bjj_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_bjj_4gamma_genmatchnojet, str(lumi*1000), xBins_pfMET,0,500, channel = "mu_bjj", titlex ="pfMET #gamma gen nojet", units = "GeV",output=tag+'pfMET_SR1_mu_bjj_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_bjj_4gamma_genmatchjet, str(lumi*1000), xBins_pfMET,0,500, channel = "mu_bjj", titlex ="pfMET #gamma gen jet", units = "GeV",output=tag+'pfMET_SR1_mu_bjj_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
 
 
      Stack.drawStack('BCandphoPFCorChIso', cut_bjj_4gammawochhadiso, str(lumi*1000), 20, 0, 2, channel = "mu_bjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_mu_bjj',outDir=outdir)#,separateSignal=sepSig)

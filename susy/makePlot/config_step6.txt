@@ -4,32 +4,74 @@
 if sys.argv[2]=='ELESR2':
    infilename	=   "step5uncert_out/Mar9_ELE.root"
    tagname	=   "Mar9_ELE_pfMET_SR2_ele_bjj"
+   blindtagname	=   "Mar9_ELE_pfMETblind_SR2_ele_bjj"
    mcbkg	=   ['TT','TTV','TTG','ST','Vgamma','ZJets']
    mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
    shapeunc	=   ['BtopPtWeight','BbtagWeight','BeleWeight','BJES','BphoWeight']
    lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.25,'TT TTG'),(0.1,'TT'),(0.45,'ZJets'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
 
+if sys.argv[2]=='ELESR2MHT':
+   infilename	=   "step5uncert_out/Mar9_ELE.root"
+   tagname	=   "Mar9_ELE_MHT_SR2_ele_bjj"
+   blindtagname	=   "Mar9_ELE_MHTblind_SR2_ele_bjj"
+   mcbkg	=   ['TT','TTV','TTG','ST','Vgamma','ZJets']
+   mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
+   shapeunc	=   ['BtopPtWeight','BbtagWeight','BeleWeight','BphoWeight']
+   lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.25,'TT TTG'),(0.1,'TT'),(0.45,'ZJets'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
+
 if sys.argv[2]=='ELESR1':
    infilename	=   "step5uncert_out/Mar9_ELE.root"
    tagname	=   "Mar9_ELE_pfMET_SR1_ele_bjj"
+   blindtagname	=   "Mar9_ELE_pfMETblind_SR1_ele_bjj"
    mcbkg	=   ['TT','TTV','TTG','ST','Vgamma','WJets','ZJets','VV']
    mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
    shapeunc	=   ['BtopPtWeight','BbtagWeight','BeleWeight','BJES','BphoWeight']
+   lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.2,'TT TTG'),(0.1,'TT'),(0.17,'WJets'),(0.45,'ZJets'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
+
+if sys.argv[2]=='ELESR1MHT':
+   infilename	=   "step5uncert_out/Mar9_ELE.root"
+   tagname	=   "Mar9_ELE_MHT_SR1_ele_bjj"
+   blindtagname	=   "Mar9_ELE_MHTblind_SR1_ele_bjj"
+   mcbkg	=   ['TT','TTV','TTG','ST','Vgamma','WJets','ZJets','VV']
+   mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
+   shapeunc	=   ['BtopPtWeight','BbtagWeight','BeleWeight','BphoWeight']
    lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.2,'TT TTG'),(0.1,'TT'),(0.17,'WJets'),(0.45,'ZJets'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
 
 
 if sys.argv[2]=='MUSR2':
    infilename	=   "step5uncert_out/Mar9_Mu.root"
    tagname	=   "Mar9_Mu_pfMET_SR2_mu_bjj"
+   blindtagname	=   "Mar9_Mu_pfMETblind_SR2_mu_bjj"
    mcbkg	=   ['TT','TTV','TTG','ST','Vgamma']
    mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
    shapeunc	=   ['BtopPtWeight','BbtagWeight','BmuWeight','BJES','BphoWeight']
    lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.20,'TT TTG'),(0.08,'TT'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
 
+if sys.argv[2]=='MUSR2MHT':
+   infilename	=   "step5uncert_out/Mar9_Mu.root"
+   tagname	=   "Mar9_Mu_MHT_SR2_mu_bjj"
+   blindtagname	=   "Mar9_Mu_MHTblind_SR2_mu_bjj"
+   mcbkg	=   ['TT','TTV','TTG','ST','Vgamma']
+   mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
+   shapeunc	=   ['BtopPtWeight','BbtagWeight','BmuWeight','BphoWeight']
+   lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.20,'TT TTG'),(0.08,'TT'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
+
+
 if sys.argv[2]=='MUSR1':
    infilename	=   "step5uncert_out/Mar9_Mu.root"
    tagname	=   "Mar9_Mu_pfMET_SR1_mu_bjj"
+   blindtagname	=   "Mar9_Mu_pfMETblind_SR1_mu_bjj"
    mcbkg	=   ['TT','TTV','TTG','ST','Vgamma','WJets','ZJets','VV']
    mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
    shapeunc	=   ['BtopPtWeight','BbtagWeight','BmuWeight','BJES','BphoWeight']
+   lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.15,'TT TTG'),(0.08,'TT'),(0.18,'WJets'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
+
+
+if sys.argv[2]=='MUSR1MHT':
+   infilename	=   "step5uncert_out/Mar9_Mu.root"
+   tagname	=   "Mar9_Mu_MHT_SR1_mu_bjj"
+   blindtagname	=   "Mar9_Mu_MHTblind_SR1_mu_bjj"
+   mcbkg	=   ['TT','TTV','TTG','ST','Vgamma','WJets','ZJets','VV']
+   mcsig	=   ['_SMS_T6ttZg_Mst600_Mnl200','_SMS_T6ttZg_Mst800_Mnl400']
+   shapeunc	=   ['BtopPtWeight','BbtagWeight','BmuWeight','BphoWeight']
    lnNunc	=   [(0.046,'All'),(0.025,'All'),(0.15,'TT TTG'),(0.08,'TT'),(0.18,'WJets'),(0.13,'_SMS_T6ttZg_Mst600_Mnl200'),(0.14,'_SMS_T6ttZg_Mst800_Mnl400')]
