@@ -4,16 +4,16 @@
 # Second method to submit jobs for dir containing many inputfiles:  script   dirpath(/store/../)         OUTName files/jobs
 # 
 
-runMC=true
+runMC=False
 runSig=true
-runDataEle=false
-runDataMu=false
+runDataEle=False
+runDataMu=False
 
 ######################################################################
 ######################## Signal MC ###################################
 ######################################################################
 if [ "$runSig" = true ]; then
-    ./submitSig_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_SMS-T6ttZg/ SMS-T6ttZg 1
+    ./submitSig_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_SMS-T6ttZg_new/ SMS-T6ttZg 1
 fi
 
 ########################################################################
@@ -29,7 +29,7 @@ if [ "$runMC" = true ]; then
     ./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TT/ TT 2
 
     ./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGJets/ TTGJets 2
-    ./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGG_0Jets/ TTGG 1
+#    ./submitMC_step1.py /store/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTGG_0Jets/ TTGG 1
 
 #TTV
     ./submitMC_step1.py /store/caf/user/fxia/ggntuples/mc/V08_00_26_01/job_summer16_TTWJetsToLNu/ TTWJetsToLNu 1

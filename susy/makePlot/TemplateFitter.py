@@ -10,6 +10,7 @@ class TemplateFitter(object):
     def pushdata(self,datan,datahist):
         self.data=datahist.Clone()
         self.dataname=datan
+        self.origdatanum=self.data.Integral()
     def adddata(self,datahist,scal=1):
         self.data.Add(datahist,scal*1)
     def subdata(self,subhist,scal=1):
@@ -25,10 +26,14 @@ class TemplateFitter(object):
 #        self.mcsample[self.mcorder[mcname]]+=mchist
         self.mcsample[self.mcorder[mcname]].Add(mchist,scal*1)
     def tempfit(self):
+        print "The template fit is fitting for the adjust data which is the fraction of the original data:", self.data.Integral()/self.origdatanum
+
         mc = TObjArray(len(self.mcsample))
         for i in self.mcsample:
             mc.Add(self.mcsample[i])
         fitself = TFractionFitter(self.data, mc)
+        fitself.Constrain(1,0.0,1.0)
+        fitself.SetRangeX(4,30) #setbin fit ranges
         fitself.Fit()
         self.result={}
         for i in self.mcorder:
@@ -76,6 +81,7 @@ class TemplateFitter(object):
 #        pad1.SetLogy()
         pad1.SetLogy(0)
         hs.SetMaximum(max(self.data.GetMaximum()*1.2,hs.GetMaximum()*1.3))
+        hs.SetMinimum(0.0)
 #        hs.SetMaximum(hs.GetMaximum()*10)
         hs.Draw()
         hs.GetXaxis().SetTitle(xtitle)
@@ -104,6 +110,7 @@ class TemplateFitter(object):
         pad1.cd()
         pad1.Clear()
         hsor.SetMaximum(max(self.data.GetMaximum()*1.2,hsor.GetMaximum()*1.3))
+        hsor.SetMinimum(0.0)
         hsor.Draw()
         hsor.GetXaxis().SetTitle(xtitle)
         hsor.GetYaxis().SetTitle(ytitle)

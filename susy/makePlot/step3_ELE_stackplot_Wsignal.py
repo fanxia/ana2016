@@ -14,14 +14,14 @@ tag=sys.argv[1]
 tag=tag+"_ELE"
 LogY=True
 
-AddQCD=True
-#AddQCD=False
+#AddQCD=True
+AddQCD=False
 normaldraw=True
 test=False
 
 outdir='step3_out'
 indir='../ntupleStore'
-
+#indir='../PemntupleStore'
 tree='EventTree_ele'
 treeQCD='EventTree_eQCD'
 
@@ -102,6 +102,7 @@ tag+='_'
 
 #xBins_pfMET=[0,20,40,60,80,100,150,200,250,300,500,1000]
 xBins_pfMET=[0,20,60,100,150,300,500,1000]
+xBins2_pfMET=[0,40,100,200,500,1000]
 xBins_Pt=[0,20,40,60,80,100,120,160,200,250,300,400,500,600,800,1000,1250]
 
 #print cuts
@@ -113,6 +114,8 @@ if normaldraw:
      TT.addCorrectionFactor(SF_gpurity_tt,"photon purity")
      TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
 
+
+#     Stack.drawStack('BpfMET', cut_SR1_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: SR1",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_SR1_ele_jjj',outDir=outdir,separateSignal=sepSig) #test
 
      Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR1",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_SR1_ele_bjj',outDir=outdir,separateSignal=sepSig)
@@ -133,11 +136,14 @@ if normaldraw:
 
 
 
-     TT.addCorrectionFactor(SF_gpurity_tt,"photon purity")
-     TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
+     TT.addCorrectionFactor(1./SF_gpurity_tt,"photon purity")
+     TTG.addCorrectionFactor(1./SF_gpurity_ttg,"photon purity")
 
-     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETbinblind_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
+#     Stack.drawStack('BpfMET', cut_SR2_jjj+"*(BgenWeight>0)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_SR2_ele_jjj',outDir=outdir,separateSignal=sepSig) #test
+     ZJets.addCorrectionFactor("(BgenWeight>0)",'re')
+     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",blinding=True, blindingCut=60, output=tag+'pfMETbinblind_SR2_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",output=tag+'MHT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), 50, 0, 500, channel = "ele_bjj: SR2", titlex = "MHT", units = "GeV",blinding=True, blindingCut=50,output=tag+'MHTblind_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BHT', cut_SR2_bjj+"*(BgenWeight>0)", str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR2", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
@@ -151,8 +157,8 @@ if normaldraw:
 
      if AddQCD==True:
           Stack.addPlotter(QCD,"QCD","QCD","background")
-     TT.addCorrectionFactor(1./SF_gpurity_tt**2,"photon purity")
-     TTG.addCorrectionFactor(1./SF_gpurity_ttg**2,"photon purity")
+#     TT.addCorrectionFactor(1./SF_gpurity_tt**2,"photon purity")
+#     TTG.addCorrectionFactor(1./SF_gpurity_ttg**2,"photon purity")
      ZJets.addCorrectionFactor(1./SF_Zjets,'efakecorr')
      Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500,channel = "ele_bjj: Pre", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 500,channel = "ele_bjj: Pre", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMETbin_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
@@ -162,6 +168,7 @@ if normaldraw:
      Stack.drawStack('BnVtx', cut_pre_bjj, str(lumi*1000), 100, 0, 100, channel = "ele_bjj: Pre", titlex = "nVtx", units = "",output=tag+'nVtx_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('Bnjet', cut_pre_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
+     Stack.drawStack('Bnbjet', cut_pre_bjj, str(lumi*1000), 10, 0, 10, channel = "ele_bjj: Pre", titlex = "nbjet", units = "",output=tag+'Bnbjet_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BnPho', cut_pre_bjj, str(lumi*1000), 3, 0, 3, channel = "ele_bjj: Pre", titlex = "N_{#gamma}", units = "",output=tag+'BnPho_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BeleEta', cut_pre_bjj, str(lumi*1000), 30, -3, 3, channel = "ele_bjj: pre", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "MHT", units = "GeV",output=tag+'MHT_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)

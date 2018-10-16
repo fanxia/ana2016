@@ -128,6 +128,9 @@ muTrksf2Hist=file_muSF2_Trk.Get("ratio_eff_aeta_dr030e030_corr")
 def Fun_thisSF(eta,pt,sfhist):
     if pt>=sfhist.GetYaxis().GetXmax(): #above pt range            
         result=[sfhist.GetBinContent(sfhist.GetXaxis().FindBin(eta),sfhist.GetYaxis().GetLast()),2.*sfhist.GetBinError(sfhist.GetXaxis().FindBin(eta),sfhist.GetYaxis().GetLast())]
+    elif pt<sfhist.GetYaxis().GetXmin(): #below pt range            
+        result=[sfhist.GetBinContent(sfhist.GetXaxis().FindBin(eta),1),2.*sfhist.GetBinError(sfhist.GetXaxis().FindBin(eta),1)]
+
     else: result=[sfhist.GetBinContent(sfhist.FindBin(eta,pt)),sfhist.GetBinError(sfhist.FindBin(eta,pt))]
     return result
 

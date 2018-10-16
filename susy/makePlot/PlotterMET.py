@@ -60,20 +60,24 @@ class PlotterMET(object):
         leg.Draw("same")
 
         pad2.cd()
-        leg2= TLegend(0.72,0.65,0.88,0.80,"","brNDC")
+        leg2= TLegend(0.45,0.69,0.68,0.89,"","brNDC")
+        leg2.SetFillColor(18)
         leg2.SetBorderSize(0)
         hratio=self.afthist.Clone("hratio")
         hratio.Divide(self.befhist)
-        hratio.SetTitle(";;After/Before    ")
+        hratio.SetTitle(";;After/Before")
         hratio.GetXaxis().SetTitle("")
         hratio.GetYaxis().SetTitleOffset(0.3)
         hratio.GetXaxis().SetTitleOffset(2)
         hratio.GetYaxis().SetTitleSize(0.6)
+        hratio.SetMaximum(1.5) #
+        hratio.SetMinimum(0.5) #
+        hratio.SetTitle(";;") #
         hratio.Draw("e")
-        leg2.AddEntry(hratio,"After/Before","l")
+        leg2.AddEntry(hratio,"After / Before","l")
 
         hratio.Fit("pol0")
-        leg2.Draw("same")
+#        leg2.Draw("same")
         c1.Print(foutname+"_"+sys+plotname+".pdf")
         self.ratio=hratio.GetFunction("pol0").GetParameter(0)
         self.ratioErr=hratio.GetFunction("pol0").GetParError(0)

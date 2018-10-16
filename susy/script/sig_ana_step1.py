@@ -128,6 +128,7 @@ Bregion=array('i',[-99])
 BnVtx=array('i',[-99])
 Brho=array('d',[-99.])
 BrhoCentral=array('d',[-99.])
+BgenMET=array('d',[-99.])
 BpfMET=array('d',[-99.])
 BpfMeTPhi=array('d',[-99.])
 BpfMeT1JESUp=array('d',[-99.])
@@ -169,6 +170,7 @@ BnFake=array('i',[-99])
 BGenTopAPt=array('d',[-99.])
 BGenTopBPt=array('d',[-99.])
 
+BnbfromZ=array('i',[-99])
 #############for signal mc#################
 BlheStopMass=array('d',[-99.])  #mass get from lumiblock/lhe directly
 BlheNLSPMass=array('d',[-99.])  #mass get from lumiblock/lhe directly
@@ -188,6 +190,7 @@ tree1_out.Branch("Brho",Brho,"Brho/D")
 tree1_out.Branch("BrhoCentral",BrhoCentral,"BrhoCentral/D")
 tree1_out.Branch("BPUTrue",BPUTrue,"BPUTrue/D")
 tree1_out.Branch("BgenWeight",BgenWeight,"BgenWeight/D")
+tree1_out.Branch("BgenMET",BgenMET,"BgenMET/D")
 tree1_out.Branch("BpfMET",BpfMET,"BpfMET/D")
 tree1_out.Branch("BpfMeTPhi",BpfMeTPhi,"BpfMeTPhi/D")
 tree1_out.Branch("BpfMeT1JESUp",BpfMeT1JESUp,"BpfMeT1JESUp/D")
@@ -242,6 +245,8 @@ tree1_out.Branch("BnFake",BnFake,"BnFake/I")
 
 tree1_out.Branch("BGenTopAPt",BGenTopAPt,"BGenTopAPt/D")
 tree1_out.Branch("BGenTopBPt",BGenTopBPt,"BGenTopBPt/D")
+
+tree1_out.Branch("BnbfromZ",BnbfromZ,"BnbfromZ/I")
 
 tree1_out.Branch("BlheStopMass",BlheStopMass,"BlheStopMass/D")
 tree1_out.Branch("BlheNLSPMass",BlheNLSPMass,"BlheNLSPMass/D")
@@ -399,7 +404,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
 
 
 
-
+    BgenMET[0]=event.genMET
     BpfMET[0]=event.pfMET
     BpfMeTPhi[0]=event.pfMETPhi
     BpfMeT1JESUp[0]=event.pfMET_T1JERUp
@@ -467,6 +472,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     elif Nfinalgamma==2: #gammagamma mode
         BNLSPDecay[0]=99
 
+#-------------Find number of bjets decayed from Z boson from Neutrolino----
+    BnbfromZ[0]=Fun_SigFindnbfromZ(event)
 
 #-----------------Fill the photons/fakes----------------
 
@@ -523,6 +530,7 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BnVtx[0]=-99
     Brho[0]=-99.
     BrhoCentral[0]=-99.
+    BgenMET[0]=-99.
     BpfMET[0]=-99.
     BpfMeTPhi[0]=-99.
     BpfMeT1JESUp[0]=-99.
@@ -562,6 +570,8 @@ for entrynumber in range(startEntryNumber,endEntryNumber):
     BGenTopAPt[0]=-99.    
     BGenTopBPt[0]=-99.    
 
+    BnbfromZ[0]=-99
+    
     BlheStopMass[0]=-99. 
     BlheNLSPMass[0]=-99. 
     BGenStopAMass[0]=-99.

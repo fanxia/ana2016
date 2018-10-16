@@ -1,11 +1,11 @@
 # config for cuts for muon channel: step3,4,5
 cut_pre_bjj="(Bnbjet>0 && BmuPt>30)*BbtagWeight " # add it yourself
-cut_SR1_bjj="(Bnbjet>0 && BnPho==1 && BmuPt>30)*BphoWeight*BbtagWeight " # add it yourself
+cut_SR1_bjj="(Bnbjet>0 && BnPho==1 && BmuPt>30 && Bnjet>2)*BphoWeight*BbtagWeight " # add it yourself
 cut_SR1_bjj_4gamma="(BmuPt>30 && Bnbjet>0 && BnPho==1 && BCandPhoTag>>3&1==1)*BphoWeight*BbtagWeight" # add it yourself
 cut_SR1_bjj_4gamma_genmatchnojet="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch>0)*BphoWeight*BbtagWeight"
 cut_SR1_bjj_4gamma_genmatchjet="(BmuPt>30 && Bnbjet>0 && BnPho==1 && (BCandPhoTag>>3&1)==1 && BCandphoGenmatch<0)*BphoWeight*BbtagWeight"
 
-cut_SR2_bjj="(BmuPt>30 && Bnbjet>0 && BnPho>1)*BphoWeight*BbtagWeight" # add it yourself
+cut_SR2_bjj="(BmuPt>30 && Bnbjet>0 && BnPho>1 && Bnjet>2)*BphoWeight*BbtagWeight" # add it yourself
 cut_CR1_bjj="(BmuPt>30 && Bnbjet>0 && BnPho==0 && BnFake==1)*BbtagWeight" # add it yourself
 cut_CR1_bjj_4fake="(BmuPt>30 && Bnbjet>0 && BnPho==0 && BnFake==1 && BCandPhoTag>>0&1==1)*BbtagWeight" # add it yourself
 

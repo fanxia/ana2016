@@ -54,3 +54,12 @@ def Fun_SigNLSPBR(mass,decaymode):
     else: brweight=0.0
 
     return [br,brweight]
+
+
+def Fun_SigFindnbfromZ(tree):
+    nb=0
+    for genp in range(tree.nMC):
+        if abs(tree.mcPID[genp])==5 and tree.mcMomPID[genp]==23 and tree.mcGMomPID[genp]==1000023 and (tree.mcStatusFlag[genp]&4)==4:
+            nb+=1
+
+    return nb

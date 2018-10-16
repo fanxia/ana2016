@@ -13,8 +13,8 @@ LogY=False
 
 AddQCD=True
 #AddQCD=False
-normaldraw=False
-test=True
+normaldraw=True
+test=False
 
 outdir='step1_out'
 indir='../ntupleStore'
@@ -301,62 +301,137 @@ xBins_Pt=[0,20,40,60,80,100,120,160,200,250,300,400,500,600,800,1000,1250]
 #print cuts
 
 if normaldraw: 
-#    Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500, titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 100, 0, 500, titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), 100, 0, 500, titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 100, 0, 500, titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_CR2_bjj, str(lumi*1000), 100, 0, 500, titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR2_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BmuPt', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, titlex = "mu_Pt", units = "GeV",output=tag+'muPt_pre_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BmuPt', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, titlex = "mu_Pt", units = "GeV",output=tag+'muPt_SR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
 
 
     Stack.drawStack('BnVtx', cut_pre_bjj, str(lumi*1000), 100, 0, 100, channel = "ele_bjj: Pre", titlex = "nVtx", units = "",output=tag+'nVtx_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
 
-#    Stack.drawStack('BlepMt', cut_pre_bjj, str(lumi*1000), 20, 0, 1000, channel = "ele_bjj: Pre", titlex = "Mt", units = "GeV",output=tag+'lepMt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-#    Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 1000, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",blinding=True, blindingCut=100,output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET1_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500, channel = "eleQCD_bjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 1000,  channel = "ele_bjj: SR1", titlex = "pfMET", units a= "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 50, 0, 500,  channel = "ele_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), 50, 0, 500,  channel = "ele_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',blinding=True, blindingCut=100,outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 50, 0, 500,  channel = "ele_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 1000,  channel = "ele_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-    Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BjetM3', cut_pre_jjj, str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('Bnjet', cut_pre_jjj, str(lumi*1000), 20, 0, 20, channel = "ele_jjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
-
-    Stack.drawStack('Bnjet', cut_pre_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-
-    Stack.drawStack('BelePt', cut_SR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BelePt', cut_CR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: CR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-
-    Stack.drawStack('BeleEta', cut_pre_bjj, str(lumi*1000), 30, -3, 3, channel = "ele_bjj: pre", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BeleEta', cut_SR1_bjj, str(lumi*1000), 30, -3, 3, channel = "ele_bjj: SR1", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BeleEta', cut_CR1_bjj, str(lumi*1000), 30, -3, 3, channel = "ele_bjj: CR1", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-    Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gamma, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BCandphoEt', cut_SR1_bjj_4gamma, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: SR1", titlex = "photon E_{T}", units = "GeV",output=tag+'PhoEt_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BCandphoEta', cut_SR1_bjj_4gamma, str(lumi*1000), 20, -2, 2, channel = "ele_bjj: SR1", titlex = "photon #eta", units = "",output=tag+'PhoEta_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BCandphoSigmaIEtaIEta', cut_SR1_bjj_4gamma, str(lumi*1000), 20, 0, 0.02, channel = "ele_bjj: SR1", titlex = "photon #sigma_{i#etai#eta}", units = "",output=tag+'phoSigmaIEtaIEta_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-    Stack.drawStack('BCandphoPFChIso', cut_SR1_bjj_4gamma, str(lumi*1000), 20, 0, 2, channel = "ele_bjj: SR1", titlex = "photon chargedHadIso", units = "",output=tag+'phoPFChIso_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-
-
 #--------------------------jjj---------------
 
     Stack.drawStack('BelePt', cut_pre_jjj, str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: pre", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
-#    Stack.drawStack('BpfMET', cut_pre_jjj, str(lumi*1000), 100, 0, 1000, channel = "eleQCD_jjj: pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
     Stack.drawStack('BelePt', cut_SR1_jjj, str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: SR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_SR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
 
     Stack.drawStack('BeleEta', cut_pre_jjj, str(lumi*1000), 30, -3, 3, channel = "ele_jjj: pre", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
     Stack.drawStack('BeleEta', cut_SR1_jjj, str(lumi*1000), 30, -3, 3, channel = "ele_jjj: SR1", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_SR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BpfMET', cut_pre_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+
+     ####FOR QCD FIT###########
+    Stack.drawStack('BpfMET', cut_pre_jjj_4qcd, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: Pre", titlex = "pfMET", units = "GeV",output=tag+'pfMET_pre_ele_jjj_4qcd',outDir=outdir)#,separateSignal=sepSig)
+
+
+     
+    Stack.drawStack('BpfMET', cut_SR1_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BpfMET', cut_SR2_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BpfMET', cut_CR1_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BpfMET', cut_CR2_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: CR2", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR2_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+
+
+     #######FOR JETM3 TEMPLATE FIT###########
+    Stack.drawStack('BjetM3', cut_pre_jjj, str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BjetM3', cut_pre_jjj+"*(1.+BeleWeightErr)", str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_jjj_BeleWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BjetM3', cut_pre_jjj+"*(1.-BeleWeightErr)", str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_jjj_BeleWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BjetM3', cut_pre_jjj+"*(1./BtopPtWeight)", str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_jjj_BtopPtWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BjetM3', cut_pre_jjj+"*(2.-1./BtopPtWeight)", str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_jjj_BtopPtWeightUp',outDir=outdir)#,separateSignal=sepSig)
+
+
+    sys.exit()
+     ######FOR ZJET FIT###############
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma, str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele, str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele, str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma+"*(1.+BeleWeightErr)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BeleWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele+"*(1.+BeleWeightErr)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BeleWeightUp_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele+"*(1.+BeleWeightErr)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BeleWeightUp_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma+"*(1.-BeleWeightErr)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BeleWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele+"*(1.-BeleWeightErr)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BeleWeightDown_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele+"*(1.-BeleWeightErr)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BeleWeightDown_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma+"*(1./BtopPtWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BtopPtWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele+"*(1./BtopPtWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BtopPtWeightDown_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele+"*(1./BtopPtWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BtopPtWeightDown_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma+"*(2.-1./BtopPtWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BtopPtWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele+"*(2.-1./BtopPtWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BtopPtWeightUp_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele+"*(2.-1./BtopPtWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BtopPtWeightUp_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma+"*(1+BphoWeightErr/BphoWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BphoWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele+"*(1+BphoWeightErr/BphoWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BphoWeightUp_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele+"*(1+BphoWeightErr/BphoWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BphoWeightUp_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gamma+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BphoWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchele+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BphoWeightDown_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoLepInvMass', cut_SR1_jjj_4gammamatchnonele+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 10, 70, 120, channel = "ele_jjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_jjj_BphoWeightDown_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+
+
+    Stack.drawStack('BpfMET', cut_SR1_jjj_4gammamatchele, str(lumi*1000), xBins_pfMET,0,500, channel = "ele_jjj: SR1", titlex = "pfMET(#gamma-->e)", units = "GeV",output=tag+'pfMET_SR1_ele_jjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BpfMET', cut_SR1_jjj_4gammamatchnonele, str(lumi*1000), xBins_pfMET,0,500, channel = "ele_jjj: SR1", titlex = "pfMET(#gamma-->no e)", units = "GeV",output=tag+'pfMET_SR1_ele_jjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+
+    Stack.drawStack('Bnjet', cut_SR1_jjj_4gammamatchele, str(lumi*1000), 15,0,15, channel = "ele_jjj: SR1", titlex = "N_{jets}(#gamma-->e)", units = "",output=tag+'Bnjet_SR1_ele_jjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('Bnjet', cut_SR1_jjj_4gammamatchnonele, str(lumi*1000), 15,0,15, channel = "ele_jjj: SR1", titlex = "N_{jets}(#gamma-->no e)", units = "",output=tag+'Bnjet_SR1_ele_jjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
+
+#     Stack.drawStack('BelePt', cut_pre_jjj, str(lumi*1000), 100, 0, 1000, channel = "ele_jjj: pre", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+
+
+     #######FOR PHOTON PURITY FIT##############
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta, str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet, str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet, str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta+"*(1.+BeleWeightErr)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BeleWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet+"*(1.+BeleWeightErr)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BeleWeightUp_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet+"*(1.+BeleWeightErr)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BeleWeightUp_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta+"*(1.-BeleWeightErr)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BeleWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet+"*(1.-BeleWeightErr)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BeleWeightDown_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet+"*(1.-BeleWeightErr)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BeleWeightDown_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta+"*(1./BtopPtWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BtopPtWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet+"*(1./BtopPtWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BtopPtWeightDown_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet+"*(1./BtopPtWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BtopPtWeightDown_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta+"*(2.-1./BtopPtWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BtopPtWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet+"*(2.-1./BtopPtWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BtopPtWeightUp_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet+"*(2.-1./BtopPtWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BtopPtWeightUp_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta+"*(1.+BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BphoWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet+"*(1.+BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BphoWeightUp_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet+"*(1.+BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BphoWeightUp_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta}", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BphoWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchjet+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen jet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BphoWeightDown_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoSigmaIEtaIEtaFull', cut_jjj_4gammawoietaieta_genmatchnojet+"*(1-BphoWeightErr/BphoWeight)", str(lumi*1000), 20, 0, 0.02, channel = "ele_jjj", titlex = "#sigma_{i#etai#eta} #gamma gen nojet", units = "",output=tag+'SigmaIEtaIEta_ele_jjj_BphoWeightDown_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+
+
+    Stack.drawStack('BpfMET', cut_SR1_jjj_4gamma_genmatchnojet, str(lumi*1000), xBins_pfMET,0,500, channel = "ele_jjj", titlex ="pfMET #gamma gen nojet", units = "GeV",output=tag+'pfMET_SR1_ele_jjj_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BpfMET', cut_SR1_jjj_4gamma_genmatchjet, str(lumi*1000), xBins_pfMET,0,500, channel = "ele_jjj", titlex ="pfMET #gamma gen jet", units = "GeV",output=tag+'pfMET_SR1_ele_jjj_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+
+
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso, str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchnojet, str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen nojet", units = "",output=tag+'PFChIso_ele_jjj_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchjet, str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen jet", units = "",output=tag+'PFChIso_ele_jjj_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+
+
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso+"*(1.+BeleWeightErr)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_jjj_BeleWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchnojet+"*(1.+BeleWeightErr)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen nojet", units = "",output=tag+'PFChIso_ele_jjj_BeleWeightUp_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchjet+"*(1.+BeleWeightErr)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen jet", units = "",output=tag+'PFChIso_ele_jjj_BeleWeightUp_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso+"*(1.-BeleWeightErr)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_jjj_BeleWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchnojet+"*(1.-BeleWeightErr)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen nojet", units = "",output=tag+'PFChIso_ele_jjj_BeleWeightDown_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchjet+"*(1.-BeleWeightErr)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen jet", units = "",output=tag+'PFChIso_ele_jjj_BeleWeightDown_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso+"*(1./BtopPtWeight)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_jjj_BtopPtWeightDown',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchnojet+"*(1./BtopPtWeight)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen nojet", units = "",output=tag+'PFChIso_ele_jjj_BtopPtWeightDown_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchjet+"*(1./BtopPtWeight)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen jet", units = "",output=tag+'PFChIso_ele_jjj_BtopPtWeightDown_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso+"*(2.-1./BtopPtWeight)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso", units = "",output=tag+'PFChIso_ele_jjj_BtopPtWeightUp',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchnojet+"*(2.-1./BtopPtWeight)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen nojet", units = "",output=tag+'PFChIso_ele_jjj_BtopPtWeightUp_gammagennojet',outDir=outdir)#,separateSignal=sepSig)
+    Stack.drawStack('BCandphoPFCorChIso', cut_jjj_4gammawochhadiso_genmatchjet+"*(2.-1./BtopPtWeight)", str(lumi*1000), 20, 0, 2, channel = "ele_jjj", titlex = "chargedHadIso #gamma gen jet", units = "",output=tag+'PFChIso_ele_jjj_BtopPtWeightUp_gammagenjet',outDir=outdir)#,separateSignal=sepSig)
+
 
 
 ##################################################
@@ -373,7 +448,10 @@ if test:
 
      
      Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR1_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: SR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_SR2_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: SR2", titlex = "pfMET", units = "GeV",output=tag+'pfMET_SR2_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_jjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_jjj: CR1", titlex = "pfMET", units = "GeV",output=tag+'pfMET_CR1_ele_jjj',outDir=outdir)#,separateSignal=sepSig)
 
 
      #######FOR JETM3 TEMPLATE FIT###########
@@ -385,8 +463,10 @@ if test:
      Stack.drawStack('BjetM3', cut_pre_bjj+"*(1./BtopPtWeight)", str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj_BtopPtWeightDown',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BjetM3', cut_pre_bjj+"*(2.-1./BtopPtWeight)", str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj_BtopPtWeightUp',outDir=outdir)#,separateSignal=sepSig)
 
+Stack.closePSFile()
 
      ######FOR ZJET FIT###############
+'''
      Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gamma, str(lumi*1000), 10, 70, 120, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gammamatchele, str(lumi*1000), 10, 70, 120, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj_gammamatchele',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BCandphoLepInvMass', cut_SR1_bjj_4gammamatchnonele, str(lumi*1000), 10, 70, 120, channel = "ele_bjj: SR1", titlex = "Invmass(ele,#gamma)", units = "GeV",output=tag+'Invlepgamma_SR1_ele_bjj_gammamatchnonele',outDir=outdir)#,separateSignal=sepSig)
@@ -512,3 +592,4 @@ if test:
 Stack.closePSFile()
 
 
+'''

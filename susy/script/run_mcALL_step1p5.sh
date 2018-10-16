@@ -40,7 +40,7 @@ fi
 #MClist="TTJets_DiLept TTJets_SingleLeptFromT TTJets_SingleLeptFromTbar"
 #MClist="TT TTGJets TTGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
 #MClist="W4JetsToLNu DYJetsToLL WGToLNuG WW WZ ZGTo2LG ZZ ST_s-channel_4f_leptonDecays ST_tW_antitop_5f_inclusiveDecays ST_tW_top_5f_inclusiveDecays ST_t-channel_antitop_4f_inclusiveDecays ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
-MClist="TT TTGJets TTGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ W4JetsToLNu DYJetsToLL WGToLNuG WW WZ ZGTo2LG ZZ ST_s-channel_4f_leptonDecays ST_tW_antitop_5f_inclusiveDecays ST_tW_top_5f_inclusiveDecays ST_t-channel_antitop_4f_inclusiveDecays ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
+MClist="TT TTGJets TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ W4JetsToLNu DYJetsToLL WGToLNuG WW WZ ZGTo2LG ZZ ST_s-channel_4f_leptonDecays ST_tW_antitop_5f_inclusiveDecays ST_tW_top_5f_inclusiveDecays ST_t-channel_antitop_4f_inclusiveDecays ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
 #MClist="ST_t-channel_top_4f_inclusiveDecays W3JetsToLNu W2JetsToLNu"
 
 for mc in $MClist

@@ -13,8 +13,8 @@ tag=sys.argv[1]
 tag=tag+"_ELECR"
 LogY=True
 
-AddQCD=True
-#AddQCD=False
+#AddQCD=True
+AddQCD=False
 normaldraw=True
 test=False
 
@@ -99,39 +99,46 @@ tag+='_'
 
 xBins_pfMET=[0,20,60,100,150,300,500,1000]
 xBins_Pt=[0,20,40,60,80,100,120,160,200,250,300,400,500,600,800,1000,1250]
-
+xBins2_pfMET=[0,50,100,250,500,1000]
 #print cuts
 
 if normaldraw: 
-     Stack.drawStack('BpfMET', cut_CR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj, str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+#     Stack.drawStack('BpfMET', cut_CR2_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj+"*BbtagWeightUp/BbtagWeight", str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BbtagWeightUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj+"*BbtagWeightDown/BbtagWeight", str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BbtagWeightDown',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj+"*(1.+BeleWeightErr)", str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BeleWeightUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj+"*(1.-BeleWeightErr)", str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BeleWeightDown',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj+"*(1./BtopPtWeight)", str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BtopWeightDown',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR2_bjj+"*(2.-1./BtopPtWeight)", str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BtopWeightUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMeT1JESUp', cut_CR2_bjj, str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BJESUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMeT1JESDo', cut_CR2_bjj, str(lumi*1000), xBins2_pfMET, 0, 500, channel = "ele_bjj: CR2",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_CR2_ele_bjj_BJESDown',outDir=outdir)#,separateSignal=sepSig)
+
 
      if AddQCD==True:
           Stack.addPlotter(QCD,"QCD","QCD","background")
 
 #     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
-     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: CR1", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMETbin_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+#     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), 100, 0, 500, channel = "ele_bjj: CR1", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BelePt', cut_CR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "ele_Pt", units = "GeV",output=tag+'elePt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BMHT', cut_CR1_bjj, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "MHT", units = "GeV",output=tag+'MHT_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BHT', cut_CR1_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: CR1", titlex = "HT_jets", units = "GeV",output=tag+'HT_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('BCandphoEt', cut_CR1_bjj_4fake, str(lumi*1000), 50, 0, 500, channel = "ele_bjj: CR1", titlex = "fake E_{T}", units = "GeV",output=tag+'fakeEt_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
      Stack.drawStack('Bnjet', cut_CR1_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: CR1", titlex = "NJets", units = "",output=tag+'njets_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('Bnbjet', cut_CR1_bjj, str(lumi*1000), 10, 0, 10, channel = "ele_bjj: CR1", titlex = "NbJets", units = "",output=tag+'nbjets_CR1_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
+
+     Stack.drawStack('BpfMET', cut_CR1_bjj+"*BbtagWeightUp/BbtagWeight", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BbtagWeightUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj+"*BbtagWeightDown/BbtagWeight", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BbtagWeightDown',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj+"*(1.+BeleWeightErr)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BeleWeightUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj+"*(1.-BeleWeightErr)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BeleWeightDown',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj+"*(1./BtopPtWeight)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BtopWeightDown',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMET', cut_CR1_bjj+"*(2.-1./BtopPtWeight)", str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BtopWeightUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMeT1JESUp', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BJESUp',outDir=outdir)#,separateSignal=sepSig)
+     Stack.drawStack('BpfMeT1JESDo', cut_CR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "ele_bjj: CR1",titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_CR1_ele_bjj_BJESDown',outDir=outdir)#,separateSignal=sepSig)
 
 
-
-     #Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500,channel = "ele_bjj: Pre", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     #Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), xBins_pfMET, 0, 500,channel = "ele_bjj: Pre", titlex = "E_{T}^{mis}", units = "GeV",output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     #Stack.drawStack('BpfMET', cut_pre_bjj, str(lumi*1000), 100, 0, 500,channel = "ele_bjj: Pre", titlex = "E_{T}^{mis}", units = "GeV",blinding=True, blindingCut=50,output=tag+'pfMET_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     #Stack.drawStack('BelePt', cut_pre_bjj, str(lumi*1000), 80, 0, 800, channel = "ele_bjj: Pre",titlex = "ele_Pt", units = "GeV",output=tag+'elePt_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     # Stack.drawStack('BnVtx', cut_pre_bjj, str(lumi*1000), 100, 0, 100, channel = "ele_bjj: Pre", titlex = "nVtx", units = "",output=tag+'nVtx_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     # Stack.drawStack('BjetM3', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: Pre", titlex = "jet_M3", units = "GeV",output=tag+'BjetM3_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     # Stack.drawStack('Bnjet', cut_pre_bjj, str(lumi*1000), 20, 0, 20, channel = "ele_bjj: Pre", titlex = "njet", units = "",output=tag+'Bnjet_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     # Stack.drawStack('BnPho', cut_pre_bjj, str(lumi*1000), 3, 0, 3, channel = "ele_bjj: Pre", titlex = "N_{#gamma}", units = "",output=tag+'BnPho_pre_ele_bjj',outDir=outdir,separateSignal=sepSig)
-     # Stack.drawStack('BeleEta', cut_pre_bjj, str(lumi*1000), 30, -3, 3, channel = "ele_bjj: pre", titlex = "ele_Eta", units = "GeV",output=tag+'eleEta_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     # Stack.drawStack('BMHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "MHT", units = "GeV",output=tag+'MHT_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-     # Stack.drawStack('BHT', cut_pre_bjj, str(lumi*1000), 100, 0, 1000, channel = "ele_bjj: pre", titlex = "HT_jets", units = "GeV",output=tag+'HT_pre_ele_bjj',outDir=outdir)#,separateSignal=sepSig)
-
-
+ 
      Stack.closePSFile()
      sys.exit()
 

@@ -13,9 +13,9 @@ tag=sys.argv[1]
 tag=tag+"_Mu"
 LogY=True
 
-AddQCD=True
+#AddQCD=True
 AddSig=True
-#AddQCD=False
+AddQCD=False
 normaldraw=True
 test=False
 
@@ -111,8 +111,8 @@ if normaldraw:
 #     sepSig=True  
 
 
-     TT.addCorrectionFactor(SF_gpurity_tt*SF_gpurity_tt,"photon purity")
-     TTG.addCorrectionFactor(SF_gpurity_ttg*SF_gpurity_ttg,"photon purity")
+#     TT.addCorrectionFactor(SF_gpurity_tt*SF_gpurity_tt,"photon purity")
+#     TTG.addCorrectionFactor(SF_gpurity_ttg*SF_gpurity_ttg,"photon purity")
 
      Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",output=tag+'pfMET_SR2_mu_bjj',outDir=outdir,separateSignal=sepSig)
      Stack.drawStack('BpfMET', cut_SR2_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: SR2", titlex = "E_{T}^{miss}", units = "GeV",blinding=True,blindingCut=60,output=tag+'pfMETblind_SR2_mu_bjj',outDir=outdir,separateSignal=sepSig)
@@ -121,8 +121,8 @@ if normaldraw:
      Stack.drawStack('BHT', cut_SR2_bjj, str(lumi*1000), 100, 0, 1000, channel = "mu_bjj: SR2", titlex = "HT_jets", units = "GeV",output=tag+'HT_SR2_mu_bjj',outDir=outdir)#,separateSignal=sepSig)
 
 
-     TT.addCorrectionFactor(1./SF_gpurity_tt,"photon purity")
-     TTG.addCorrectionFactor(1./SF_gpurity_ttg,"photon purity")
+     TT.addCorrectionFactor(SF_gpurity_tt,"photon purity")
+     TTG.addCorrectionFactor(SF_gpurity_ttg,"photon purity")
 #     Stack.addPlotter(ZJets, "ZJets","ZJets", "background")
 
      Stack.drawStack('BpfMET', cut_SR1_bjj, str(lumi*1000), xBins_pfMET, 0, 500, channel = "mu_bjj: SR1", titlex = "E_{T}^{miss}", units = "GeV",blinding=True,blindingCut=60,output=tag+'pfMETbinblind_SR1_mu_bjj',outDir=outdir,separateSignal=sepSig)

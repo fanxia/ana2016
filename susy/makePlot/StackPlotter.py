@@ -354,6 +354,15 @@ class StackPlotter(object):
 
 
         stack.Draw("A,HIST,SAME")
+
+        #try to add the summed stack plot
+        if background>0.0:
+            hstlast=stack.GetStack().Last().Clone('hstlast')
+            hstlast.SetFillColor(ROOT.kGray)
+            hstlast.SetMarkerSize(0.1)
+            hstlast.SetFillStyle(3004)
+            hstlast.Draw("e2,SAME")
+
         ROOT.gStyle.SetErrorX(0.5)
         if dataH !=None:
 
@@ -417,10 +426,19 @@ class StackPlotter(object):
         if dataH is not None:
             print "Observed = %f"%(dataH.Integral())
             integral = dataH.IntegralAndError(1,dataH.GetNbinsX(),error)
+            print "Observed = %f"%(dataH.Integral()), "+-",error
             if background>0.0:
                 print "Data/Bkg= {ratio} +- {err}".format(ratio=integral/background,err=math.sqrt(error*error/(background*background)+integral*integral*backgroundErr/(background*background*background*background)))
+#                print "Data/Bkg= {ratio} +- {err}".format(ratio=integral/background,err=math.sqrt(error*error/(integral*integral)+backgroundErr*backgroundErr/(background*background)))
         print"################################################"
+################If in CR find bins mode, calculate the chi2 of Data/MC####START
+        if "BinNo" in output:
+            hmclast=stack.GetStack().Last().Clone('hmclast')
+            hdatatest=dataH.Clone('hdatatest')
+            print bins
+            hdatatest.Chi2Test(hmclast,"UW P CHI2/NDF")
 
+################# If in CR find bins mode, calculate the chi2 of Data/MC#####END
 	pt =ROOT.TPaveText(0.1577181,0.9562937,0.9580537,0.9947552,"brNDC")
         pt.SetName(output+'_'+'pavetext')
 	pt.SetBorderSize(0)

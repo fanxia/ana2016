@@ -22,10 +22,13 @@ def newth1(tag=''):
 # sum plot
 errall,systall=Double(),0
 summc=newth1("mcsum")
+datahist=inf.Get('{0}_data_obs'.format(tagname))
+print "data_obs events number: ", datahist.Integral()
 for bkg in mcbkg:summc.Add(inf.Get('{0}_{1}'.format(tagname,bkg)))
 evtall=summc.IntegralAndError(1,summc.GetNbinsX(),errall)
-for i in range(1,summc.GetNbinsX()):
+for i in range(1,summc.GetNbinsX()+1):
     print i,summc.GetBinContent(i),summc.GetBinError(i)
+    print "data_obs", datahist.GetBinContent(i)
 print
 # adding shapeunc
 unccont=[newth1() for i in range(len(shapeunc))]
@@ -52,10 +55,12 @@ systall**=0.5
 # merging error
 for i in shperr: summc.Add(i)
 for i in lnNerr: summc.Add(i)
-for i in range(1,summc.GetNbinsX()):
+for i in range(1,summc.GetNbinsX()+1):
     print i,summc.GetBinContent(i),summc.GetBinError(i)
 print
 c=inf.Get(tagname+'_c1')
+hstlast=c.FindObject(tagname+"_pad1").GetPrimitive("hstlast")
+leg1=c.FindObject(tagname+"_pad1").GetPrimitive(tagname+"_legend")
 ratio=c.FindObject(tagname+"_pad2").GetPrimitive("hMCstats")
 leg=c.FindObject(tagname+"_pad2").GetPrimitive(tagname+"_leg2")
 leg.Clear()
@@ -63,12 +68,20 @@ leg.AddEntry(ratio,'uncertainty','f')
 for i in range(1,ratio.GetNbinsX()):
     if summc.GetBinContent(i)<0.000001: continue
     ratio.SetBinError(i,summc.GetBinError(i)/summc.GetBinContent(i))
+    hstlast.SetBinError(i,summc.GetBinError(i))
+hstlast.SetFillColor(kGray+3)
+hstlast.SetMarkerSize(0.1)
+hstlast.SetLineColor(kWhite)
+hstlast.SetFillStyle(3017)
+leg1.AddEntry(hstlast,'uncertainty','f')
 ratio.SetFillColor(kGray)
 ratio.SetFillStyle(1001)
 c.Print("step6_out/"+tagname+".pdf")
 
 c.Clear()
 c=inf.Get(blindtagname+'_c1')
+hstlast=c.FindObject(blindtagname+"_pad1").GetPrimitive("hstlast")
+leg1=c.FindObject(blindtagname+"_pad1").GetPrimitive(blindtagname+"_legend")
 ratio=c.FindObject(blindtagname+"_pad2").GetPrimitive("hMCstats")
 leg=c.FindObject(blindtagname+"_pad2").GetPrimitive(blindtagname+"_leg2")
 leg.Clear()
@@ -76,6 +89,12 @@ leg.AddEntry(ratio,'uncertainty','f')
 for i in range(1,ratio.GetNbinsX()):
     if summc.GetBinContent(i)<0.000001: continue
     ratio.SetBinError(i,summc.GetBinError(i)/summc.GetBinContent(i))
+    hstlast.SetBinError(i,summc.GetBinError(i))
+hstlast.SetFillColor(kGray+3)
+hstlast.SetMarkerSize(0.1)
+hstlast.SetLineColor(kWhite)
+hstlast.SetFillStyle(3017)
+leg1.AddEntry(hstlast,'uncertainty','f')
 ratio.SetFillColor(kGray)
 ratio.SetFillStyle(1001)
 c.Print("step6_out/"+blindtagname+".pdf")

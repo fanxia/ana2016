@@ -103,15 +103,15 @@ def doZJets(k_ttbar,k_wjets,sys=''):
     InvEGFitter.subdata(fin.Get(InvEGhistname+"Wgamma"))
     InvEGFitter.subdata(fin.Get(InvEGhistname+"Zgamma"))
 
-    InvEGFitter.pushmc("DYgamma",fin.Get(InvEGhistname+"gammamatchnonele_ZJets"))
-    InvEGFitter.pushmc("fakeDYgamma",fin.Get(InvEGhistname+"gammamatchele_ZJets"),col=kAzure+1)
+    InvEGFitter.pushmc("#gamma not matched gen-ele",fin.Get(InvEGhistname+"gammamatchnonele_ZJets"))
+    InvEGFitter.pushmc("#gamma matched gen-ele",fin.Get(InvEGhistname+"gammamatchele_ZJets"),col=kAzure+1)
     InvEGFitter.tempfit()
     InvEGFitter_result=InvEGFitter.result
-    k_egamma=InvEGFitter_result['DYgamma'][2]
-    k_egamma_err=InvEGFitter_result['DYgamma'][3]
+    k_egamma=InvEGFitter_result['#gamma not matched gen-ele'][2]
+    k_egamma_err=InvEGFitter_result['#gamma not matched gen-ele'][3]
 
-    k_fake=InvEGFitter_result['fakeDYgamma'][2]
-    k_fake_err=InvEGFitter_result['fakeDYgamma'][3]
+    k_fake=InvEGFitter_result['#gamma matched gen-ele'][2]
+    k_fake_err=InvEGFitter_result['#gamma matched gen-ele'][3]
     log.write("\n\n####################################################################")
     log.write("\n####################InvmassEG Fitter##################################")
     log.write("\n####################InvmassEF Fitter##################################")
@@ -379,6 +379,32 @@ def doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar,sys=""):
     log.write("\n For SR1, the scale factor for TT&TTG Err is %s"%PlotMETTTcom.ratioErr)
     log.write("\n#################################################################\n\n\n")
 
+
+def doCompTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar,sf_gpurity_ttbar,sf_gpurity_ttg,sys=""):
+    print "#####################################################"
+    print "plot MET comparison  (TT&TTG sfs)/(promptg/non-promptg sfs), use only plot"
+    PlotMETTTcomp=PlotterMET()
+    PlotMETTTcomp.pushbef("#gamma purity SFs",fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagennojet_TTG"),col=kBlack,scal=sf_promptgamma)
+    PlotMETTTcomp.addbef(fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagenjet_TTG"),scal=sf_nonpromptgamma)
+    PlotMETTTcomp.addbef(fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagenjet_TT"),scal=k_ttbar*sf_nonpromptgamma)
+    PlotMETTTcomp.addbef(fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagennojet_TT"),scal=k_ttbar*sf_promptgamma)
+    PlotMETTTcomp.pushaft("united SFs for tt(#gamma)",fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagennojet_TTG"),col=kBlue,scal=sf_gpurity_ttg)
+    PlotMETTTcomp.addaft(fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagenjet_TTG"),scal=sf_gpurity_ttg)
+    PlotMETTTcomp.addaft(fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagenjet_TT"),scal=sf_gpurity_ttbar*k_ttbar)
+    PlotMETTTcomp.addaft(fin.Get(tag+"_ELE_pfMET_SR1_ele_bjj_gammagennojet_TT"),scal=sf_gpurity_ttbar*k_ttbar)
+
+    PlotMETTTcomp.plotMETcompare(foutname,"compTTaTTG_pfMET","E_{T}^{miss} (GeV)","",sys)
+#    print "In TT/TTG samples, SF for non-prompt photon(jet) events is ",sf_nonpromptgamma," and for prompt gamma is ",sf_promptgamma
+#    print "Before/After applying the above sfs, the total ratio for the whole sample is ",PlotMETTTcomp.ratio
+#    print "And the ratio Error is ",PlotMETTTcomp.ratioErr
+#    print "You need to carefully check the comparison ratio hists to make sure the seperate sfs won't affect the MET shape"
+    print "*******************************************************\n\n\n"
+    log.write("\n\n####################################################################")
+    log.write("Compare the (sf*ttbar+sf*ttg)/(sf*non_promptphoton+sf*promptphoton)")
+    log.write("\n For SR1, the scale factor  is %s"%PlotMETTTcomp.ratio)
+    log.write("\n For SR1, the scale factor Err is %s"%PlotMETTTcomp.ratioErr)
+    log.write("\n#################################################################\n\n\n")
+
 ######################################################################################
 ##############Running config area#####################################################
 ######################################################################################
@@ -391,6 +417,7 @@ frootout=TFile.Open(foutname+".root","recreate")
 frootout.Close()
 log=open(foutname+".log","w")
 sumlog=open(foutname+"summary.log","w")
+DoSYScal=False
 
 # qcd sf for pre-region
 [k_qcd,k_qcd_err]=doQCD()
@@ -399,6 +426,7 @@ sumlog.write("\n QCD normalization scale factor")
 sumlog.write("\nk_qcd = %s\n"%k_qcd)
 sumlog.write("\nk_qcd_err = %s\n\n\n"%k_qcd_err)
 
+#k_qcd=0.0
 # ttbar, wjets sfs for pre-region
 [k_wjets,k_wjets_err,k_ttbar,k_ttbar_err]=doJetM3fit(k_qcd)
 sumlog.write("\n\n####################################################################")
@@ -406,20 +434,23 @@ sumlog.write("\n JetM3 template fit scale factor for wjets and ttbar")
 sumlog.write("\nSYSTEMATIC: SF_wjets, SF_wjets_err, SF_ttbar, SF_ttbar_err\n")
 sumlog.write("central:%s\n"%[k_wjets,k_wjets_err,k_ttbar,k_ttbar_err])
 
-sys_wjets=CombineSys(k_wjets)
-sys_ttbar=CombineSys(k_ttbar)
-for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp']:
-    [sk_wjets,sk_wjets_err,sk_ttbar,sk_ttbar_err]=doJetM3fit(k_qcd,sys)
-    sumlog.write("%s:%s\n"%(sys,[sk_wjets,sk_wjets_err,sk_ttbar,sk_ttbar_err]))
-    sys_wjets.pushsys(sk_wjets)
-    sys_ttbar.pushsys(sk_ttbar)
-sumlog.write("estimateJESUp(+5percent):%s\n"%[k_wjets*1.05,'----',k_ttbar*1.05,'---'])
-sumlog.write("estimateJESUp(-5percent):%s\n"%[k_wjets*0.95,'----',k_ttbar*0.95,'---'])
-sys_wjets.pushsys(sk_wjets*1.05)
-sys_wjets.pushsys(sk_wjets*0.95)
-sys_ttbar.pushsys(sk_ttbar*1.05)
-sys_ttbar.pushsys(sk_ttbar*0.95)
-sumlog.write("CombineSYS:--%s--%s\n\n\n"%(sys_wjets.sys(),sys_ttbar.sys()))
+sys.exit()
+
+if DoSYScal:
+    sys_wjets=CombineSys(k_wjets)
+    sys_ttbar=CombineSys(k_ttbar)
+    for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp']:
+        [sk_wjets,sk_wjets_err,sk_ttbar,sk_ttbar_err]=doJetM3fit(k_qcd,sys)
+        sumlog.write("%s:%s\n"%(sys,[sk_wjets,sk_wjets_err,sk_ttbar,sk_ttbar_err]))
+        sys_wjets.pushsys(sk_wjets)
+        sys_ttbar.pushsys(sk_ttbar)
+    sumlog.write("estimateJESUp(+5percent):%s\n"%[k_wjets*1.05,'----',k_ttbar*1.05,'---'])
+    sumlog.write("estimateJESUp(-5percent):%s\n"%[k_wjets*0.95,'----',k_ttbar*0.95,'---'])
+    sys_wjets.pushsys(sk_wjets*1.05)
+    sys_wjets.pushsys(sk_wjets*0.95)
+    sys_ttbar.pushsys(sk_ttbar*1.05)
+    sys_ttbar.pushsys(sk_ttbar*0.95)
+    sumlog.write("CombineSYS:--%s--%s\n\n\n"%(sys_wjets.sys(),sys_ttbar.sys()))
 
 # zjets sfs for ELE SR1
 [sf_zjets_gamma,sferr_zjets_gamma,sf_zjets_efakep,sferr_zjets_efakep]=doZJets(k_ttbar,k_wjets)
@@ -429,17 +460,19 @@ sumlog.write("\n\n##############################################################
 sumlog.write("\n Zjets template fit scale factor for realgamma and elefakedgamma")
 sumlog.write("\nSYSTEMATIC: SF_zjet_gamma, SF_zjet_gamma_err, SF_zjet_efakep, SF_zjet_efakep_err, combinedSF_zjet,combinedSF_zjet_err\n")
 sumlog.write("central:%s\n"%[sf_zjets_gamma,sferr_zjets_gamma,sf_zjets_efakep,sferr_zjets_efakep,k_zjets,kerr_zjets])
-sys_zjets_gamma=CombineSys(sf_zjets_gamma)
-sys_zjets_efakep=CombineSys(sf_zjets_efakep)
-sys_combZjets=CombineSys(k_zjets)
-for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp','BphoWeightUp','BphoWeightDown']:
-    [sysf_zjets_gamma,sysferr_zjets_gamma,sysf_zjets_efakep,sysferr_zjets_efakep]=doZJets(k_ttbar,k_wjets,sys)
-    [sysk_zjets,syskerr_zjets]=doCombZJets(sysf_zjets_gamma,sysferr_zjets_gamma,sysf_zjets_efakep,sysferr_zjets_efakep,sys)
-    sumlog.write("%s:%s\n"%(sys,[sysf_zjets_gamma,sysferr_zjets_gamma,sysf_zjets_efakep,sysferr_zjets_efakep,sysk_zjets,syskerr_zjets]))
-    sys_zjets_gamma.pushsys(sysf_zjets_gamma)
-    sys_zjets_efakep.pushsys(sysf_zjets_efakep)
-    sys_combZjets.pushsys(sysk_zjets)
-sumlog.write("CombineSYS:--%s--%s--%s\n\n\n"%(sys_zjets_gamma.sys(),sys_zjets_efakep.sys(),sys_combZjets.sys()))
+
+if DoSYScal:
+    sys_zjets_gamma=CombineSys(sf_zjets_gamma)
+    sys_zjets_efakep=CombineSys(sf_zjets_efakep)
+    sys_combZjets=CombineSys(k_zjets)
+    for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp','BphoWeightUp','BphoWeightDown']:
+        [sysf_zjets_gamma,sysferr_zjets_gamma,sysf_zjets_efakep,sysferr_zjets_efakep]=doZJets(k_ttbar,k_wjets,sys)
+        [sysk_zjets,syskerr_zjets]=doCombZJets(sysf_zjets_gamma,sysferr_zjets_gamma,sysf_zjets_efakep,sysferr_zjets_efakep,sys)
+        sumlog.write("%s:%s\n"%(sys,[sysf_zjets_gamma,sysferr_zjets_gamma,sysf_zjets_efakep,sysferr_zjets_efakep,sysk_zjets,syskerr_zjets]))
+        sys_zjets_gamma.pushsys(sysf_zjets_gamma)
+        sys_zjets_efakep.pushsys(sysf_zjets_efakep)
+        sys_combZjets.pushsys(sysk_zjets)
+    sumlog.write("CombineSYS:--%s--%s--%s\n\n\n"%(sys_zjets_gamma.sys(),sys_zjets_efakep.sys(),sys_combZjets.sys()))
 
 
 #In SR1, fit the sfs for prompt non-prompt photons for samples: TT, TTG
@@ -462,38 +495,43 @@ sferr_nonpromptgamma=k_bkgs_gammagenjet_err
 combTTresult=doCombTT(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma,"")
 combTTGresult=doCombTTG(sf_promptgamma,sferr_promptgamma,sf_nonpromptgamma,sferr_nonpromptgamma,"")
 doCombTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar,"")
+doCompTTaTTG(sf_nonpromptgamma,sf_promptgamma,k_ttbar,combTTresult[0],combTTGresult[0],"")
 sumlog.write("\n\n####################################################################")
 sumlog.write("\n photon purity template fit scale factor for promptphoton and nonpromptphoton and combinedsf for tt, ttg\n")
 sumlog.write("\nSYSTEMATIC:SigIEIE sf_promptg, sf_promptg_err, sf_nong, sf_nong_err, combinedSF_tt,tt_err, combineSF_ttg, ttg_err \n")
 sumlog.write("central:%s\n"%(SigmaIEIEresult+combTTresult+combTTGresult))
-sysIEIE_ppurity_promptgamma=CombineSys(SigmaIEIEresult[0])
-sysIEIE_ppurity_nongamma=CombineSys(SigmaIEIEresult[2])
-sysIEIE_tt=CombineSys(combTTresult[0])
-sysIEIE_ttg=CombineSys(combTTGresult[0])
-for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp','BphoWeightUp','BphoWeightDown']:
-    [sysa,sysb,sysc,sysd]=doSigmaIEIEfit(k_wjets,k_ttbar,k_zjets,sys)
-    [systt,systterr]=doCombTT(sysa,sysb,sysc,sysd,sys)
-    [systtg,systtgerr]=doCombTTG(sysa,sysb,sysc,sysd,sys)
-    sumlog.write("%s:%s\n"%(sys,[sysa,sysb,sysc,sysd,systt,systterr,systtg,systtgerr]))
-    sysIEIE_ppurity_promptgamma.pushsys(sysa)
-    sysIEIE_ppurity_nongamma.pushsys(sysc)
-    sysIEIE_tt.pushsys(systt)
-    sysIEIE_ttg.pushsys(systtg)
-sumlog.write("CombineSYS:--%s--%s--%s--%s\n\n\n"%(sysIEIE_ppurity_promptgamma.sys(),sysIEIE_ppurity_nongamma.sys(),sysIEIE_tt.sys(),sysIEIE_ttg.sys()))
+
+if DoSYScal:
+    sysIEIE_ppurity_promptgamma=CombineSys(SigmaIEIEresult[0])
+    sysIEIE_ppurity_nongamma=CombineSys(SigmaIEIEresult[2])
+    sysIEIE_tt=CombineSys(combTTresult[0])
+    sysIEIE_ttg=CombineSys(combTTGresult[0])
+    for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp','BphoWeightUp','BphoWeightDown']:
+        [sysa,sysb,sysc,sysd]=doSigmaIEIEfit(k_wjets,k_ttbar,k_zjets,sys)
+        [systt,systterr]=doCombTT(sysa,sysb,sysc,sysd,sys)
+        [systtg,systtgerr]=doCombTTG(sysa,sysb,sysc,sysd,sys)
+        sumlog.write("%s:%s\n"%(sys,[sysa,sysb,sysc,sysd,systt,systterr,systtg,systtgerr]))
+        sysIEIE_ppurity_promptgamma.pushsys(sysa)
+        sysIEIE_ppurity_nongamma.pushsys(sysc)
+        sysIEIE_tt.pushsys(systt)
+        sysIEIE_ttg.pushsys(systtg)
+    sumlog.write("CombineSYS:--%s--%s--%s--%s\n\n\n"%(sysIEIE_ppurity_promptgamma.sys(),sysIEIE_ppurity_nongamma.sys(),sysIEIE_tt.sys(),sysIEIE_ttg.sys()))
 
 sumlog.write("\n\n####################################################################")
 sumlog.write("\n photon purity template fit scale factor for promptphoton and nonpromptphoton (chargedHardron Iso)\n")
 sumlog.write("\nSYSTEMATIC: sf_promptg, sf_promptg_err, sf_nong, sf_nong_err, combinedSF_tt,tt_err, combineSF_ttg, ttg_err \n")
 sumlog.write("central:%s\n"%(ChHadIsoresult))
-sysCHIso_ppurity_promptgamma=CombineSys(ChHadIsoresult[0])
-sysCHIso_ppurity_nongamma=CombineSys(ChHadIsoresult[2])
 
-for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp']:
-    [sysa,sysb,sysc,sysd]=doChHadIsofit(k_wjets,k_ttbar,k_zjets,sys)
-    sumlog.write("%s:%s\n"%(sys,[sysa,sysb,sysc,sysd]))
-    sysCHIso_ppurity_promptgamma.pushsys(sysa)
-    sysCHIso_ppurity_nongamma.pushsys(sysc)
-sumlog.write("CombineSYS:--%s--%s\n\n\n"%(sysCHIso_ppurity_promptgamma.sys(),sysCHIso_ppurity_nongamma.sys()))
+if DoSYScal:
+    sysCHIso_ppurity_promptgamma=CombineSys(ChHadIsoresult[0])
+    sysCHIso_ppurity_nongamma=CombineSys(ChHadIsoresult[2])
+
+    for sys in ['BbtagWeightUp','BbtagWeightDown','BeleWeightUp','BeleWeightDown','BtopPtWeightDown','BtopPtWeightUp']:
+        [sysa,sysb,sysc,sysd]=doChHadIsofit(k_wjets,k_ttbar,k_zjets,sys)
+        sumlog.write("%s:%s\n"%(sys,[sysa,sysb,sysc,sysd]))
+        sysCHIso_ppurity_promptgamma.pushsys(sysa)
+        sysCHIso_ppurity_nongamma.pushsys(sysc)
+    sumlog.write("CombineSYS:--%s--%s\n\n\n"%(sysCHIso_ppurity_promptgamma.sys(),sysCHIso_ppurity_nongamma.sys()))
 
 sumlog.close()
 log.close()

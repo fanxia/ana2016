@@ -192,6 +192,7 @@ dataSamples = [
 ]
 for sample in dataSamples:
     dataPlotters.append(TreePlotter(sample, indir+'/'+sample+'.root',tree))
+#    dataPlotters[-1].addCorrectionFactor(2.1,'test')
 Data = MergedPlotter(dataPlotters)
 
 Data.setAlias("BgenWeight","1.*1")
